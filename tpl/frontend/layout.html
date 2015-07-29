@@ -9,6 +9,9 @@
 	<title>{{#title}}{{title}} - {{/title}}{{WEBSITE_NAME}}</title>
 
 	{{#getLinkedFiles}}css{{/getLinkedFiles}}
+
+	<link type="application/rss+xml" rel="alternate" href="{{#buildUrl}}blog showRssFeed{{/buildUrl}}"/>
+	<link type="application/atom+xml" rel="alternate" href="{{#buildUrl}}blog showAtomFeed{{/buildUrl}}"/>
 </head>
 <body>
 	<div class="navbar-wrapper">
