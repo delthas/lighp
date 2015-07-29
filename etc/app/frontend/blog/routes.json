@@ -1,15 +1,15 @@
 [
 	{
-		"url":"/blog",
+		"url":"/blog/?",
 		"action":"index"
 	},
 	{
-		"url":"/blog/page/([0-9]+)",
+		"url":"/blog/page/([0-9]+)/?",
 		"action":"showPage",
 		"vars": ["pageNbr"]
 	},
 	{
-		"url":"/blog/post/([a-zA-Z0-9-_.]+)",
+		"url":"/blog/post/([a-zA-Z0-9-_.]+)/?",
 		"action":"showPost",
 		"vars": ["postName"]
 	}
