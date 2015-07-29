@@ -37,6 +37,10 @@ class BlogController extends \core\BackController {
 		$this->page()->addVar('isLastPage', $isLastPage);
 		$this->page()->addVar('previousPage', $pageNbr - 1);
 		$this->page()->addVar('nextPage', $pageNbr + 1);
+
+		$router = $this->app->router();
+		$this->page()->addVar('rssFeed', $router->getUrl('blog', 'showRssFeed'));
+		$this->page()->addVar('atomFeed', $router->getUrl('blog', 'showRssFeed'));
 	}
 
 	public function executeIndex(HTTPRequest $request) {

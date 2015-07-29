@@ -4,11 +4,11 @@
 		"action":"index"
 	},
 	{
-		"url":"/blog/rss.xml",
+		"url":"/blog/rss\\.xml",
 		"action":"showRssFeed"
 	},
 	{
-		"url":"/blog/atom.xml",
+		"url":"/blog/atom\\.xml",
 		"action":"showAtomFeed"
 	},
 	{
