@@ -1,0 +1,44 @@
+{{! We will use filters}}
+{{%FILTERS}}
+
+<dl class="dl-horizontal">
+	<dt>Nom du paquet</dt>
+	<dd>{{getPrettyName}}</dd>
+
+	<!--{{#title}}
+		<dt>Titre</dt>
+		<dd>{{title}}</dd>
+	{{/title}}-->
+
+	<dt>Version</dt>
+	<dd>{{getPrettyVersion}}</dd>
+
+	{{#getDescription}}
+		<dt>Description</dt>
+		<dd>{{getDescription}}</dd>
+	{{/getDescription}}
+
+	{{#getHomepage}}
+		<dt>Site Web</dt>
+		<dd><a href="{{getHomepage}}" target="_blank">{{getHomepage}}</a></dd>
+	{{/getHomepage}}
+
+	<dt>Auteur(s)</dt>
+	<dd>{{#getAuthors}}
+		{{name}}
+	{{/getAuthors}}</dd>
+
+	<dt>License</dt>
+	<dd>{{getLicense | join}}{{^getLicense}}<span class="muted">Aucune</span>{{/getLicense}}</dd>
+
+	<dt>D&eacute;pendances</dt>
+	<dd>
+		{{#requires}}{{getTarget}} <span class="muted">{{getPrettyConstraint}}</span><br />{{/requires}}
+		{{^requires}}<span class="muted">Aucune</span>{{/requires}}</dd>
+
+	<dt>Date de publication</dt>
+	<dd>{{#getReleaseDate}}{{getReleaseDate.getTimestamp | date}}{{/getReleaseDate}}</dd>
+
+	<dt>Statut</dt>
+	<dd>{{getStability}}</dd>
+</dl>

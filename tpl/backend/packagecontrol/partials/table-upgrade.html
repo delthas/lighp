@@ -1,0 +1,8 @@
+{{! We will use filters}}
+{{%FILTERS}}
+
+<tr>
+	<td><strong><a href="{{#buildUrl}}packagecontrol showPackage {{getName}}{{/buildUrl}}">{{getPrettyName}}</a></strong>{{#getDescription}} - {{getDescription}}{{/getDescription}}</td>
+	<td>{{getPrettyVersion}}</td>
+	<td>{{getLicence | join}}</td>
+</tr>

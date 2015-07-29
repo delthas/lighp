@@ -1,0 +1,52 @@
+{
+    "name": "lighp/lighp",
+    "description": "A light-weight php framework based on a package system.",
+    "homepage": "http://lighp.github.io/lighp/",
+    "version": "1.0-alpha2",
+    "license": "GPLv3",
+    "type": "project",
+    "authors": [
+        {
+            "name": "emersion",
+            "homepage": "http://emersion.fr"
+        }
+    ],
+    "config": {
+        "vendor-dir": "lib/vendor",
+        "component-dir": "public/assets",
+        "component-baseurl": "assets"
+    },
+    "repositories": {
+        "lighp": {
+            "type": "composer",
+            "url": "https://github.com/lighp/lighp.repo/raw/master/"
+        }
+    },
+    "scripts": {
+        "server": "echo 'Starting server at http://localhost:8000'; php -t public -S localhost:8000 public/router.php"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "php": ">=5.3.0",
+        "composer/composer": "1.0.*@dev",
+        "mustache/mustache": "dev-master",
+        "mustangostang/spyc": "0.5.*@dev",
+        "ircmaxell/password-compat": "dev-master",
+        "symfony/http-foundation": "~2.2",
+        "fsi/acl": "0.9.*",
+        "components/jquery": "1.9.*",
+        "components/bootstrap": "2.3.2",
+        "components/mustache": "0.8.*",
+        "lighp/composer-lighp-installers": "dev-master",
+        "lighp/lighp-core": "dev-master",
+        "lighp/module-backend-main": "dev-master",
+        "lighp/module-backend-packagecontrol": "dev-master",
+        "lighp/module-backend-routes": "dev-master",
+        "lighp/module-backend-assets": "dev-master"
+    },
+    "suggest": {
+        "lighp/dao-jsondb": "For a basic file-based database",
+        "lighp/dao-pdo": "For PDO support"
+    }
+}

@@ -1,0 +1,47 @@
+{{! We will use filters}}
+{{%FILTERS}}
+
+{{#upgraded?}}
+	<div class="alert alert-block alert-success">
+		<h4 class="alert-heading">Mises &agrave; jour appliqu&eacute;es</h4>
+		<p>Les mises &agrave; jour ont bien &eacute;t&eacute; appliqu&eacute;es.</p>
+		<p><a class="btn" href="{{#buildUrl}}main showModule packagecontrol{{/buildUrl}}">Retour</a></p>
+	</div>
+
+	{{> partials/output}}
+{{/upgraded?}}
+
+{{^upgraded?}}
+	{{#upgrades?}}
+		{{#error}}
+			<div class="alert alert-block alert-error">
+				<h4 class="alert-heading">Erreur lors de la mise à jour</h4>
+				<p>La mise à jour n'a pas pû être installée : {{error}}</p>
+			</div>
+		{{/error}}
+
+		{{^error}}
+			<p>Paquets &agrave; mettre &agrave; jour :</p>
+		{{/error}}
+
+		{{> partials/output}}
+
+		{{^error}}
+			<form action="" method="post">
+				<input type="hidden" name="check" value="1">
+
+				<div class="form-actions">
+					<button type="submit" class="btn btn-primary"><i class="icon-arrow-down icon-white"></i>&nbsp;Mettre à jour</button>
+					<a class="btn" href="{{#buildUrl}}main showModule packagecontrol{{/buildUrl}}">Annuler</a>
+				</div>
+			</form>
+		{{/error}}
+	{{/upgrades?}}
+	{{^upgrades?}}
+		<div class="alert alert-block alert-info">
+			<h4 class="alert-heading">Le système est à jour</h4>
+			<p>Aucune mise à jour n'est pour l'instant disponible.</p>
+			<p><a class="btn" href="{{#buildUrl}}main showModule packagecontrol{{/buildUrl}}">Retour</a></p>
+		</div>
+	{{/upgrades?}}
+{{/upgraded?}}

@@ -1,0 +1,44 @@
+{
+	"title":"Gestionnaire de paquets",
+	"icon":"download-alt",
+	"actions":{
+		"searchPackage":{
+			"title":"Installer un paquet"
+		},
+		"upgradePackages":{
+			"title":"Mettre à jour les paquets"
+		},
+		"showPackage":{
+			"title":"Afficher les paquets installés",
+			"list":{
+				"items":"installedPackages"
+			}
+		},
+		"removePackage":{
+			"title":"Supprimer un paquet",
+			"list":{
+				"items":"installedPackages"
+			}
+		},
+		"addRepository":{
+			"title":"Ajouter un dépôt"
+		},
+		"removeRepository":{
+			"title":"Supprimer un dépôt",
+			"list":{
+				"items":"repositories"
+			}
+		},
+		"about":{
+			"title":"&Agrave; propos"
+		}
+	},
+	"lists":{
+		"installedPackages":{
+			"title":"Paquets installés"
+		},
+		"repositories":{
+			"title":"Dépôts"
+		}
+	}
+}

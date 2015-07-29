@@ -1,0 +1,16 @@
+{{#installed?}}
+	<div class="alert alert-block alert-success">
+		<h4 class="alert-heading">Paquet install&eacute;</h4>
+		<p>Le paquet a bien &eacute;t&eacute; install&eacute;.</p>
+		<p><a class="btn" href="{{#buildUrl}}main showModule packagecontrol{{/buildUrl}}">Retour</a></p>
+	</div>
+{{/installed?}}
+
+{{#error}}
+	<div class="alert alert-block alert-error">
+		<h4 class="alert-heading">Erreur lors de l'installation</h4>
+		<p>Le paquet n'a pas p&ucirc; &eacute;t&eacute; install&eacute; : {{error}}</p>
+	</div>
+{{/error}}
+
+{{> partials/output}}

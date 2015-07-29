@@ -1,0 +1,15 @@
+[
+	{
+		"url":"/admin/routes/?",
+		"action":"listRoutes"
+	},
+	{
+		"url":"/admin/routes/insert/?",
+		"action":"insertRoute"
+	},
+	{
+		"url":"/admin/routes/delete/([a-zA-Z0-9-_.]+)/([0-9]+)/?",
+		"action":"deleteRoute",
+		"vars": ["app","id"]
+	}
+]

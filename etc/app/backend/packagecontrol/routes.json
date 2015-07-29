@@ -1,0 +1,42 @@
+[
+	{
+		"url":"/admin/packagecontrol/about/?",
+		"action":"about"
+	},
+	{
+		"url":"/admin/packagecontrol/show/([a-zA-Z0-9-_.]+(/[a-zA-Z0-9-_.]+)?)/?",
+		"action":"showPackage",
+		"vars": ["name"]
+	},
+	{
+		"url":"/admin/packagecontrol/search/?",
+		"action":"searchPackage"
+	},
+	{
+		"url":"/admin/packagecontrol/install/([a-zA-Z0-9-_.]+(/[a-zA-Z0-9-_.]+)?)/?",
+		"action":"installPackage",
+		"vars": ["name"]
+	},
+	{
+		"url":"/admin/packagecontrol/remove/([a-zA-Z0-9-_.]+(/[a-zA-Z0-9-_.]+)?)/?",
+		"action":"removePackage",
+		"vars": ["name"]
+	},
+	{
+		"url":"/admin/packagecontrol/upgrade/?",
+		"action":"upgradePackages"
+	},
+	{
+		"url":"/admin/packagecontrol/repos/?",
+		"action":"listRepositories"
+	},
+	{
+		"url":"/admin/packagecontrol/repos/add/?",
+		"action":"addRepository"
+	},
+	{
+		"url":"/admin/packagecontrol/repos/remove/([a-zA-Z0-9-_.]+)/?",
+		"action":"removeRepository",
+		"vars": ["name"]
+	}
+]

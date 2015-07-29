@@ -1,0 +1,13 @@
+{
+    "pdo": {
+        "config": {
+            "dsn": "mysql:host=localhost;dbname=lighp",
+            "username": "root",
+            "password": "",
+            "driver_options": {}
+        }
+    },
+    "json": {
+        "default": true
+    }
+}

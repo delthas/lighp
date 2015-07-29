@@ -1,0 +1,26 @@
+{
+	"title":"Utilisateurs",
+	"icon":"user",
+	"actions":{
+		"logout":{
+			"title":"Se déconnecter"
+		},
+		"insert":{
+			"title":"Ajouter un utilisateur"
+		},
+		"updateMe":{
+			"title":"Modifier mon compte"
+		},
+		"delete":{
+			"title":"Supprimer un utilisateur",
+			"list":{
+				"items":"users"
+			}
+		}
+	},
+	"lists":{
+		"users":{
+			"title":"Utilisateurs"
+		}
+	}
+}
