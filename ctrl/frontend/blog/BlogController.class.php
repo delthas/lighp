@@ -141,4 +141,47 @@ class BlogController extends \core\BackController {
 
 		$this->page()->addVar('user', $this->app()->user());
 	}
+
+	protected function executeShowFeed() {
+		$router = $this->app->router();
+
+		$this->setResponseType('FeedResponse');
+
+		$res = $this->responseContent();
+
+		$websiteConfig = $this->app->websiteConfig()->read();
+		$link = (!empty($websiteConfig['root'])) ? $websiteConfig['root'] : '/'; // TODO
+		$res->setMetadata(array(
+			'title' => $websiteConfig['name'],
+			'link' => $link,
+			'description' => $websiteConfig['description']
+		));
+
+		$items = array();
+		$manager = $this->managers->getManagerOf('blog');
+		$postsList = $manager->listPosts(0, 20);
+		foreach ($postsList as $post) {
+			$link = $router->getUrl('blog', 'showPost', array(
+				'postName' => $post['name']
+			));
+
+			$items[] = array(
+				'title' => $post['title'],
+				'link' => $link,
+				'content' => $post['content'],
+				'createdAt' => $post['creationDate']
+			);
+		}
+		$res->setItems($items);
+	}
+
+	public function executeShowRssFeed() {
+		$this->executeShowFeed();
+		$this->responseContent()->setFormat('rss');
+	}
+
+	public function executeShowAtomFeed() {
+		return $this->executeShowFeed();
+		$this->responseContent()->setFormat('atom');
+	}
 }

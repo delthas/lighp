@@ -4,6 +4,14 @@
 		"action":"index"
 	},
 	{
+		"url":"/blog/rss.xml",
+		"action":"showRssFeed"
+	},
+	{
+		"url":"/blog/atom.xml",
+		"action":"showAtomFeed"
+	},
+	{
 		"url":"/blog/page/([0-9]+)/?",
 		"action":"showPage",
 		"vars": ["pageNbr"]
