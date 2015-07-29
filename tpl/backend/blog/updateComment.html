@@ -1,0 +1,10 @@
+{{#updated?}}
+	<div class="alert alert-block alert-success">
+		<h4 class="alert-heading">Commentaire modifi&eacute;</h4>
+		<p>Le commentaire a bien &eacute;t&eacute; modifi&eacute;.</p>
+		<p><a class="btn" href="{{#buildUrl}}main showModule blog{{/buildUrl}}">Retour</a></p>
+	</div>
+{{/updated?}}
+{{^updated?}}
+	{{> partials/form-comment}}
+{{/updated?}}

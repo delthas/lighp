@@ -1,0 +1,24 @@
+{
+	"title":"Blog",
+	"icon":"align-justify",
+	"actions":{
+		"insertPost":{
+			"title":"Créer un billet"
+		},
+		"updatePost":{
+			"title":"Modifier un billet",
+			"list":{
+				"items":"posts"
+			}
+		},
+		"deletePost":{
+			"title":"Supprimer un billet",
+			"list":{
+				"items":"posts"
+			}
+		},
+		"updateConfig":{
+			"title":"Modifier la configuration"
+		}
+	}
+}

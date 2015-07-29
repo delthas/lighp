@@ -1,0 +1,21 @@
+{{#postsListNotEmpty?}}
+	{{> partials/postsListPager}}
+
+	<hr />
+{{/postsListNotEmpty?}}
+
+{{#postsList}}
+	<article>
+		<h2><a href="{{#buildUrl}}blog showPost {{name}}{{/buildUrl}}">{{title}}</a></h2>
+		<p><small><i class="icon-time"></i>&nbsp;{{creationDate}} · <i class="icon-comment"></i>&nbsp;<a href="{{#buildUrl}}blog showPost {{name}}{{/buildUrl}}#comments">{{#__}}comments{{/__}}</a></small></p>
+		<p>{{{content}}}</p>
+	</article>
+	<hr />
+{{/postsList}}
+{{^postsList}}
+	<p class="muted">{{#__}}emptyPostsList{{/__}}</p>
+{{/postsList}}
+
+{{#postsListNotEmpty?}}
+	{{> partials/postsListPager}}
+{{/postsListNotEmpty?}}

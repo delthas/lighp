@@ -1,0 +1,51 @@
+<form action="#comments" method="post" class="form-horizontal" id="form-blog-comment">
+	{{#error}}
+		<div class="alert alert-block alert-error">
+			<button class="close" data-dismiss="alert" type="button">&times;</button>
+			<h4 class="alert-heading">{{#__}}comments.error.title{{/__}}</h4>
+			<p>{{#__}}comments.error.msg{{/__}} : {{error}}.</p>
+		</div>
+	{{/error}}
+
+	<input type="hidden" name="captcha-id" value="{{captcha.id}}"/>
+
+	<div class="control-group">
+		<label class="control-label" for="comment-author-pseudo">{{#__}}comments.form.pseudo{{/__}}</label>
+		<div class="controls">
+			<input type="text" name="comment-author-pseudo" id="comment-author-pseudo" value="{{comment.authorPseudo}}" required>
+		</div>
+	</div>
+
+	<div class="control-group">
+		<label class="control-label" for="comment-author-email">{{#__}}comments.form.email{{/__}}</label>
+		<div class="controls">
+			<input type="email" name="comment-author-email" id="comment-author-email" value="{{comment.authorEmail}}"><span class="help-inline"><span class="muted">{{#__}}comments.form.optionalAndWontBePublished{{/__}}</span></span>
+		</div>
+	</div>
+
+	<div class="control-group">
+		<label class="control-label" for="comment-author-website">{{#__}}comments.form.website{{/__}}</label>
+		<div class="controls">
+			<input type="url" name="comment-author-website" id="comment-author-website" value="{{comment.authorWebsite}}"><span class="help-inline"><span class="muted">{{#__}}comments.form.optional{{/__}}</span></span>
+		</div>
+	</div>
+
+	<div class="control-group">
+		<label class="control-label" for="comment-content">{{#__}}comments.form.content{{/__}}</label>
+		<div class="controls">
+			<textarea name="comment-content" id="comment-content" rows="10" class="input-xxlarge" required>{{comment.content}}</textarea>
+		</div>
+	</div>
+
+	<div class="control-group">
+		<label class="control-label" for="captcha-value">{{captcha.question}}</label>
+		<div class="controls">
+			<input type="number" name="captcha-value" id="captcha-value" class="input-small" required/><span class="help-inline"><span class="muted">{{#__}}comments.form.captchaHelp{{/__}}</span></span>
+		</div>
+	</div>
+
+	<div class="form-actions">
+		<button type="submit" class="btn btn-primary">Valider</button>
+		<a class="btn" href="{{#buildUrl}}main showModule blog{{/buildUrl}}">Annuler</a>
+	</div>
+</form>

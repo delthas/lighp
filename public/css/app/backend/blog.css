@@ -1,0 +1,27 @@
+.editor-html5 .toolbar-container,
+.editor-html5 .editor-wysiwyg {
+	display: none;
+}
+
+.editor-html5 .editor-html {
+	font-family: "Ubuntu Mono", monospace;
+}
+
+.editor-html5 .editor-inner {
+	overflow: hidden;
+	word-wrap: break-word;
+	white-space: normal;
+	min-height: 200px;
+	height: auto;
+	width: 100%;
+	resize: none;
+	cursor: text;
+	color: black;
+}
+
+.editor-html5 .toolbar-container {
+	padding: 2px 5px;
+}
+.editor-html5 .toolbar-container.toolbar-fixed {
+	position: relative;
+}

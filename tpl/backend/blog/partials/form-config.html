@@ -1,0 +1,39 @@
+<form action="" method="post" class="form-horizontal">
+	{{#error}}
+		<div class="alert alert-block alert-error">
+			<button class="close" data-dismiss="alert" type="button">&times;</button>
+			<h4 class="alert-heading">Erreur</h4>
+			<p>Une erreur est survenue lors du traitement de la requ&ecirc;te : {{error}}.</p>
+		</div>
+	{{/error}}
+
+	<div class="control-group">
+		<label class="control-label" for="config-introduction">Introduction du blog</label>
+		<div class="controls">
+			<textarea name="config-introduction" id="config-introduction" rows="10" class="input-xxlarge">{{config.introduction}}</textarea>
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label" for="config-postsPerPage">Nombre de billets par page</label>
+		<div class="controls">
+			<input type="number" name="config-postsPerPage" id="config-postsPerPage" value="{{config.postsPerPage}}" required>
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label" for="config-dateFormat">Format de la date</label>
+		<div class="controls">
+			<input type="text" name="config-dateFormat" id="config-dateFormat" value="{{config.dateFormat}}" required><span class="help-inline">(pour le format, se r&eacute;f&eacute;rer &agrave; <a href="http://www.php.net/manual/fr/function.date.php#refsect1-function.date-parameters" target="_blank">la documentation PHP</a>)</span>
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label" for="config-enableComments">Activer les commentaires</label>
+		<div class="controls">
+			<input type="checkbox" name="config-enableComments" id="config-enableComments" {{#config.enableComments}}checked="checked"{{/config.enableComments}}>
+		</div>
+	</div>
+
+	<div class="form-actions">
+		<button type="submit" class="btn btn-primary">Valider</button>
+		<a class="btn" href="{{#buildUrl}}main showModule blog{{/buildUrl}}">Annuler</a>
+	</div>
+</form>

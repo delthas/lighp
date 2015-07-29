@@ -1,0 +1,10 @@
+{{#updated?}}
+	<div class="alert alert-block alert-success">
+		<h4 class="alert-heading">Configuration modifi&eacute;e</h4>
+		<p>La configuration a bien &eacute;t&eacute; modifi&eacute;e.</p>
+		<p><a class="btn" href="{{#buildUrl}}main showModule blog{{/buildUrl}}">Retour</a></p>
+	</div>
+{{/updated?}}
+{{^updated?}}
+	{{> partials/form-config}}
+{{/updated?}}

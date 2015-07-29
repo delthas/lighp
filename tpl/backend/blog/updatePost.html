@@ -1,0 +1,10 @@
+{{#updated?}}
+	<div class="alert alert-block alert-success">
+		<h4 class="alert-heading">Billet modifi&eacute;</h4>
+		<p>Le billet a bien &eacute;t&eacute; modifi&eacute;.</p>
+		<p><a class="btn" href="{{#buildUrl}}main showModule blog{{/buildUrl}}">Retour</a></p>
+	</div>
+{{/updated?}}
+{{^updated?}}
+	{{> partials/form-post}}
+{{/updated?}}

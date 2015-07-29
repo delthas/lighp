@@ -1,0 +1,10 @@
+{{#inserted?}}
+	<div class="alert alert-block alert-success">
+		<h4 class="alert-heading">Billet cr&eacute;&eacute;</h4>
+		<p>Le billet a bien &eacute;t&eacute; cr&eacute;&eacute;.</p>
+		<p><a class="btn" href="{{#buildUrl}}main showModule blog{{/buildUrl}}">Retour</a></p>
+	</div>
+{{/inserted?}}
+{{^inserted?}}
+	{{> partials/form-post}}
+{{/inserted?}}
