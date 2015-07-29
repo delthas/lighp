@@ -48,6 +48,12 @@ abstract class Application {
 	protected $name;
 
 	/**
+	 * The website config.
+	 * @var Config
+	 */
+	protected $websiteConfig;
+
+	/**
 	 * Initialize a new application.
 	 */
 	public function __construct() {
@@ -58,6 +64,16 @@ abstract class Application {
 		$this->httpResponse = new HTTPResponse;
 
 		$this->user = new User($this);
+
+		$this->websiteConfig = new Config(Pathfinder::getPathFor('config').'/core/website.json');
+	}
+
+	/**
+	 * Get the website config.
+	 * @return Config
+	 */
+	public function websiteConfig() {
+		return $this->websiteConfig;
 	}
 
 	/**
@@ -68,8 +84,7 @@ abstract class Application {
 		$router = $this->router();
 
 		$requestURI = $this->httpRequest->requestURI();
-		$websiteConfigFile = new Config(Pathfinder::getRoot().'/etc/core/website.json');
-		$websiteConfig = $websiteConfigFile->read();
+		$websiteConfig = $this->websiteConfig()->read();
 
 		$rootPath = $websiteConfig['root'];
 		if ($rootPath == '/') {

@@ -66,8 +66,7 @@ class Page extends ResponseContent {
 	 * @return array
 	 */
 	public function globalVars() {
-		$json = file_get_contents(Pathfinder::getPathFor('config').'/core/website.json');
-		$data = json_decode($json, true);
+		$data = $this->app->websiteConfig()->read();
 
 		$vars = array();
 		foreach($data as $index => $value) {

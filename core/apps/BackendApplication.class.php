@@ -26,6 +26,6 @@ class BackendApplication extends Application {
 
 		$controller->execute();
 
-		$this->httpResponse->setContent($controller->page());
+		$this->httpResponse->setContent($controller->responseContent());
 	}
 }
