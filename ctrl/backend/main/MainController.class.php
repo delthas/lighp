@@ -253,6 +253,9 @@ class MainController extends \core\BackController {
 							if (!isset($list[$itemName]['actions'])) {
 								$list[$itemName]['actions'] = array();
 							}
+							if (isset($item['actions?']) && isset($item['actions?'][$action['name']]) && !$item['actions?'][$action['name']]) {
+								continue;
+							}
 
 							$list[$itemName]['actions'][] = array(
 								'action' => $action,
