@@ -1,0 +1,10 @@
+{{#inserted?}}
+	<div class="alert alert-block alert-success">
+		<h4 class="alert-heading">Route dupliquée</h4>
+		<p>La route a bien été ajoutée.</p>
+		<p><a class="btn" href="{{#buildUrl}}main showModule routes{{/buildUrl}}">Retour</a></p>
+	</div>
+{{/inserted?}}
+{{^inserted?}}
+	{{> partials/form-route}}
+{{/inserted?}}

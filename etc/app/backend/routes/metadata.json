@@ -2,11 +2,25 @@
 	"title":"Routes",
 	"icon":"road",
 	"actions":{
-		"listRoutes":{
-			"title":"Gérer les routes"
-		},
 		"insertRoute":{
 			"title":"Ajouter une route"
+		},
+		"deleteRoute":{
+			"title":"Supprimer une route",
+			"list":{
+				"items":"routes"
+			}
+		},
+		"duplicateRoute":{
+			"title":"Dupliquer une route",
+			"list":{
+				"items":"routes"
+			}
+		}
+	},
+	"lists":{
+		"routes":{
+			"title":"Routes"
 		}
 	}
 }
