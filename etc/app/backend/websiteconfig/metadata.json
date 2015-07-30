@@ -1,0 +1,9 @@
+{
+	"title":"Configuration du site web",
+	"icon":"globe",
+	"actions":{
+		"update":{
+			"title":"Modifier la configuration"
+		}
+	}
+}

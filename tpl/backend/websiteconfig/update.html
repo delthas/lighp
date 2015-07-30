@@ -1,0 +1,42 @@
+{{#updated?}}
+	<div class="alert alert-block alert-success">
+		<h4 class="alert-heading">Configuraion modifiée</h4>
+		<p>La configuration du site web a bien été modifiée.</p>
+		<p><a class="btn" href="{{#buildUrl}}main showModule websiteconfig{{/buildUrl}}">Retour</a></p>
+	</div>
+{{/updated?}}
+{{^updated?}}
+	{{#error}}
+		<div class="alert alert-block alert-error">
+			<button class="close" data-dismiss="alert" type="button">&times;</button>
+			<h4 class="alert-heading">Erreur</h4>
+			<p>Une erreur est survenue lors de la modification de la configuration : {{error}}.</p>
+		</div>
+	{{/error}}
+
+	<form action="" method="post" class="form-horizontal">
+		<div class="control-group">
+			<label class="control-label" for="name">Nom</label>
+			<div class="controls">
+				<input type="text" name="name" id="name" value="{{config.name}}" placeholder="Nom du site web" required>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="description">Description</label>
+			<div class="controls">
+				<input type="text" name="description" id="description" value="{{config.description}}" placeholder="Description courte du site web" class="input-xxlarge">
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="author">Auteur</label>
+			<div class="controls">
+				<input type="text" name="author" id="author" value="{{config.author}}" placeholder="Auteur du site web">
+			</div>
+		</div>
+
+		<div class="form-actions">
+			<button type="submit" class="btn btn-primary">Valider</button>
+			<a class="btn" href="{{#buildUrl}}main showModule websiteconfig{{/buildUrl}}">Annuler</a>
+		</div>
+	</form>
+{{/updated?}}
