@@ -15,6 +15,7 @@ class FrontendApiApplication extends Application {
 		parent::__construct();
 
 		$this->name = 'frontendApi';
+		$this->mountPoint = '/api';
 	}
 
 	public function run() {

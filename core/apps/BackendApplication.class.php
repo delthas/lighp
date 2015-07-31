@@ -15,6 +15,7 @@ class BackendApplication extends Application {
 		parent::__construct();
 
 		$this->name = 'backend';
+		$this->mountPoint = '/admin';
 	}
 
 	public function run() {

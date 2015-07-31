@@ -48,6 +48,12 @@ abstract class Application {
 	protected $name;
 
 	/**
+	 * The application's mountpoint.
+	 * @var string
+	 */
+	protected $mountPoint;
+
+	/**
 	 * The website config.
 	 * @var Config
 	 */
@@ -95,21 +101,21 @@ abstract class Application {
 		}
 		$requestURI = preg_replace('#^'.preg_quote($rootPath).'#', '$1', $requestURI);
 
-		try { //Let's get the route matching with the URL
+		try { // Let's get the route matching with the URL
 			$matchedRoute = $router->getRouteFromUrl($requestURI);
 		} catch (\RuntimeException $e) {
-			if ($e->getCode() == Router::NO_ROUTE) { //No route matching, the page doesn't exist
+			if ($e->getCode() == Router::NO_ROUTE) { // No route matching, the page doesn't exist
 				$this->httpResponse->redirect404($this);
 				return;
 			}
 		}
 
-		//Check if this route is a redirection
+		// Check if this route is a redirection
 		if ($matchedRoute->redirect()) {
 			try { //Let's get another direct route
 				$redirectUrl = $rootPath . '/' . $router->getUrl($matchedRoute->module(), $matchedRoute->action(), $matchedRoute->vars());
 			} catch (\RuntimeException $e) {
-				if ($e->getCode() == Router::NO_ROUTE) { //No route matching, the page doesn't exist
+				if ($e->getCode() == Router::NO_ROUTE) { // No route matching, the page doesn't exist
 					$this->httpResponse->redirect404($this);
 					return;
 				}
@@ -118,10 +124,10 @@ abstract class Application {
 			$this->httpResponse->redirect301($redirectUrl);
 		}
 
-		//Add variables to the $_GET array
+		// Add variables to the $_GET array
 		$_GET = array_merge($_GET, $matchedRoute->vars());
 
-		//And then create the controller
+		// And then create the controller
 		return $this->buildController($matchedRoute->module(), $matchedRoute->action());
 	}
 
@@ -207,31 +213,37 @@ abstract class Application {
 			}
 			closedir($dir);
 
-			//Sorting modules is important :
-			//"." must be at the begining, because it has the greatest priority 
+			// Sorting modules is important :
+			// "." must be at the begining, because it has the greatest priority 
 			sort($modules);
 
 			foreach($modules as $module) {
 				$routesPath = $configPath . '/' . $module . '/routes.json';
 
 				if (file_exists($routesPath)) {
-					$json = file_get_contents($routesPath);
-					if ($json === false) { continue; }
-
-					$routes = json_decode($json, true);
-					if ($routes === null) { continue; }
+					$routesFile = new Config($routesPath);
+					try {
+						$routes = $routesFile->read();
+					} catch (\Exception $e) {
+						continue;
+					}
 
 					foreach ($routes as $route) {
 						$varsNames = (isset($route['vars']) && is_array($route['vars'])) ? $route['vars'] : array();
-						$redirect = (isset($route['redirect'])) ? (bool)$route['redirect'] : false;
+						$redirect = (isset($route['redirect'])) ? (bool) $route['redirect'] : false;
 
-						if ($module == '.') { //Global route
+						if ($module == '.') { // Global route
 							$routeModule = $route['module'];
 						} else {
 							$routeModule = $module;
 						}
 
-						$router->addRoute(new Route($route['url'], $routeModule, $route['action'], $varsNames, $redirect));
+						$url = $route['url'];
+						if (!empty($this->mountPoint)) {
+							$url = $this->mountPoint.$url;
+						}
+
+						$router->addRoute(new Route($url, $routeModule, $route['action'], $varsNames, $redirect));
 					}
 				}
 			}
