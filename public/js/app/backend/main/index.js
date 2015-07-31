@@ -19,45 +19,66 @@ $(function() {
 	function executeIndex() {
 		var searchQuery = $(searchFormQuerySel).val();
 
-		var oldView = Lighp.vars(),
-			newView = $.extend({}, oldView);
-
 		Lighp.loading(true, {
 			container: $(mainStackSel).parent()
 		});
 		emptyMainStack();
 
-		if (searchQuery.length) {
-			newView.searchQuery = searchQuery;
-			newView.backends = null;
+		var oldView = Lighp.vars();
 
-			var actions = [];
-			for (var i = 0; i < oldView.backends.length; i++) {
-				var backend = oldView.backends[i];
+		if (oldView.backends) {
+			// Backends list available, do a client-side search
+			var newView = $.extend({}, oldView);
 
-				for (var j = 0; j < backend.actions.length; j++) {
-					var action = $.extend({}, backend.actions[j]);
+			if (searchQuery.length) {
+				newView.searchQuery = searchQuery;
+				newView.backends = null;
 
-					action.title = backend.title + ' : ' + action.title;
-					action.backend = backend.name;
+				var actions = [];
+				for (var i = 0; i < oldView.backends.length; i++) {
+					var backend = oldView.backends[i];
 
-					if (backend.icon) {
-						action.icon = backend.icon;
+					for (var j = 0; j < backend.actions.length; j++) {
+						var action = $.extend({}, backend.actions[j]);
+
+						action.title = backend.title + ' : ' + action.title;
+						action.backend = backend.name;
+
+						if (backend.icon) {
+							action.icon = backend.icon;
+						}
+
+						actions.push(action);
 					}
-
-					actions.push(action);
 				}
+
+				var searcher = new Lighp.ArraySearcher(actions);
+				newView.actions = searcher.search(searchQuery, ['title', 'backend', 'name']);
 			}
 
-			var searcher = new Lighp.ArraySearcher(actions);
-			newView.actions = searcher.search(searchQuery, ['title', 'backend', 'name']);
-		}
+			loadingRequest = Lighp.backend.main.insertTpl('index', newView, function (data) {
+				Lighp.loading(false);
+				$(searchFormGoBackSel).toggle(searchQuery.length > 0);
+				attachEvents();
+			}, '#main-stack-container');
+		} else {
+			// Perform a server-side search
+			abortLoadingRequest();
 
-		loadingRequest = Lighp.backend.main.insertTpl('index', newView, function (data) {
-			Lighp.loading(false);
-			$(searchFormGoBackSel).toggle(searchQuery.length > 0);
-			attachEvents();
-		}, '#main-stack-container');
+			var req = Lighp.backend.main.execute('index', {
+				q: searchQuery
+			});
+			loadingRequest = req;
+
+			req.execute(function (view) {
+				loadingRequest = Lighp.backend.main.insertTpl('index', view, function (data) {
+					Lighp.loading(false);
+
+					$(searchFormGoBackSel).toggle(searchQuery.length > 0);
+					attachEvents();
+				}, '#main-stack-container');
+			});
+		}
 	}
 
 	function attachEvents() {
