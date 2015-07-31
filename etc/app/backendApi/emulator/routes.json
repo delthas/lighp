@@ -1,11 +1,11 @@
 [
 	{
-		"url":"/api/admin/execute/([a-zA-Z0-9_.-]+)/([a-zA-Z0-9_.-]+)",
+		"url":"/execute/([a-zA-Z0-9_.-]+)/([a-zA-Z0-9_.-]+)",
 		"action":"emulate",
 		"vars": ["emulateModule","emulateAction"]
 	},
 	{
-		"url":"/api/admin/list/([a-zA-Z0-9_.-]+)/([a-zA-Z0-9_.-]+)",
+		"url":"/list/([a-zA-Z0-9_.-]+)/([a-zA-Z0-9_.-]+)",
 		"action":"emulateList",
 		"vars": ["emulateModule","emulateListItems"]
 	}
