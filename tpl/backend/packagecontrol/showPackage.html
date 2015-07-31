@@ -48,6 +48,10 @@
 								<a class="btn" href="{{#buildUrl}}main showModule packagecontrol{{/buildUrl}}">Annuler</a>
 							</p>
 						</div>
+
+						<p>
+							<input type="checkbox" name="overwrite" id="overwrite"> Écraser les modifications locales lors de la mise à jour
+						</p>
 					{{/update?}}
 					{{^update?}}
 						<div class="form-actions">

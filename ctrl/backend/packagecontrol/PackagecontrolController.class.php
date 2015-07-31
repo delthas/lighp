@@ -409,17 +409,15 @@ class PackagecontrolController extends \core\BackController {
 		$pkgName = $request->getData('name');
 
 		if ($request->postExists('check')) {
-			if ($request->postExists('overwrite')) {
-				// Uninstall package first
-				$process = $this->_runCommandInProc(array('--no-update', 'remove', $pkgName));
-				if (!$process->isSuccessful()) {
-					$this->page()->addVar('error', 'Error while removing package before reinstalling (process returned '.$process->getExitCode().')');
-					return;
-				}
+			$installedRepo = $this->_getInstalledRepo();
+			$localPkgs = $installedRepo->findPackages($pkgName);
+			if (!empty($localPkgs)) {
+				// Package already installed, update it
+				$args = array('update', $pkgName, '--prefer-dist');
+			} else {
+				// Package not iinstalled, install it
+				$args = array('require', $pkgName.' dev-master', '--prefer-dist');
 			}
-
-			// Install package
-			$args = array('require', $pkgName.' dev-master', '--prefer-dist');
 
 			$env = array();
 			if ($request->postExists('overwrite')) {
