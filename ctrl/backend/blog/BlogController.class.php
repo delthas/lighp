@@ -2,6 +2,7 @@
 namespace ctrl\backend\blog;
 
 use core\http\HTTPRequest;
+use lib\entities\BlogPost;
 
 class BlogController extends \core\BackController {
 	protected function _addBreadcrumb($additionnalBreadcrumb = array(array())) {
@@ -17,7 +18,6 @@ class BlogController extends \core\BackController {
 		$this->page()->addVar('breadcrumb', array_merge($breadcrumb, $additionnalBreadcrumb));
 	}
 
-
 	public function executeInsertPost(HTTPRequest $request) {
 		$this->page()->addVar('title', 'Créer un billet');
 		$this->_addBreadcrumb();
@@ -28,13 +28,14 @@ class BlogController extends \core\BackController {
 			$postData = array(
 				'name' => $request->postData('post-name'),
 				'title' => $request->postData('post-title'),
-				'content' => $request->postData('post-content')
+				'content' => $request->postData('post-content'),
+				'author' => $this->app->user()->username()
 			);
 
 			$this->page()->addVar('post', $postData);
 
 			try {
-				$post = new \lib\entities\BlogPost($postData);
+				$post = new BlogPost($postData);
 			} catch(\InvalidArgumentException $e) {
 				$this->page()->addVar('error', $e->getMessage());
 				return;

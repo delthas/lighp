@@ -2,7 +2,7 @@
 namespace lib\entities;
 
 class BlogPost extends \core\Entity {
-	protected $name, $title, $content, $creationDate;
+	protected $name, $title, $content, $creationDate, $author;
 
 	// SETTERS //
 
@@ -38,6 +38,14 @@ class BlogPost extends \core\Entity {
 		$this->creationDate = $creationDate;
 	}
 
+	public function setAuthor($author) {
+		if (!is_string($author) || empty($author)) {
+			throw new \InvalidArgumentException('Invalid blog post author');
+		}
+
+		$this->author = $author;
+	}
+
 	// GETTERS //
 
 	public function name() {
@@ -54,5 +62,9 @@ class BlogPost extends \core\Entity {
 
 	public function creationDate() {
 		return $this->creationDate;
+	}
+
+	public function author() {
+		return $this->author;
 	}
 }
