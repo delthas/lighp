@@ -1,19 +1,19 @@
 [
 	{
-		"url":"/admin/routes/?",
+		"url":"/routes/?",
 		"action":"listRoutes"
 	},
 	{
-		"url":"/admin/routes/insert/?",
+		"url":"/routes/insert/?",
 		"action":"insertRoute"
 	},
 	{
-		"url":"/admin/routes/delete/([a-zA-Z0-9-_.]+)/([0-9]+)/?",
+		"url":"/routes/delete/([a-zA-Z0-9-_.]+)/([0-9]+)/?",
 		"action":"deleteRoute",
 		"vars": ["app","id"]
 	},
 	{
-		"url":"/admin/routes/duplicate/([a-zA-Z0-9-_.]+)/([a-zA-Z0-9-_.]+)/([0-9]+)/?",
+		"url":"/routes/duplicate/([a-zA-Z0-9-_.]+)/([a-zA-Z0-9-_.]+)/([0-9]+)/?",
 		"action":"duplicateRoute",
 		"vars": ["app","module","id"]
 	}
