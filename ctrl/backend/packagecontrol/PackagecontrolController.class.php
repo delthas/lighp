@@ -409,6 +409,16 @@ class PackagecontrolController extends \core\BackController {
 		$pkgName = $request->getData('name');
 
 		if ($request->postExists('check')) {
+			if ($request->postExists('overwrite')) {
+				// Uninstall package first
+				$process = $this->_runCommandInProc(array('--no-update', 'remove', $pkgName));
+				if (!$process->isSuccessful()) {
+					$this->page()->addVar('error', 'Error while removing package before reinstalling (process returned '.$process->getExitCode().')');
+					return;
+				}
+			}
+
+			// Install package
 			$args = array('require', $pkgName.' dev-master', '--prefer-dist');
 
 			$env = array();
