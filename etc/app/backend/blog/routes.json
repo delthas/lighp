@@ -1,30 +1,30 @@
 [
 	{
-		"url":"/admin/blog/posts/insert",
+		"url":"/blog/posts/insert",
 		"action":"insertPost"
 	},
 	{
-		"url":"/admin/blog/posts/update/([a-zA-Z0-9-_.]+)",
+		"url":"/blog/posts/update/([a-zA-Z0-9-_.]+)",
 		"action":"updatePost",
 		"vars": ["postName"]
 	},
 	{
-		"url":"/admin/blog/posts/delete/([a-zA-Z0-9-_.]+)",
+		"url":"/blog/posts/delete/([a-zA-Z0-9-_.]+)",
 		"action":"deletePost",
 		"vars": ["postName"]
 	},
 	{
-		"url":"/admin/blog/comments/([0-9]+)/update",
+		"url":"/blog/comments/([0-9]+)/update",
 		"action":"updateComment",
 		"vars": ["commentId"]
 	},
 	{
-		"url":"/admin/blog/comments/([0-9]+)/delete",
+		"url":"/blog/comments/([0-9]+)/delete",
 		"action":"deleteComment",
 		"vars": ["commentId"]
 	},
 	{
-		"url":"/admin/blog/config",
+		"url":"/blog/config",
 		"action":"updateConfig"
 	}
 ]
