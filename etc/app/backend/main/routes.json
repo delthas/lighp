@@ -1,15 +1,15 @@
 [
 	{
-		"url":"/admin/?",
+		"url":"/?",
 		"action":"index"
 	},
 	{
-		"url":"/admin/module/([a-zA-Z0-9_.-]+)/?",
+		"url":"/module/([a-zA-Z0-9_.-]+)/?",
 		"action":"showModule",
 		"vars": ["module"]
 	},
 	{
-		"url":"/admin/module/([a-zA-Z0-9_.]+)/action/([a-zA-Z0-9_.-]+)/?",
+		"url":"/module/([a-zA-Z0-9_.]+)/action/([a-zA-Z0-9_.-]+)/?",
 		"action":"showAction",
 		"vars": ["module","action"]
 	}
