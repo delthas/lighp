@@ -219,7 +219,7 @@ class BlogController extends \core\BackController {
 		foreach($posts as $post) {
 			$item = array(
 				'title' => $post['title'],
-				'shortDescription' => '',
+				'shortDescription' => 'Par '.$post['author'],
 				'vars' => array('postName' => $post['name'])
 			);
 
