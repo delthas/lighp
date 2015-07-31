@@ -59,11 +59,14 @@
 			{{/unsafePkg?}}
 		{{/alreadyInstalled?}}
 		{{#alreadyInstalled?}}
+			<input type="hidden" name="overwrite" value="1">
+
 			<div class="alert alert-block alert-info">
 				<h4 class="alert-heading">Paquet d&eacute;j&agrave; install&eacute;</h4>
 				<p>Ce paquet est d&eacute;j&agrave; install&eacute;.</p>
 				<p>
 					<a class="btn btn-info" href="{{#buildUrl}}packagecontrol removePackage {{metadata.name}}{{/buildUrl}}"><i class="icon-trash icon-white"></i>&nbsp;Supprimer</a>
+					<button type="submit" class="btn btn-danger"><i class="icon-arrow-down icon-white"></i>&nbsp;Écraser les modifications locales</button>
 					<a class="btn" href="{{#buildUrl}}main showModule packagecontrol{{/buildUrl}}">Retour</a>
 				</p>
 			</div>

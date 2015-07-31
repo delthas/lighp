@@ -190,7 +190,7 @@ class PackagecontrolController extends \core\BackController {
 		return $doDownload;
 	}
 
-	protected function _runCommandInProc($args = array()) {
+	protected function _runCommandInProc($args = array(), $env = array()) {
 		$this->_initEnv();
 		$this->_ensureComposerAvailable();
 
@@ -207,6 +207,10 @@ class PackagecontrolController extends \core\BackController {
 		$builder->setTimeout(250);
 		$builder->setPrefix(array($php, 'composer.phar', '--no-progress', '--ansi'/*, '--profile', '-vvv'*/));
 		$builder->setArguments($args);
+
+		foreach ($env as $name => $val) {
+			$builder->setEnv($name, $val);
+		}
 
 		$this->page()->addVar('arguments', implode(' ', $args));
 
@@ -405,7 +409,14 @@ class PackagecontrolController extends \core\BackController {
 		$pkgName = $request->getData('name');
 
 		if ($request->postExists('check')) {
-			$process = $this->_runCommandInProc(array('require', $pkgName.' dev-master', '--prefer-dist'));
+			$args = array('require', $pkgName.' dev-master', '--prefer-dist');
+
+			$env = array();
+			if ($request->postExists('overwrite')) {
+				$env['COMPOSER_LIGHP_FORCE_OVERWRITE'] = 'true';
+			}
+
+			$process = $this->_runCommandInProc($args, $env);
 
 			if ($process->isSuccessful()) {
 				$this->page()->addVar('installed?', true);
