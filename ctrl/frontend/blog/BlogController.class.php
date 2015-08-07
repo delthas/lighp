@@ -20,6 +20,11 @@ class BlogController extends \core\BackController {
 		$postsList = $manager->listPosts($listPostsFrom, $postsPerPage);
 
 		foreach ($postsList as $i => $post) {
+			if ($post['isDraft']) {
+				unset($postsList[$i]);
+				continue;
+			}
+
 			$postData = $post->toArray();
 
 			$postData['creationDate'] = date($config['dateFormat'], $postData['creationDate']);
@@ -76,6 +81,12 @@ class BlogController extends \core\BackController {
 		try {
 			$post = $manager->getPost($postName);
 		} catch(\Exception $e) {
+			$this->app->httpResponse()->redirect404($this->app);
+			return;
+		}
+
+		if ($post['isDraft']) {
+			$this->app->httpResponse()->redirect404($this->app);
 			return;
 		}
 
@@ -165,6 +176,10 @@ class BlogController extends \core\BackController {
 		$manager = $this->managers->getManagerOf('blog');
 		$postsList = $manager->listPosts(0, 20);
 		foreach ($postsList as $post) {
+			if ($post['isDraft']) {
+				continue;
+			}
+
 			$link = $router->getUrl('blog', 'showPost', array(
 				'postName' => $post['name']
 			));
@@ -176,6 +191,7 @@ class BlogController extends \core\BackController {
 				'createdAt' => $post['creationDate']
 			);
 		}
+
 		$res->setItems($items);
 	}
 

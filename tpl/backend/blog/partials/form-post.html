@@ -20,6 +20,13 @@
 			<input type="text" name="post-title" id="post-title" value="{{post.title}}" placeholder="Titre" required class="input-xxlarge">
 		</div>
 	</div>
+	<div class="control-group">
+		<div class="controls">
+			<label class="checkbox">
+				<input type="checkbox" name="post-is-draft" id="post-is-draft" {{#post.isDraft}}checked{{/post.isDraft}}> Garder ce billet comme brouillon
+			</label>
+		</div>
+	</div>
 
 	<div class="editor-html5">
 		<label>Contenu du billet</label>

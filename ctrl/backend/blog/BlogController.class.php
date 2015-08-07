@@ -29,7 +29,8 @@ class BlogController extends \core\BackController {
 				'name' => $request->postData('post-name'),
 				'title' => $request->postData('post-title'),
 				'content' => $request->postData('post-content'),
-				'author' => $this->app->user()->username()
+				'author' => $this->app->user()->username(),
+				'isDraft' => $request->postExists('post-is-draft')
 			);
 
 			$this->page()->addVar('post', $postData);
@@ -67,7 +68,8 @@ class BlogController extends \core\BackController {
 			$postData = array(
 				'name' => $request->postData('post-name'),
 				'title' => $request->postData('post-title'),
-				'content' => $request->postData('post-content')
+				'content' => $request->postData('post-content'),
+				'isDraft' => $request->postExists('post-is-draft')
 			);
 
 			$this->page()->addVar('post', $postData);
@@ -217,9 +219,14 @@ class BlogController extends \core\BackController {
 		$list = array();
 
 		foreach($posts as $post) {
+			$desc = 'Par '.$post['author'];
+			if ($post['isDraft']) {
+				$desc .= ' [brouillon]';
+			}
+
 			$item = array(
 				'title' => $post['title'],
-				'shortDescription' => 'Par '.$post['author'],
+				'shortDescription' => $desc,
 				'vars' => array('postName' => $post['name'])
 			);
 

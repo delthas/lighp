@@ -2,7 +2,7 @@
 namespace lib\entities;
 
 class BlogPost extends \core\Entity {
-	protected $name, $title, $content, $creationDate, $author;
+	protected $name, $title, $content, $creationDate, $author, $isDraft;
 
 	// SETTERS //
 
@@ -46,6 +46,14 @@ class BlogPost extends \core\Entity {
 		$this->author = $author;
 	}
 
+	public function setIsDraft($isDraft) {
+		if (!is_bool($isDraft)) {
+			throw new \InvalidArgumentException('Invalid blog post draft value');
+		}
+
+		$this->isDraft = $isDraft;
+	}
+
 	// GETTERS //
 
 	public function name() {
@@ -66,5 +74,9 @@ class BlogPost extends \core\Entity {
 
 	public function author() {
 		return $this->author;
+	}
+
+	public function isDraft() {
+		return $this->isDraft;
 	}
 }
