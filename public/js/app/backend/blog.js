@@ -450,6 +450,10 @@
 				$('#insertCustomHTML-content').focus();
 			}
 		},
+		heading: function (headingName) {
+			// The "heading" command is only supported in Firefox
+			this.execCommand('formatBlock', '<'+headingName+'>');
+		},
 		switchMode: function(newMode) {
 			var $editor = this._$el;
 
