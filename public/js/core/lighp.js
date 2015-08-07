@@ -56,7 +56,12 @@
 				i++;
 			}
 
-			return Lighp.websiteConf.WEBSITE_ROOT + '/' + this._url + getParams;
+			var url = this._url;
+			if (url[0] != '/') {
+				url = '/' + url;
+			}
+
+			return Lighp.websiteConf.WEBSITE_ROOT + this._url + getParams;
 		},
 		_ajaxParams: function() {
 			var that = this;
@@ -65,6 +70,8 @@
 				url: this.url(),
 				type: 'post',
 				data: this.option('postData'),
+				processData: !(this.option('postData') instanceof FormData),
+				contentType: !(this.option('postData') instanceof FormData),
 				dataType: 'json',
 				beforeSend: function() {
 					that.setSent();
@@ -167,7 +174,7 @@
 		if (Lighp._isLoading) {
 			$loadingMsg = $('#loading-container');
 		} else {
-			$loadingMsg = $('<p id="loading-container"><img src="'+Lighp.websiteConf.WEBSITE_ROOT+'/img/loader.gif"/>&nbsp;' + options.message + '</p>');
+			$loadingMsg = $('<p id="loading-container">' + Lighp.loading.spinner() + '&nbsp;' + options.message + '</p>');
 		}
 
 		if (value && !Lighp._isLoading) {
@@ -178,6 +185,10 @@
 			$loadingMsg.remove();
 			Lighp._isLoading = false;
 		}
+	};
+
+	Lighp.loading.spinner = function () {
+		return '<img src="'+Lighp.websiteConf.WEBSITE_ROOT+'/img/loader.gif"/>';
 	};
 
 	Lighp.registerModule = function(appName, moduleName) {
