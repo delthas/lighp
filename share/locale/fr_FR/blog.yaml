@@ -6,6 +6,8 @@ index:
 	pager:
 		older: '&larr; Plus ancien'
 		newer: 'Plus r&eacute;cent &rarr;'
+	tagColon: 'Tag :'
+	showAllPosts: 'Afficher tous les billets'
 
 showPost:
 	backToBlog: 'Retour au blog'

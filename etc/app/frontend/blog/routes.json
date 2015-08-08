@@ -20,5 +20,10 @@
 		"url":"/blog/post/([a-zA-Z0-9-_.]+)/?",
 		"action":"showPost",
 		"vars": ["postName"]
+	},
+	{
+		"url":"/blog/tag/([a-zA-Z0-9-_.]+)/?",
+		"action":"showTag",
+		"vars": ["tagName"]
 	}
 ]

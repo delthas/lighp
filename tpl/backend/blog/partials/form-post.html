@@ -1,3 +1,5 @@
+{{%FILTERS}}
+
 <form action="" method="post" class="form-horizontal">
 	{{#error}}
 		<div class="alert alert-block alert-error">
@@ -18,6 +20,12 @@
 		<label class="control-label" for="post-title">Titre du billet</label>
 		<div class="controls">
 			<input type="text" name="post-title" id="post-title" value="{{post.title}}" placeholder="Titre" required class="input-xxlarge">
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label" for="post-tags">Tags</label>
+		<div class="controls">
+			<input type="text" name="post-tags" id="post-tags" value="{{post.tags | join}}" placeholder="Tags séparés par des virgules" class="input-xxlarge">
 		</div>
 	</div>
 	<div class="control-group">

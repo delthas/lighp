@@ -30,7 +30,8 @@ class BlogController extends \core\BackController {
 				'title' => $request->postData('post-title'),
 				'content' => $request->postData('post-content'),
 				'author' => $this->app->user()->username(),
-				'isDraft' => $request->postExists('post-is-draft')
+				'isDraft' => $request->postExists('post-is-draft'),
+				'tags' => preg_split('/[\s,]+/', $request->postData('post-tags'))
 			);
 
 			$this->page()->addVar('post', $postData);
@@ -69,7 +70,8 @@ class BlogController extends \core\BackController {
 				'name' => $request->postData('post-name'),
 				'title' => $request->postData('post-title'),
 				'content' => $request->postData('post-content'),
-				'isDraft' => $request->postExists('post-is-draft')
+				'isDraft' => $request->postExists('post-is-draft'),
+				'tags' => preg_split('/[\s,]+/', $request->postData('post-tags'))
 			);
 
 			$this->page()->addVar('post', $postData);

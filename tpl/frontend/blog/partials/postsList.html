@@ -1,10 +1,11 @@
-{{#postsListNotEmpty?}}
+{{#postsList.0}}
 	{{> partials/postsListPager}}
 
 	<hr />
-{{/postsListNotEmpty?}}
+{{/postsList.0}}
 
 {{#postsList}}
+	{{. | var_dump}}
 	<article>
 		<h2><a href="{{#buildUrl}}blog showPost {{name}}{{/buildUrl}}">{{title}}</a></h2>
 		<p><small><i class="icon-time"></i>&nbsp;{{creationDate}} · <i class="icon-user"></i>&nbsp;{{author}} · <i class="icon-comment"></i>&nbsp;<a href="{{#buildUrl}}blog showPost {{name}}{{/buildUrl}}#comments">{{#__}}comments{{/__}}</a></small></p>
@@ -16,6 +17,6 @@
 	<p class="muted">{{#__}}emptyPostsList{{/__}}</p>
 {{/postsList}}
 
-{{#postsListNotEmpty?}}
+{{#postsList.0}}
 	{{> partials/postsListPager}}
-{{/postsListNotEmpty?}}
+{{/postsList.0}}

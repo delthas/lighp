@@ -5,7 +5,7 @@ use core\http\HTTPRequest;
 use lib\Captcha;
 
 class BlogController extends \core\BackController {
-	protected function _showPostsList($pageNbr) {
+	protected function _showPostsPage($pageNbr) {
 		$manager = $this->managers->getManagerOf('blog');
 		$config = $this->config()->read();
 
@@ -18,6 +18,20 @@ class BlogController extends \core\BackController {
 		$nbrPages = ceil($nbrPosts / $postsPerPage);
 		$listPostsFrom = ($pageNbr - 1) * $postsPerPage;
 		$postsList = $manager->listPosts($listPostsFrom, $postsPerPage);
+
+		$isFirstPage = ($pageNbr == 1);
+		$isLastPage = ($pageNbr == $nbrPages);
+
+		$this->page()->addVar('isFirstPage', $isFirstPage);
+		$this->page()->addVar('isLastPage', $isLastPage);
+		$this->page()->addVar('previousPage', $pageNbr - 1);
+		$this->page()->addVar('nextPage', $pageNbr + 1);
+
+		$this->_showPostsList($postsList);
+	}
+
+	protected function _showPostsList($postsList) {
+		$config = $this->config()->read();
 
 		foreach ($postsList as $i => $post) {
 			if ($post['isDraft']) {
@@ -33,15 +47,8 @@ class BlogController extends \core\BackController {
 			$postsList[$i] = $postData;
 		}
 
-		$isFirstPage = ($pageNbr == 1);
-		$isLastPage = ($pageNbr == $nbrPages);
-
 		$this->page()->addVar('postsList', $postsList);
 		$this->page()->addVar('postsListNotEmpty?', (count($postsList) > 0));
-		$this->page()->addVar('isFirstPage', $isFirstPage);
-		$this->page()->addVar('isLastPage', $isLastPage);
-		$this->page()->addVar('previousPage', $pageNbr - 1);
-		$this->page()->addVar('nextPage', $pageNbr + 1);
 
 		$router = $this->app->router();
 		$this->page()->addVar('rssFeed', $router->getUrl('blog', 'showRssFeed'));
@@ -54,7 +61,7 @@ class BlogController extends \core\BackController {
 
 		$this->page()->addVar('title', $dict['title']);
 
-		$this->_showPostsList(1);
+		$this->_showPostsPage(1);
 
 		$this->page()->addVar('introduction', $config['introduction']);
 	}
@@ -67,9 +74,30 @@ class BlogController extends \core\BackController {
 
 		$this->page()->addVar('title', $dict['title']);
 
-		$this->_showPostsList((int) $request->getData('pageNbr'));
+		$this->_showPostsPage((int) $request->getData('pageNbr'));
 
 		$this->page()->addVar('introduction', $config['introduction']);
+	}
+
+	public function executeShowTag(HTTPRequest $request) {
+		$this->translation()->setSection('index');
+
+		$manager = $this->managers->getManagerOf('blog');
+
+		$tagName = $request->getData('tagName');
+		$this->page()->addVar('title', $tagName);
+
+		$postsList = $manager->listPostsByTag($tagName);
+		
+		if (count($postsList) === 0) {
+			return $this->app->httpResponse()->redirect404($this->app);
+		}
+
+		$this->_showPostsList($postsList);
+
+		// TODO: pagination support here
+		$this->page()->addVar('isFirstPage', true);
+		$this->page()->addVar('isLastPage', true);
 	}
 
 	public function executeShowPost(HTTPRequest $request) {
@@ -95,7 +123,21 @@ class BlogController extends \core\BackController {
 		$this->page()->addVar('postCreationDate', date($config['dateFormat'], $post['creationDate']));
 		$this->page()->addVar('postContent', nl2br($post['content']));
 
-		//Comments
+		// Tags
+		$tagsNames = $post['tags'];
+		$router = $this->app->router();
+
+		$tags = array();
+		foreach ($tagsNames as $i => $tagName) {
+			$tags[] = array(
+				'name' => $tagName,
+				'url' => $router->getUrl('blog', 'showTag', array($tagName)),
+				'first?' => ($i == 0)
+			);
+		}
+		$this->page()->addVar('postTags', $tags);
+
+		// Comments
 		$commentsManager = $this->managers->getManagerOf('blogComments');
 
 		$captcha = Captcha::build($this->app());
@@ -140,7 +182,7 @@ class BlogController extends \core\BackController {
 			$this->page()->addVar('comment', null);
 		}
 
-		//Listing comments
+		// Listing comments
 		$comments = $commentsManager->listByPost($postName);
 
 		foreach ($comments as $i => $comment) {

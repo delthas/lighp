@@ -6,12 +6,8 @@ class BlogManager_json extends BlogManager {
 		return new \lib\entities\BlogPost($postData);
 	}
 
-	public function listPosts($fromIndex = 0, $toIndex = null) {
-		$postsFile = $this->dao->open('blog/posts');
-		$postsData = $postsFile->read();
-
+	protected function _buildPostsList($postsData) {
 		$postsList = array();
-
 		foreach($postsData as $postData) {
 			try {
 				$post = $this->_buildPost($postData);
@@ -21,9 +17,29 @@ class BlogManager_json extends BlogManager {
 			}
 		}
 
-		krsort($postsList); //Sort posts by creation date
+		krsort($postsList); // Sort posts by creation date
+
+		return array_values($postsList);
+	}
+
+	public function listPosts($fromIndex = 0, $toIndex = null) {
+		$postsFile = $this->dao->open('blog/posts');
+		$postsData = $postsFile->read();
+
+		$postsList = $this->_buildPostsList($postsData);
 
 		return array_slice($postsList, $fromIndex, $toIndex, false);
+	}
+
+	public function listPostsByTag($tag) {
+		$postsFile = $this->dao->open('blog/posts');
+		$postsData = $postsFile->read()->filter(function ($item) use ($tag) {
+			return in_array($tag, $item['tags']);
+		});
+
+		$postsList = $this->_buildPostsList($postsData);
+
+		return $postsList;
 	}
 
 	public function countPosts() {

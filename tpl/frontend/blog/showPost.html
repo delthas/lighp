@@ -1,9 +1,17 @@
+{{%FILTERS}}
+
 <div class="container">
 	{{#post}}
 		<article>
 			<div class="page-header">
 				<h1>{{title}}</h1>
-				<small><i class="icon-time"></i>&nbsp;{{postCreationDate}} · <i class="icon-user"></i>&nbsp;{{author}} · <i class="icon-comment"></i>&nbsp;<a href="#comments">{{#__}}comments.title{{/__}}</a> · <a href="{{#buildUrl}}blog index{{/buildUrl}}">{{#__}}backToBlog{{/__}}</a></small>
+				<small>
+					<i class="icon-time"></i>&nbsp;{{postCreationDate}}
+					· <i class="icon-user"></i>&nbsp;{{author}}{{#postTags.0}}
+					· <i class="icon-tags"></i>&nbsp;{{#postTags}}{{^first?}}, {{/first?}}<a href="{{WEBSITE_ROOT}}/{{url}}">{{name}}</a>{{/postTags}}{{/postTags.0}}
+					· <i class="icon-comment"></i>&nbsp;<a href="#comments">{{#__}}comments.title{{/__}}</a>
+					· <a href="{{#buildUrl}}blog index{{/buildUrl}}">{{#__}}backToBlog{{/__}}</a>
+				</small>
 			</div>
 
 			<p>{{{content}}}</p>
@@ -14,6 +22,9 @@
 
 			<a href="#form-blog-comment" class="pull-right btn">{{#__}}comments.insertComment{{/__}}</a>
 			<h2 id="comments">{{#__}}comments.title{{/__}}</h2>
+		{{/comments?}}
+		{{^comments?}}
+			<div id="comments"></div>
 		{{/comments?}}
 
 		{{#commentInserted?}}

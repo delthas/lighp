@@ -1,8 +1,10 @@
 <?php
 namespace lib\entities;
 
-class BlogPost extends \core\Entity {
-	protected $name, $title, $content, $creationDate, $author, $isDraft;
+use core\Entity;
+
+class BlogPost extends Entity {
+	protected $name, $title, $content, $creationDate, $author, $isDraft, $tags;
 
 	// SETTERS //
 
@@ -54,6 +56,14 @@ class BlogPost extends \core\Entity {
 		$this->isDraft = $isDraft;
 	}
 
+	public function setTags($tags) {
+		if (!is_array($tags)) {
+			throw new \InvalidArgumentException('Invalid blog post tags');
+		}
+
+		$this->tags = $tags;
+	}
+
 	// GETTERS //
 
 	public function name() {
@@ -78,5 +88,9 @@ class BlogPost extends \core\Entity {
 
 	public function isDraft() {
 		return $this->isDraft;
+	}
+
+	public function tags() {
+		return $this->tags;
 	}
 }
