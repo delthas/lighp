@@ -20,20 +20,27 @@ class Collection implements \ArrayAccess, \IteratorAggregate, \Countable, \JsonS
 		}
 	}
 
-	public function filter(array $filters = array()) {
+	public function filter($filter = array()) {
 		$data = $this->data;
 		$filteredItems = array();
 
-		if (count($filters) > 0) {
+		if (is_array($filter) && count($filter) > 0) {
 			foreach($this->data as $id => $item) {
-				foreach($filters as $key => $value) {
+				foreach($filter as $key => $value) {
 					if (isset($item[$key]) && $item[$key] == $value) {
 						$filteredItems[] = $item;
+						break;
 					}
 				}
 			}
+		} elseif (is_callable($filter)) {
+			foreach($this->data as $id => $item) {
+				if ($filter($item)) {
+					$filteredItems[] = $item;
+				}
+			}
 		}
-		
+
 		return new $this($filteredItems);
 	}
 
