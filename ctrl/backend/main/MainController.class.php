@@ -244,6 +244,10 @@ class MainController extends \core\BackController {
 						$kind = $backend['lists'][$listName];
 					}
 
+					if ($list === null) {
+						continue;
+					}
+
 					foreach($actionIndexes as $actionIndex) {
 						$actionList = array();
 						$action = $backend['actions'][$actionIndex];
