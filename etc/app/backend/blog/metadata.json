@@ -20,5 +20,10 @@
 		"updateConfig":{
 			"title":"Modifier la configuration"
 		}
+	},
+	"lists":{
+		"posts":{
+			"title":"Billets"
+		}
 	}
 }
