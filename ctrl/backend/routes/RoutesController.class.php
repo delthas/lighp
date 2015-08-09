@@ -87,6 +87,32 @@ class RoutesController extends \core\BackController {
 		$this->page()->addVar('title', 'Ajouter une route');
 		$this->_addBreadcrumb();
 
+		$modulesPath = Pathfinder::getPathFor('config').'/app/frontend';
+		$modulesDir = opendir($modulesPath);
+		$modulesList = array();
+		$actionsList = array();
+		while (($module = readdir($modulesDir)) !== false) {
+			if ($module == '.' || $module == '..') {
+				continue;
+			}
+
+			$modulePath = $modulesPath.'/'.$module;
+			$routesPath = $modulePath.'/routes.json';
+			if (!is_dir($modulePath) || !file_exists($routesPath)) {
+				continue;
+			}
+
+			$modulesList[] = $module;
+
+			$routesConfig = new Config($routesPath);
+			$routes = $routesConfig->read();
+
+			$actionsList[$module] = $routes;
+		}
+
+		$this->page()->addVar('modulesList', $modulesList);
+		$this->page()->addVar('actionsList', $actionsList);
+
 		if ($request->postExists('route-url')) {
 			$routeApp = $request->postData('route-app');
 			$routeVarsList = $request->postData('route-vars');

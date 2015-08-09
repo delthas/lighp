@@ -18,13 +18,13 @@
 	<div class="control-group">
 		<label class="control-label" for="route-module">Module</label>
 		<div class="controls">
-			<input type="text" name="route-module" id="route-module" value="{{route.module}}" placeholder="Module" required>
+			<input type="text" name="route-module" id="route-module" value="{{route.module}}" placeholder="Module" list="modules-list" required>
 		</div>
 	</div>
 	<div class="control-group">
 		<label class="control-label" for="route-action">Action</label>
 		<div class="controls">
-			<input type="text" name="route-action" id="route-action" value="{{route.action}}" placeholder="Action" required>
+			<input type="text" name="route-action" id="route-action" value="{{route.action}}" placeholder="Action" list="actions-list" required>
 		</div>
 	</div>
 	<div class="control-group">
@@ -40,6 +40,14 @@
 			</label>
 		</div>
 	</div>
+
+	<datalist id="modules-list">
+		{{#modulesList}}
+			<option value="{{.}}"></option>
+		{{/modulesList}}
+	</datalist>
+
+	<datalist id="actions-list"></datalist>
 
 	<div class="form-actions">
 		<button type="submit" class="btn btn-primary">Valider</button>
