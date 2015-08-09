@@ -10,13 +10,15 @@
 .editor-html5 .editor-inner {
 	overflow: hidden;
 	word-wrap: break-word;
-	white-space: normal;
 	min-height: 200px;
 	height: auto;
 	width: 100%;
 	resize: none;
 	cursor: text;
 	color: black;
+}
+.editor-html5 .editor-wysiwyg {
+	white-space: normal;
 }
 
 .editor-html5 .toolbar-container {

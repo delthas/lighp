@@ -481,10 +481,10 @@
 				previousContent = $newEditorInner[($newEditorInner.is('textarea')) ? 'val' : 'html']();
 			}
 
-			if (newMode != 'wysiwyg') { //Improve HTML visibility
+			if (newMode != 'wysiwyg') { // Improve HTML visibility
 				previousContent = previousContent
 					.replace(/(<br\s?\/?>)([^\n])/gi, '$1\n$2')
-					.replace(/(<\/(p|div|h[0-6]|ul|ol|li|blockquote|hr|pre|code)>)([^\n])/gi, '$1\n$2');
+					.replace(/(<\/(?:p|div|h[0-6]|ul|ol|li|blockquote|hr|pre|code)>)([^\n])/gi, '$1\n$2');
 			}
 
 			$newEditorInner.show();
