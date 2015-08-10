@@ -1,6 +1,6 @@
 {
 	"title":"Pages",
-	"icon":"",
+	"icon":"book",
 	"actions":{
 		"insert":{
 			"title":"Créer une page"
