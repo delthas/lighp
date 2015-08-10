@@ -1,0 +1,35 @@
+<form action="" method="post" class="form-horizontal">
+	{{#error}}
+		<div class="alert alert-block alert-error">
+			<button class="close" data-dismiss="alert" type="button">&times;</button>
+			<h4 class="alert-heading">Erreur</h4>
+			<p>Une erreur est survenue lors du traitement de la requête : {{error}}.</p>
+		</div>
+	{{/error}}
+
+	<div class="control-group">
+		<label class="control-label" for="page-name">Nom unique de la page</label>
+		<div class="controls">
+			<input type="text" name="page-name" id="page-name" value="{{page.name}}" placeholder="Nom" pattern="[^/]+" required class="input-xlarge"><span class="help-inline">(appara&icirc;tra dans le lien de la page)</span>
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label" for="page-title">Titre de la page</label>
+		<div class="controls">
+			<input type="text" name="page-title" id="page-title" value="{{page.title}}" placeholder="Titre" required class="input-xxlarge">
+		</div>
+	</div>
+
+	<div class="control-group">
+		<label class="control-label" for="page-content">Contenu de la page</label>
+		<div class="controls">
+			<textarea name="page-content" id="page-content" class="input-xxlarge" rows="10" required>{{{page.content}}}</textarea>
+			<span class="help-block">(Les balises HTML sont acceptées)</span>
+		</div>
+	</div>
+
+	<div class="form-actions">
+		<button type="submit" class="btn btn-primary">Valider</button>
+		<a class="btn" href="{{#buildUrl}}main showModule pages{{/buildUrl}}">Annuler</a>
+	</div>
+</form>

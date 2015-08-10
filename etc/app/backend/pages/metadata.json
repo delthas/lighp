@@ -1,0 +1,26 @@
+{
+	"title":"Pages",
+	"icon":"",
+	"actions":{
+		"insert":{
+			"title":"Créer une page"
+		},
+		"update":{
+			"title":"Modifier une page",
+			"list":{
+				"items":"pages"
+			}
+		},
+		"delete":{
+			"title":"Supprimer une page",
+			"list":{
+				"items":"pages"
+			}
+		}
+	},
+	"lists":{
+		"pages":{
+			"title":"Pages"
+		}
+	}
+}

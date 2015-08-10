@@ -1,0 +1,16 @@
+[
+	{
+		"url":"/pages/new",
+		"action":"insert"
+	},
+	{
+		"url":"/pages/([^/]+)/update",
+		"action":"update",
+		"vars":["pageName"]
+	},
+	{
+		"url":"/pages/([^/]+)/delete",
+		"action":"delete",
+		"vars":["pageName"]
+	}
+]

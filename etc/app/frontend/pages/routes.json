@@ -1,0 +1,7 @@
+[
+	{
+		"url":"/page/([^/]+)/?",
+		"action":"showPage",
+		"vars":["pageName"]
+	}
+]

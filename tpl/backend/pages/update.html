@@ -1,0 +1,10 @@
+{{#updated?}}
+	<div class="alert alert-block alert-success">
+		<h4 class="alert-heading">Page modifiée</h4>
+		<p>La page a bien été modifiée.</p>
+		<p><a class="btn" href="{{#buildUrl}}main showModule pages{{/buildUrl}}">Retour</a></p>
+	</div>
+{{/updated?}}
+{{^updated?}}
+	{{> partials/form-page}}
+{{/updated?}}

@@ -1,0 +1,10 @@
+{{#inserted?}}
+	<div class="alert alert-block alert-success">
+		<h4 class="alert-heading">Page créée</h4>
+		<p>La page a bien été créée.</p>
+		<p><a class="btn" href="{{#buildUrl}}main showModule pages{{/buildUrl}}">Retour</a></p>
+	</div>
+{{/inserted?}}
+{{^inserted?}}
+	{{> partials/form-page}}
+{{/inserted?}}
