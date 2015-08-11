@@ -1,0 +1,22 @@
+{{#deleted?}}
+	<div class="alert alert-block alert-success">
+		<h4 class="alert-heading">Fichier supprimé</h4>
+		<p>Le fichier a bien été supprimé.</p>
+		<p><a class="btn" href="{{#buildUrl}}main showModule assets{{/buildUrl}}">Retour</a></p>
+	</div>
+{{/deleted?}}
+{{^deleted?}}
+	<form action="" method="post">
+		<input type="hidden" name="check" value="1">
+
+		<div class="alert alert-block alert-info">
+			<h4 class="alert-heading">Confirmation</h4>
+			<p>Voulez-vous vraiment supprimer ce fichier ?</p>
+			<p>Le fichier sera uniquement retiré de la liste, il ne sera pas supprimé du disque.</p>
+			<p>
+				<input type="submit" class="btn btn-info" value="Valider">
+				<a class="btn" href="{{#buildUrl}}main showModule assets{{/buildUrl}}">Annuler</a>
+			</p>
+		</div>
+	</form>
+{{/deleted?}}

@@ -20,5 +20,13 @@
 				"items":"scripts"
 			}
 		}
+	},
+	"lists":{
+		"scripts":{
+			"title":"Fichiers Javascript"
+		},
+		"stylesheets":{
+			"title":"Feuilles de style"
+		}
 	}
 }

@@ -13,7 +13,7 @@ class AssetsController extends \core\BackController {
 				'url' => $this->app->router()->getUrl('main', 'showModule', array(
 					'module' => $this->module()
 				)),
-				'title' => 'Utilisateurs'
+				'title' => 'Feuilles de style & fichiers Javascript'
 			)
 		);
 
@@ -29,7 +29,7 @@ class AssetsController extends \core\BackController {
 		return new Config($path);
 	}
 
-	protected function executeInsertAsset($req, $type) {
+	protected function executeInsertAsset(HTTPRequest $req, $type) {
 		$this->_addBreadcrumb();
 
 		if ($req->postExists('filename')) {
@@ -64,13 +64,45 @@ class AssetsController extends \core\BackController {
 		$this->executeInsertAsset($req, 'scripts');
 	}
 
+	protected function executeDeleteAsset(HTTPRequest $req, $type) {
+		$this->_addBreadcrumb();
+
+		$index = $req->getData('index');
+
+		if ($req->postExists('check')) {
+			$config = $this->_getConfig($type);
+			$assets = $config->read();
+			
+			unset($assets[$index]);
+
+			try {
+				$config->write($assets);
+			} catch (\Exception $e) {
+				$this->page()->addVar('error', $e->getMessage());
+				return;
+			}
+
+			$this->page()->addVar('deleted?', true);
+		}
+	}
+
+	public function executeDeleteStylesheet(HTTPRequest $req) {
+		$this->page()->addVar('title', 'Supprimer une feuille de style');
+		$this->executeDeleteAsset($req, 'stylesheets');
+	}
+
+	public function executeDeleteScript(HTTPRequest $req) {
+		$this->page()->addVar('title', 'Supprimer un fichier Javascript');
+		$this->executeDeleteAsset($req, 'scripts');
+	}
+
 	protected function listAssets($type) {
 		$assets = $this->_getConfig($type)->read();
 
 		$list = array();
 		foreach($assets as $i => $asset) {
 			$list[] = array(
-				'title' => $asset['filename'],
+				'title' => '<code>'.$asset['filename'].'</code>',
 				//'shortDescription' => '',
 				'vars' => array('index' => $i)
 			);
