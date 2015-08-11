@@ -61,7 +61,7 @@
 				url = '/' + url;
 			}
 
-			return Lighp.websiteConf.WEBSITE_ROOT + this._url + getParams;
+			return Lighp.websiteConf.WEBSITE_ROOT + url + getParams;
 		},
 		_ajaxParams: function() {
 			var that = this;
