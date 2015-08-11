@@ -4,10 +4,18 @@ namespace lib\manager;
 
 use core\Entity;
 
+/**
+ * An implementation of `BasicManager` with jsondb.
+ * @author emersion <contact@emersion.fr>
+ * @since 1.0alpha3
+ */
 trait BasicManager_json {
 	//protected $path;
-	//protected $primaryKey = 'id';
 
+	/**
+	 * The entities file.
+	 * @var \core\dao\json\File
+	 */
 	protected $file;
 
 	protected function open() {
@@ -16,6 +24,20 @@ trait BasicManager_json {
 		}
 
 		return $this->file;
+	}
+
+	protected function buildAllEntities($items) {
+		$list = array();
+
+		foreach($items as $item) {
+			try {
+				$list[] = new $this->entity($item);
+			} catch(\InvalidArgumentException $e) {
+				continue;
+			}
+		}
+
+		return $list;
 	}
 
 	public function get($entityKey) {
@@ -29,20 +51,37 @@ trait BasicManager_json {
 		return new $this->entity($items[0]);
 	}
 
+	public function listBy($filter = array(), array $options = array()) {
+		$file = $this->open();
+		$items = $file->read()->filter($filter);
+
+		// TODO: check this
+		if (isset($options['offset'])) {
+			$items = array_slice($items, $options['offset']);
+		}
+		if (isset($options['limit'])) {
+			$items = array_chunk($items, $options['limit']);
+		}
+		if (isset($options['sortBy'])) {
+			$sortKey = $options['sortBy'];
+			$items = usort($items, function ($a, $b) {
+				if ($a[$sortKey] == $b[$sortKey]) {
+					return 0;
+				}
+				if ($a[$sortKey] < $b[$sortKey]) {
+					return 1;
+				}
+				return -1;
+			});
+		}
+
+		return $this->buildAllEntities($items);
+	}
+
 	public function listAll() {
 		$file = $this->open();
 		$items = $file->read();
-
-		$list = array();
-		foreach($items as $item) {
-			try {
-				$list[] = new $this->entity($item);
-			} catch(\InvalidArgumentException $e) {
-				continue;
-			}
-		}
-
-		return $list;
+		return $this->buildAllEntities($items);
 	}
 
 	protected function checkEntityType(Entity $entity) {
