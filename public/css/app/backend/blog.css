@@ -28,10 +28,10 @@
 	position: relative;
 }
 
-.editor-html5 .editor-inner {
+.editor-html5 .editor-wysiwyg {
 	max-width: 800px;
 	margin: auto;
 
-	font-size: 18px;
+	font-size: 17px;
 	line-height: 1.5em;
 }
