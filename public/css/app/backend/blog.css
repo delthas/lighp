@@ -27,3 +27,11 @@
 .editor-html5 .toolbar-container.toolbar-fixed {
 	position: relative;
 }
+
+.editor-html5 .editor-inner {
+	max-width: 800px;
+	margin: auto;
+
+	font-size: 18px;
+	line-height: 1.5em;
+}

@@ -1,0 +1,9 @@
+article {
+	max-width: 800px;
+	margin: auto;
+}
+
+article section {
+	font-size: 18px;
+	line-height: 1.5em;
+}
