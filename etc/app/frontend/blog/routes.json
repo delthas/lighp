@@ -22,7 +22,7 @@
 		"vars": ["postName"]
 	},
 	{
-		"url":"/blog/tag/([a-zA-Z0-9-_.]+)/?",
+		"url":"/blog/tag/([^/]+)/?",
 		"action":"showTag",
 		"vars": ["tagName"]
 	}
