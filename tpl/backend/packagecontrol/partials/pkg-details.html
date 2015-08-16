@@ -5,23 +5,23 @@
 	<dt>Nom du paquet</dt>
 	<dd>{{getPrettyName}}</dd>
 
-	<!--{{#title}}
-		<dt>Titre</dt>
-		<dd>{{title}}</dd>
-	{{/title}}-->
-
 	<dt>Version</dt>
 	<dd>{{getPrettyVersion}}</dd>
 
 	{{#getDescription}}
 		<dt>Description</dt>
-		<dd>{{getDescription}}</dd>
+		<dd>{{.}}</dd>
 	{{/getDescription}}
 
 	{{#getHomepage}}
 		<dt>Site Web</dt>
-		<dd><a href="{{getHomepage}}" target="_blank">{{getHomepage}}</a></dd>
+		<dd><a href="{{.}}" target="_blank">{{.}}</a></dd>
 	{{/getHomepage}}
+
+	{{#getSourceUrl}}
+		<dt>Source</dt>
+		<dd><a href="{{.}}" target="_blank">{{.}}</a></dd>
+	{{/getSourceUrl}}
 
 	<dt>Auteur(s)</dt>
 	<dd>{{#getAuthors}}
@@ -37,8 +37,24 @@
 		{{^requires}}<span class="muted">Aucune</span>{{/requires}}</dd>
 
 	<dt>Date de publication</dt>
-	<dd>{{#getReleaseDate}}{{getReleaseDate.getTimestamp | date}}{{/getReleaseDate}}</dd>
+	<dd>{{#getReleaseDate}}{{getTimestamp | date}}{{/getReleaseDate}}</dd>
 
 	<dt>Statut</dt>
 	<dd>{{getStability}}</dd>
+
+	{{#getType}}
+		<dt>Type</dt>
+		<dd>{{.}}</dd>
+	{{/getType}}
+
+	{{#getExtra.component}}
+		{{#styles.0}}
+			<dt>Feuilles de style</dt>
+			<dd>{{#styles}}<code>{{.}}</code><br>{{/styles}}</dd>
+		{{/styles.0}}
+		{{#scripts.0}}
+			<dt>Fichiers Javascript</dt>
+			<dd>{{#scripts}}<code>{{.}}</code><br>{{/scripts}}</dd>
+		{{/scripts.0}}
+	{{/getExtra.component}}
 </dl>
