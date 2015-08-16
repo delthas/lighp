@@ -1,5 +1,6 @@
 {
 	"uploads":{
-		"allowedExtensions":["png","jpg","jpeg","gif","svg"]
+		"allowedExtensions":["png","jpg","jpeg","gif","svg"],
+		"randomizeFilename": false
 	}
 }

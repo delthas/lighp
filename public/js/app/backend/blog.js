@@ -374,9 +374,24 @@
 					} else if(imgFiles && imgFiles.length) {
 						var spinnersIdPrefix = 'imgupload-'+(new Date()).getTime();
 						for (var i = 0; i < imgFiles.length; i++) {
+							var file = imgFiles[i];
+							var fileName = (file.name) ? file.name : '';
+
+							if (file.type && file.type.indexOf('image/') === -1) {
+								Lighp.triggerError('Cannot upload files: file '+fileName+' is not an image');
+								return;
+							}
+
+							var imgTag = Lighp.loading.spinner();
+							var spinnerAttrs = '';
+							if (window.URL && window.URL.createObjectURL) {
+								var imgUrl = window.URL.createObjectURL(file);
+								imgTag = '<img src="'+imgUrl+'" alt="'+imgCaption+'"/>';
+								spinnerAttrs = ' class="img-uploading"';
+							}
+
 							var spinnerId = spinnersIdPrefix+'-'+i;
-							var fileName = (imgFiles[i].name) ? imgFiles[i].name : '';
-							var spinner = '<span id="'+spinnerId+'" title="Envoi en cours'+((fileName) ? ' de '+fileName : '')+'...">'+Lighp.loading.spinner()+'</span>';
+							var spinner = '<div id="'+spinnerId+'" title="Envoi en cours'+((fileName) ? ' de '+fileName : '')+'..."'+spinnerAttrs+'>'+imgTag+'</div>';
 
 							that.execCommand('insertHTML', spinner);
 						}
@@ -385,12 +400,13 @@
 
 						var processFile = function() {
 							if (!window.FormData) {
-								Lighp.triggerError('Cannot upload files : outdated Web browser (missing API : FormData)');
+								Lighp.triggerError('Cannot upload files: outdated Web browser (missing API : FormData)');
 								return;
 							}
 
 							var fd = new FormData();
 							fd.append('image', imgFiles[currentFileIndex]);
+							fd.append('postName', $('#post-name').val());
 
 							var req = Lighp.ApiRequest.build('/api/admin/blog/images/insert', {
 								postData: fd
