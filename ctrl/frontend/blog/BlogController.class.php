@@ -47,6 +47,11 @@ class BlogController extends \core\BackController {
 			$postsList[$i] = $postData;
 		}
 
+		// Important: make sure $postsList is not indexed
+		// because of unset(), otherwise mustache doesn't
+		// want to loop through it.
+		$postsList = array_values($postsList);
+
 		$this->page()->addVar('postsList', $postsList);
 		$this->page()->addVar('postsListNotEmpty?', (count($postsList) > 0));
 
