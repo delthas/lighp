@@ -37,6 +37,9 @@
 	margin: auto;
 
 	font-size: 17px;
+}
+.editor-html5 .editor-wysiwyg,
+.editor-html5 .editor-wysiwyg li {
 	line-height: 1.5em;
 }
 

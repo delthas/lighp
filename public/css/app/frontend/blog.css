@@ -3,7 +3,8 @@ article {
 	margin: auto;
 }
 
-article section {
+article section,
+article section li {
 	font-size: 17px;
 	line-height: 1.5em;
 }
