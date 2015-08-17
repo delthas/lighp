@@ -36,7 +36,7 @@ interface BasicManager {
 	 * @param  array $options Options.
 	 * @return Entity[] A list of entities.
 	 */
-	public function listBy($filter, $options);
+	public function listBy($filter = array(), array $options = array());
 
 	/**
 	 * List all entities.
