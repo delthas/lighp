@@ -1,6 +1,8 @@
 <?php
 namespace lib\manager;
 
+use lib\ArraySearcher;
+
 class BlogManager_json extends BlogManager {
 	protected function _buildPost($postData) {
 		return new \lib\entities\BlogPost($postData);
@@ -36,6 +38,20 @@ class BlogManager_json extends BlogManager {
 		$postsData = $postsFile->read()->filter(function ($item) use ($tag) {
 			return in_array($tag, $item['tags']);
 		});
+
+		$postsList = $this->_buildPostsList($postsData);
+
+		return $postsList;
+	}
+
+	public function searchPosts($query) {
+		$query = strtolower($query);
+
+		$postsFile = $this->dao->open('blog/posts');
+		$postsData = $postsFile->read();
+
+		$searcher = new ArraySearcher($postsData);
+		$postsData = $searcher->search($query, array('title', 'content'));
 
 		$postsList = $this->_buildPostsList($postsData);
 

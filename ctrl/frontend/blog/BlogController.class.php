@@ -252,4 +252,28 @@ class BlogController extends \core\BackController {
 		return $this->executeShowFeed();
 		$this->responseContent()->setFormat('atom');
 	}
+
+	public function executeSearchPosts(HTTPRequest $request) {
+		$this->page()->addVar('title', 'Rechercher des billets');
+		$this->translation()->setSection('index');
+
+		$manager = $this->managers->getManagerOf('blog');
+
+		if ($request->getExists('q')) {
+			$searchQuery = $request->getData('q');
+			$this->page()->addVar('searchQuery', $searchQuery);
+
+			if (strlen($searchQuery) < 3) {
+				$this->page()->addVar('error', 'Votre requête doit contenir 3 caractères au minimum.');
+				return;
+			} 
+
+			$postsList = $manager->searchPosts($searchQuery);
+			$this->_showPostsList($postsList);
+		}
+
+		// TODO: pagination support here
+		$this->page()->addVar('isFirstPage', true);
+		$this->page()->addVar('isLastPage', true);
+	}
 }
