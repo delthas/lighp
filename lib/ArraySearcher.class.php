@@ -39,7 +39,7 @@ class ArraySearcher {
 	 * Construct an array searcher.
 	 * @param array $data The data. Data must be a 2-dimension array.
 	 */
-	public function __construct(array $data) {
+	public function __construct($data) {
 		$this->data = $data;
 	}
 
@@ -57,17 +57,26 @@ class ArraySearcher {
 	 * @param  array $searchFields  A list of search fields. If ommited, the query will be searched in all fields.
 	 * @return array                Data, sorted by revelance.
 	 */
-	public function search($query, array $searchFields) {
+	public function search($query, array $searchFields, $highlightMatches = true) {
 		//Escape the query string
 		$escapedQuery = preg_quote(trim($query));
 		$escapedQuery = str_replace(' ', '|', $escapedQuery); //" " = OR
-		foreach (self::$accentedChars as $chars) { //Accented chars tolerance
+		foreach (self::$accentedChars as $chars) { // Accented chars tolerance
 			$regex = '('.$chars.')';
 			$escapedQuery = preg_replace('#'.$regex.'#', $regex, $escapedQuery);
 		}
 
-		if (empty($escapedQuery)) { //Empty query
+		if (empty($escapedQuery)) { // Empty query
 			return $this->data;
+		}
+
+		if ($highlightMatches === true) {
+			$highlightMatches = 'mark';
+		}
+
+		$replaceBy = '$1';
+		if ($highlightMatches !== false) {
+			$replaceBy = '<'.$highlightMatches.'>$1</'.$highlightMatches.'>';
 		}
 
 		$matchingItems = array();
@@ -92,7 +101,7 @@ class ArraySearcher {
 					continue;
 				}
 
-				$item[$field] = preg_replace('#('.$escapedQuery.')#i', '<strong>$1</strong>', (string) $item[$field], -1, $fieldHits);
+				$item[$field] = preg_replace('#('.$escapedQuery.')#i', $replaceBy, (string) $item[$field], -1, $fieldHits);
 				$itemHits += $fieldHits * ($nbrFields - $j);
 
 				$j++;
