@@ -57,7 +57,7 @@ class ArraySearcher {
 	 * @param  array $searchFields  A list of search fields. If ommited, the query will be searched in all fields.
 	 * @return array                Data, sorted by revelance.
 	 */
-	public function search($query, array $searchFields, $highlightMatches = true) {
+	public function search($query, array $searchFields, $highlightMatches = false) {
 		//Escape the query string
 		$escapedQuery = preg_quote(trim($query));
 		$escapedQuery = str_replace(' ', '|', $escapedQuery); //" " = OR
