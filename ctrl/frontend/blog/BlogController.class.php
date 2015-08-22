@@ -124,6 +124,7 @@ class BlogController extends \core\BackController {
 		}
 
 		$this->page()->addVar('title', $post['title']);
+		$this->page()->addVar('type', 'article');
 		$this->page()->addVar('post', $post);
 		$this->page()->addVar('postCreationDate', date($config['dateFormat'], $post['creationDate']));
 		$this->page()->addVar('postContent', nl2br($post['content']));
