@@ -20,12 +20,12 @@
 	{{/searchQuery}}
 	{{^searchQuery}}
 		<ul class="nav nav-tabs nav-stacked" id="main-stack">
-			{{#backends}}
+			{{#backends}}{{^hidden}}
 				<li><a href="{{WEBSITE_ROOT}}/{{url}}">
 					<span class="muted pull-right">{{{name}}}</span>
 					<i class="icon-{{#icon}}{{icon}}{{/icon}}{{^icon}}cog{{/icon}}"></i>&nbsp;{{title}}
 				</a></li>
-			{{/backends}}
+			{{/hidden}}{{/backends}}
 		</ul>
 		{{^backends}}
 			<p class="alert alert-info">Il n'y a actuellement aucun module qui soit administrable via cette page.</p>
