@@ -1,0 +1,27 @@
+{{#fixed?}}
+	<div class="alert alert-block alert-success">
+		<h4 class="alert-heading">Permissions réparées</h4>
+		<p>Les permissions ont bien été réparées.</p>
+		<p><a class="btn" href="{{#buildUrl}}main showModule devtools{{/buildUrl}}">Retour</a></p>
+	</div>
+{{/fixed?}}
+{{^fixed?}}
+	{{#error}}
+		<div class="alert alert-block alert-error">
+			<h4 class="alert-heading">Erreur lors de la réparation</h4>
+			<p>Les permissions n'ont pas pu être réparées : {{error}}</p>
+		</div>
+	{{/error}}
+	<form action="" method="post">
+		<input type="hidden" name="check" value="1">
+
+		<div class="alert alert-block alert-info">
+			<h4 class="alert-heading">Réparer les permissions</h4>
+			<p>Parfois, les permissions sur les fichiers sont mal définies et empêchent leur modification avec un client FTP.</p>
+			<p>
+				<button type="submit" class="btn btn-info">Réparer les permissions</button>
+				<a class="btn" href="{{#buildUrl}}main showModule devtools{{/buildUrl}}">Retour</a>
+			</p>
+		</div>
+	</form>
+{{/fixed?}}

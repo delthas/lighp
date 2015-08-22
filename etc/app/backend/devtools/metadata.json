@@ -1,0 +1,10 @@
+{
+	"title":"Options pour développeurs",
+	"icon":"",
+	"hidden": true,
+	"actions":{
+		"fixPermissions":{
+			"title":"Réparer les permissions"
+		}
+	}
+}
