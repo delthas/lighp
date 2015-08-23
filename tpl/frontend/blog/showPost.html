@@ -38,14 +38,13 @@
 		{{#comments}}
 			<div id="comment-{{id}}">
 				<span class="pull-right">
-					{{#user.isAdmin}}<a href="{{WEBSITE_ROOT}}/admin/blog/comments/{{id}}/update"><i class="icon-pencil"></i></a>&nbsp;<a href="{{WEBSITE_ROOT}}/admin/blog/comments/{{id}}/delete"><i class="icon-trash"></i></a> · {{/user.isAdmin}}
 					<i class="icon-time"></i>&nbsp;<a href="{{#buildUrl}}blog showPost {{name}}{{/buildUrl}}#comment-{{id}}" title="{{#__}}comments.permalink{{/__}}">{{creationDate}}</a>
 				</span>
 
 				{{#authorWebsite}}<h4><a href="{{authorWebsite}}" title="{{#__}}comments.goToAuthorWebsite{{/__}}" target="_blank">{{authorPseudo}}</a></h4>{{/authorWebsite}}
 				{{^authorWebsite}}<h4>{{authorPseudo}}</h4>{{/authorWebsite}}
 
-				<p>{{content}}</p>
+				<p>{{{content | htmlspecialchars | nl2br}}}</p>
 			</div>
 		{{/comments}}
 

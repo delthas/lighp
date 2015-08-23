@@ -1,0 +1,19 @@
+{{%FILTERS}}
+
+<table class="table table-bordered">
+	{{#comments}}
+		<tr><td>
+			<div class="pull-right">
+				<a class="btn" href="{{#buildUrl}}blog updateComment {{id}}{{/buildUrl}}">Modifier</a>
+				<a class="btn btn-danger" href="{{#buildUrl}}blog deleteComment {{id}}{{/buildUrl}}">Supprimer</a>
+			</div>
+
+			<strong>{{authorPseudo}} {{#authorEmail}}({{authorEmail}}){{/authorEmail}}</strong>
+			<p>{{{content | htmlspecialchars | nl2br}}}</p>
+		</td></tr>
+	{{/comments}}
+</table>
+
+{{^comments}}
+	<p class="muted">Aucun commentaire n'a été publié pour ce billet.</p>
+{{/comments}}

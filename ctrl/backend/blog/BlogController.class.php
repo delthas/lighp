@@ -122,6 +122,19 @@ class BlogController extends \core\BackController {
 		}
 	}
 
+	public function executeListPostComments(HTTPRequest $request) {
+		$this->page()->addVar('title', 'Lister les commentaires d\'un billet');
+		$this->_addBreadcrumb();
+
+		$manager = $this->managers->getManagerOf('blogComments');
+
+		$postName = $request->getData('postName');
+
+		$comments = $manager->listByPost($postName);
+
+		$this->page()->addVar('comments', $comments);
+	}
+
 	public function executeUpdateComment(HTTPRequest $request) {
 		$this->page()->addVar('title', 'Modifier un commentaire');
 		$this->_addBreadcrumb();

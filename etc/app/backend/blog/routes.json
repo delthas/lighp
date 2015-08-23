@@ -1,16 +1,21 @@
 [
 	{
-		"url":"/blog/posts/insert",
+		"url":"/blog/posts/new",
 		"action":"insertPost"
 	},
 	{
-		"url":"/blog/posts/update/([a-zA-Z0-9-_.]+)",
+		"url":"/blog/posts/([^/]+)/update",
 		"action":"updatePost",
 		"vars": ["postName"]
 	},
 	{
-		"url":"/blog/posts/delete/([a-zA-Z0-9-_.]+)",
+		"url":"/blog/posts/([^/]+)/delete",
 		"action":"deletePost",
+		"vars": ["postName"]
+	},
+	{
+		"url":"/blog/posts/([^/]+)/comments",
+		"action":"listPostComments",
 		"vars": ["postName"]
 	},
 	{

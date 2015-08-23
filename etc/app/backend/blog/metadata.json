@@ -17,6 +17,12 @@
 				"items":"posts"
 			}
 		},
+		"listPostComments":{
+			"title":"Afficher les commentaires d'un billet",
+			"list":{
+				"items":"posts"
+			}
+		},
 		"updateConfig":{
 			"title":"Modifier la configuration"
 		}
