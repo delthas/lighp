@@ -294,6 +294,24 @@ class Page extends ResponseContent {
 			return ucfirst($text);
 		});
 
+		//nl2br
+		$mustache->addHelper('nl2br', function($text, $helper = null) {
+			if (!empty($helper)) {
+				$text = $helper->render($text);
+			}
+
+			return nl2br($text);
+		});
+
+		//htmlspecialchars
+		$mustache->addHelper('htmlspecialchars', function($text, $helper = null) {
+			if (!empty($helper)) {
+				$text = $helper->render($text);
+			}
+
+			return htmlspecialchars($text);
+		});
+
 		//Date & time
 		$mustache->addHelper('strtotime', function($text, $helper = null) {
 			if (!empty($helper)) {
