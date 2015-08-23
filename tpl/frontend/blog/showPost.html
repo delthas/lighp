@@ -17,6 +17,8 @@
 			<section class="post-content">{{{content}}}</section>
 		</article>
 
+		{{> partials/postFooter}}
+
 		{{#comments?}}
 			<hr />
 
@@ -48,10 +50,12 @@
 			</div>
 		{{/comments}}
 
-		<hr />
+		{{#comments?}}
+			<hr />
 
-		<h2>{{#__}}comments.insertComment{{/__}}</h2>
-		{{> partials/form-comment}}
+			<h2>{{#__}}comments.insertComment{{/__}}</h2>
+			{{> partials/form-comment}}
+		{{/comments?}}
 	{{/post}}
 	{{^post}}
 		<div class="alert alert-error">
