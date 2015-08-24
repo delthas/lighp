@@ -10,7 +10,17 @@ use core\Entity;
  * @since 1.0alpha3
  */
 trait BasicManager_json {
+	use BasicManager;
+
 	//protected $path;
+
+	public function __construct($dao) {
+		parent::__construct($dao);
+
+		if (!isset($this->path)) {
+			throw new \LogicException(__CLASS__.' has no $path');
+		}
+	}
 
 	/**
 	 * The entities file.
@@ -18,12 +28,39 @@ trait BasicManager_json {
 	 */
 	protected $file;
 
+	/**
+	 * The last entity's id.
+	 * @var int
+	 */
+	protected $lastInsertedId;
+
 	protected function open() {
 		if (empty($this->file)) {
 			$this->file = $this->dao->open($this->path);
 		}
 
 		return $this->file;
+	}
+
+	protected function lastInsertedId() {
+		if ($this->lastInsertedId === null) {
+			// Find greatest id
+
+			$file = $this->open();
+			$items = $file->read();
+
+			$lastId = 0;
+			foreach ($items as $item) {
+				$id = $item['id'];
+				if ($id > $lastId) {
+					$lastId = $id;
+				}
+			}
+
+			$this->lastInsertedId = $lastId;
+		}
+
+		return $this->lastInsertedId;
 	}
 
 	protected function buildAllEntities($items) {
@@ -56,23 +93,13 @@ trait BasicManager_json {
 		$items = $file->read()->filter($filter);
 
 		// TODO: check this
-		if (isset($options['offset'])) {
-			$items = array_slice($items, $options['offset']);
-		}
-		if (isset($options['limit'])) {
-			$items = array_chunk($items, $options['limit']);
-		}
 		if (isset($options['sortBy'])) {
-			$sortKey = $options['sortBy'];
-			$items = usort($items, function ($a, $b) {
-				if ($a[$sortKey] == $b[$sortKey]) {
-					return 0;
-				}
-				if ($a[$sortKey] < $b[$sortKey]) {
-					return 1;
-				}
-				return -1;
-			});
+			$items = $items->sort($options['sortBy']);
+		}
+		if (isset($options['limit']) || isset($options['offset'])) {
+			$offset = (isset($options['offset'])) ? $options['offset'] : 0;
+			$limit = (isset($options['limit'])) ? $options['limit'] : -1;
+			$items = $items->getRange($offset, $limit);
 		}
 
 		return $this->buildAllEntities($items);
@@ -90,8 +117,21 @@ trait BasicManager_json {
 		}
 	}
 
-	public function insert(Entity $entity) {
+	public function insert($entity) {
+		// Auto-create entity if we got its data
+		if (is_array($entity)) {
+			$entity = new $this->entity($entity);
+		}
+
 		$this->checkEntityType($entity);
+
+		if ($this->primaryKey == 'id') {
+			$entity['id'] = $this->lastInsertedId() + 1;
+		}
+
+		$now = time();
+		$entity['createdAt'] = $now;
+		$entity['updatedAt'] = $now;
 
 		$file = $this->open();
 		$items = $file->read();
@@ -99,9 +139,24 @@ trait BasicManager_json {
 		$item = $this->dao->createItem($entity->toArray());
 		$items[] = $item;
 		$file->write($items);
+
+		if ($this->primaryKey == 'id') {
+			$this->lastInsertedId++;
+		}
 	}
 
-	public function update(Entity $entity) {
+	public function update($entity) {
+		// Auto-hydrate entity if we got its data
+		if (is_array($entity)) {
+			$entityData = $entity;
+			$entity = $this->get($entity[$this->primaryKey]);
+			$entity->hydrate($entityData);
+		}
+
+		$this->checkEntityType($entity);
+
+		$entity['updatedAt'] = time();
+
 		$file = $this->open();
 		$items = $file->read();
 		
@@ -117,6 +172,11 @@ trait BasicManager_json {
 	}
 
 	public function delete($entityKey) {
+		// If the entity object is given, get its primary key
+		if ($entityKey instanceof $this->entity) {
+			$entityKey = $entityKey[$this->primaryKey];
+		}
+
 		$file = $this->open();
 		$items = $file->read();
 
