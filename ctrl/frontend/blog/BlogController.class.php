@@ -129,6 +129,8 @@ class BlogController extends \core\BackController {
 		$this->page()->addVar('postCreationDate', date($config['dateFormat'], $post['creationDate']));
 		$this->page()->addVar('postContent', nl2br($post['content']));
 
+		$this->page()->addVar('postUrl', $request->href());
+
 		// Tags
 		$tagsNames = $post['tags'];
 		$router = $this->app->router();
@@ -214,8 +216,6 @@ class BlogController extends \core\BackController {
 
 		$this->page()->addVar('comments', $comments);
 		$this->page()->addVar('comments?', (count($comments) > 0));
-
-		$this->page()->addVar('user', $this->app()->user());
 	}
 
 	protected function executeShowFeed() {
