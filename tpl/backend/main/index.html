@@ -19,16 +19,40 @@
 		{{/actions}}
 	{{/searchQuery}}
 	{{^searchQuery}}
-		<ul class="nav nav-tabs nav-stacked" id="main-stack">
-			{{#backends}}{{^hidden}}
-				<li><a href="{{WEBSITE_ROOT}}/{{url}}">
-					<span class="muted pull-right">{{{name}}}</span>
-					<i class="icon-{{#icon}}{{icon}}{{/icon}}{{^icon}}cog{{/icon}}"></i>&nbsp;{{title}}
-				</a></li>
-			{{/hidden}}{{/backends}}
-		</ul>
-		{{^backends}}
-			<p class="alert alert-info">Il n'y a actuellement aucun module qui soit administrable via cette page.</p>
-		{{/backends}}
+		<div class="row-fluid">
+			<div class="span6">
+				<ul class="nav nav-tabs nav-stacked" id="main-stack">
+					{{#backends}}{{^hidden}}
+						<li><a href="{{WEBSITE_ROOT}}/{{url}}">
+							<span class="muted pull-right">{{{name}}}</span>
+							<i class="icon-{{icon}}{{^icon}}cog{{/icon}}"></i>&nbsp;{{title}}
+						</a></li>
+					{{/hidden}}{{/backends}}
+				</ul>
+				{{^backends}}
+					<p class="alert alert-info">Il n'y a actuellement aucun module qui soit administrable via cette page.</p>
+				{{/backends}}
+			</div>
+			<div class="span6">
+				<table class="table table-bordered" id="notifications-stack">
+					{{#notifications}}
+						<tr><td {{#dismissed}}class="muted"{{/dismissed}}>
+							<a href="{{#buildUrl}}main dismissNotification {{id}}{{/buildUrl}}" class="pull-right close">&times;</a>
+							<i class="icon-{{icon}}{{^icon}}bell{{/icon}}"></i>&nbsp;{{{title}}}
+							{{#description}}<br><small>{{{description}}}</small>{{/description}}
+							<div class="text-right">
+								{{#actions}}<a class="btn btn-small">{{title}}</a>&nbsp;{{/actions}}
+							</div>
+						</td></tr>
+					{{/notifications}}
+				</table>
+
+				{{^notifications}}
+					<p></p>
+					<p class="text-center"><i class="icon-bell"></i> Aucune notification</p>
+				{{/notifications}}
+			</div>
+		</div>
+		
 	{{/searchQuery}}
 </div>

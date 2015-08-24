@@ -182,6 +182,15 @@ class MainController extends \core\BackController {
 			}
 
 			$this->page()->addVar('backends', $backends);
+
+			$notificationsManager = $this->managers->getManagerOf('notifications');
+			$notifications = $notificationsManager->listBy(array(
+				'receiver' => $this->app->user()->username()
+			), array(
+				'sortBy' => 'createdAt',
+				'limit' => 20
+			));
+			$this->page()->addVar('notifications', $notifications);
 		} else {
 			$actions = array();
 
@@ -371,5 +380,14 @@ class MainController extends \core\BackController {
 				}
 			}
 		}
+	}
+
+	public function executeDismissNotification(HTTPRequest $request) {
+		$manager = $this->managers->getManagerOf('notifications');
+
+		$notificationId = (int) $request->getData('notificationId');
+		$manager->delete($notificationId);
+
+		$this->app->httpResponse()->redirect($request->referer());
 	}
 }

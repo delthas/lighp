@@ -12,5 +12,10 @@
 		"url":"/module/([a-zA-Z0-9_.]+)/action/([a-zA-Z0-9_.-]+)/?",
 		"action":"showAction",
 		"vars": ["module","action"]
+	},
+	{
+		"url":"/notifications/([0-9]+)/dismiss/?",
+		"action":"dismissNotification",
+		"vars":["notificationId"]
 	}
 ]
