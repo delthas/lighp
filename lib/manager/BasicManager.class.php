@@ -9,10 +9,21 @@ use core\Entity;
  * @author emersion <contact@emersion.fr>
  * @since 1.0alpha3
  */
-interface BasicManager {
+trait BasicManager {
 	//protected $entity;
 	//protected $primaryKey = 'id';
 	
+	public function __construct($dao) {
+		parent::__construct($dao);
+
+		if (!isset($this->entity)) {
+			throw new \LogicException(__CLASS__.' has no $entity');
+		}
+		if (!isset($this->primaryKey)) {
+			$this->primaryKey = 'id';
+		}
+	}
+
 	// GETTERS
 
 	/**
@@ -20,7 +31,7 @@ interface BasicManager {
 	 * @param  mixed $entityKey The entity key, as defined in `$primaryKey`.
 	 * @return Entity The entity.
 	 */
-	public function get($entityKey);
+	abstract public function get($entityKey);
 
 	/**
 	 * List entities given a criteria and options.
@@ -36,31 +47,31 @@ interface BasicManager {
 	 * @param  array $options Options.
 	 * @return Entity[] A list of entities.
 	 */
-	public function listBy($filter = array(), array $options = array());
+	abstract public function listBy($filter = array(), array $options = array());
 
 	/**
 	 * List all entities.
 	 * @return Entity[] A list of entities.
 	 */
-	public function listAll();
+	abstract public function listAll();
 
 	// SETTERS
 
 	/**
 	 * Insert a new entity in the database.
-	 * @param Entity $entity The new entity.
+	 * @param Entity|array $entity The new entity.
 	 */
-	public function insert(Entity $entity);
+	abstract public function insert($entity);
 
 	/**
 	 * Update an entity already stored in the database.
-	 * @param Entity $entity The entity to update.
+	 * @param Entity|array $entity The entity to update.
 	 */
-	public function update(Entity $entity);
+	abstract public function update($entity);
 
 	/**
 	 * Delete an entity from the database.
 	 * @param mixed $entityKey The entity key.
 	 */
-	public function delete($entityKey);
+	abstract public function delete($entityKey);
 }
