@@ -71,11 +71,55 @@ class HTTPRequest {
 	}
 
 	/**
+	 * Get this request's host.
+	 * @return string
+	 */
+	public function protocol() {
+		if (empty($_SERVER['HTTPS']) or $_SERVER['HTTPS'] == 'off') {
+			return 'http';
+		}
+		return 'https';
+	}
+
+	/**
+	 * Get this request's host.
+	 * @return string
+	 */
+	public function host() {
+		return $_SERVER['HTTP_HOST'];
+	}
+
+	/**
 	 * Get this request's URI.
 	 * @return string
+	 * @deprecated
 	 */
 	public function requestURI() {
 		return $_SERVER['REQUEST_URI'];
+	}
+
+	/**
+	 * Get this request's path.
+	 * @return string
+	 */
+	public function path() {
+		return $_SERVER['REQUEST_URI'];
+	}
+
+	/**
+	 * Get this request's query string.
+	 * @return string
+	 */
+	public function queryString() {
+		return (isset($_SERVER['QUERY_STRING'])) ? $_SERVER['QUERY_STRING'] : null;
+	}
+
+	/**
+	 * Get this request's full URL.
+	 * @return string
+	 */
+	public function href() {
+		return $this->protocol().'://'.$this->host().$this->path();
 	}
 
 	/**
