@@ -11,10 +11,22 @@ use core\data\JsonSerializable;
  */
 abstract class Entity implements \ArrayAccess, JsonSerializable {
 	/**
-	 * The identifier of this entity.
-	 * @var int
+	 * This entity's unique identifier. Its type depends on the database backend.
+	 * @var int|string
 	 */
 	protected $id;
+
+	/**
+	 * The creation date of this entity.
+	 * @var int
+	 */
+	protected $createdAt;
+
+	/**
+	 * The last update date of this entity.
+	 * @var int
+	 */
+	protected $updatedAt;
 
 	/**
 	 * Initialize this entity.
@@ -46,12 +58,34 @@ abstract class Entity implements \ArrayAccess, JsonSerializable {
 		return $this->id;
 	}
 
+	public function createdAt() {
+		return $this->createdAt;
+	}
+
+	public function updatedAt() {
+		return $this->updatedAt;
+	}
+
 	/**
 	 * Set this entity's identifier.
 	 * @param int $id The new identifier.
 	 */
 	public function setId($id) {
 		$this->id = (int) $id;
+	}
+
+	public function setCreatedAt($createdAt) {
+		if (!is_int($createdAt)) {
+			throw new InvalidArgumentException('Invalid entity creation timestamp: not a timestamp');
+		}
+		$this->createdAt = $createdAt;
+	}
+
+	public function setUpdatedAt($updatedAt) {
+		if (!is_int($updatedAt)) {
+			throw new InvalidArgumentException('Invalid entity update timestamp: not a timestamp');
+		}
+		$this->updatedAt = $updatedAt;
 	}
 
 	/**
@@ -73,7 +107,7 @@ abstract class Entity implements \ArrayAccess, JsonSerializable {
 	}
 
 	public function offsetGet($var) {
-		if (isset($this->$var) && is_callable(array($this, $var))) {
+		if (property_exists($this, $var) && is_callable(array($this, $var))) {
 			return $this->$var();
 		}
 	}
@@ -81,13 +115,15 @@ abstract class Entity implements \ArrayAccess, JsonSerializable {
 	public function offsetSet($var, $value) {
 		$method = 'set'.ucfirst($var);
 
-		if (isset($this->$var) && is_callable(array($this, $method))) {
+		if (property_exists($this, $var) && is_callable(array($this, $method))) {
 			$this->$method($value);
+		} else {
+			throw new \Exception('Cannot set '.$var.': this property doesn\'t exist or is read-only');
 		}
 	}
 
 	public function offsetExists($var) {
-		return isset($this->$var) && is_callable(array($this, $var));
+		return property_exists($this, $var) && is_callable(array($this, $var));
 	}
 
 	public function offsetUnset($var) {
