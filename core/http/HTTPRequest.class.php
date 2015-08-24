@@ -71,6 +71,15 @@ class HTTPRequest {
 	}
 
 	/**
+	 * Get this request's method.
+	 * The method is returned in lower case.
+	 * @return string
+	 */
+	public function method() {
+		return strtolower($_SERVER['REQUEST_METHOD']);
+	}
+
+	/**
 	 * Get this request's host.
 	 * @return string
 	 */
