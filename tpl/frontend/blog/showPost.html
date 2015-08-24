@@ -50,12 +50,10 @@
 			</div>
 		{{/comments}}
 
-		{{#comments?}}
-			<hr />
+		<hr />
 
-			<h2>{{#__}}comments.insertComment{{/__}}</h2>
-			{{> partials/form-comment}}
-		{{/comments?}}
+		<h2>{{#__}}comments.insertComment{{/__}}</h2>
+		{{> partials/form-comment}}
 	{{/post}}
 	{{^post}}
 		<div class="alert alert-error">

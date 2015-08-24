@@ -184,6 +184,19 @@ class BlogController extends \core\BackController {
 				return;
 			}
 
+			$notificationsManager = $this->managers->getManagerOf('notifications');
+			try {
+				$notificationsManager->insert(array(
+					'title' => 'Nouveau commentaire de <em>'.htmlspecialchars($comment['authorPseudo']).'</em> pour <em>'.htmlspecialchars($post['title']).'</em>',
+					'description' => nl2br(htmlspecialchars($comment['content'])),
+					'receiver' => $post['author']
+				));
+			} catch(\Exception $e) {
+				// TODO: non-blocking error handling
+				$this->page()->addVar('error', $e->getMessage());
+				return;
+			}
+
 			$this->page()->addVar('commentInserted?', true);
 			$this->page()->addVar('comment', null);
 		}
