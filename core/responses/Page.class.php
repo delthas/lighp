@@ -312,6 +312,11 @@ class Page extends ResponseContent {
 			return htmlspecialchars($text);
 		});
 
+		//urlencode
+		$mustache->addHelper('urlencode', function($text) {
+			return urlencode($text);
+		});
+
 		//Date & time
 		$mustache->addHelper('strtotime', function($text, $helper = null) {
 			if (!empty($helper)) {
