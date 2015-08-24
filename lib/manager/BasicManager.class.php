@@ -13,7 +13,8 @@ trait BasicManager {
 	//protected $entity;
 	//protected $primaryKey = 'id';
 	
-	public function __construct($dao) {
+	// Doesn't work with PHP 5.4
+	/*public function __construct($dao) {
 		parent::__construct($dao);
 
 		if (!isset($this->entity)) {
@@ -22,7 +23,7 @@ trait BasicManager {
 		if (!isset($this->primaryKey)) {
 			$this->primaryKey = 'id';
 		}
-	}
+	}*/
 
 	// GETTERS
 
