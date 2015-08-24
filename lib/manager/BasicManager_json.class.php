@@ -14,13 +14,14 @@ trait BasicManager_json {
 
 	//protected $path;
 
-	public function __construct($dao) {
+	// Doesn't work with PHP 5.4
+	/*public function __construct($dao) {
 		parent::__construct($dao);
 
 		if (!isset($this->path)) {
 			throw new \LogicException(__CLASS__.' has no $path');
 		}
-	}
+	}*/
 
 	/**
 	 * The entities file.
