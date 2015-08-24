@@ -12,10 +12,10 @@ class Collection implements \ArrayAccess, \IteratorAggregate, \Countable, \JsonS
 		$this->data = array();
 
 		foreach($data as $id => $item) {
-			if (is_array($item) || $item instanceof \Traversable) {
-				$this->data[] = new Item($item);
-			} else if ($item instanceof Item) {
+			if ($item instanceof Item) {
 				$this->data[] = $item;
+			} else if (is_array($item) || $item instanceof \Traversable) {
+				$this->data[] = new Item($item);
 			}
 		}
 	}
@@ -42,6 +42,20 @@ class Collection implements \ArrayAccess, \IteratorAggregate, \Countable, \JsonS
 		}
 
 		return new $this($filteredItems);
+	}
+
+	public function sort($sortKey) {
+		usort($this->data, function ($a, $b) use($sortKey) {
+			if ($a[$sortKey] == $b[$sortKey]) {
+				return 0;
+			}
+			if ($a[$sortKey] < $b[$sortKey]) {
+				return 1;
+			}
+			return -1;
+		});
+
+		return $this;
 	}
 
 	public function getRange($from, $limit = -1) {
