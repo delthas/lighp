@@ -154,16 +154,16 @@ class Page extends ResponseContent {
 	protected function _templatesEngine() {
 		$mustacheOptions = array();
 
-		//Cache
+		// Cache
 		try {
 			$cacheDir = new CacheDirectory('core/mustache');
 			$mustacheOptions['cache'] = $cacheDir->path();
 		} catch(\Exception $e) {}
 
-		//Create the engine
+		// Create the engine
 		$mustache = new Mustache_Engine($mustacheOptions);
 
-		//Translate
+		// Translate
 		$translation = $this->translation();
 		$mustache->addHelper('translate', function($path) use ($translation) {
 			return $translation->get($path);
@@ -197,7 +197,7 @@ class Page extends ResponseContent {
 			return $url;
 		});
 
-		//Linked files
+		// Linked files
 		$appName = $this->app->name();
 		$module = $this->module();
 		$action = $this->action();
@@ -214,7 +214,7 @@ class Page extends ResponseContent {
 			$relativePublicFilesDir = Pathfinder::getPathFor('public');
 			$hasPublicFilesDir = is_dir($relativePublicFilesDir.'/'.$filesBaseDir);
 
-			//Core files
+			// Core files
 			$coreFilesPath = $filesBaseDir.'/core';
 			if (isset($coreLinkedFiles[$type])) {
 				foreach($coreLinkedFiles[$type] as $scriptData) {
@@ -285,7 +285,7 @@ class Page extends ResponseContent {
 			return $linkedFilesTags;
 		});
 
-		//ucfirst
+		// ucfirst
 		$mustache->addHelper('ucfirst', function($text, $helper = null) {
 			if (!empty($helper)) {
 				$text = $helper->render($text);
@@ -294,7 +294,7 @@ class Page extends ResponseContent {
 			return ucfirst($text);
 		});
 
-		//nl2br
+		// nl2br
 		$mustache->addHelper('nl2br', function($text, $helper = null) {
 			if (!empty($helper)) {
 				$text = $helper->render($text);
@@ -303,7 +303,7 @@ class Page extends ResponseContent {
 			return nl2br($text);
 		});
 
-		//htmlspecialchars
+		// htmlspecialchars
 		$mustache->addHelper('htmlspecialchars', function($text, $helper = null) {
 			if (!empty($helper)) {
 				$text = $helper->render($text);
@@ -312,12 +312,12 @@ class Page extends ResponseContent {
 			return htmlspecialchars($text);
 		});
 
-		//urlencode
+		// urlencode
 		$mustache->addHelper('urlencode', function($text) {
 			return urlencode($text);
 		});
 
-		//Date & time
+		// Date & time
 		$mustache->addHelper('strtotime', function($text, $helper = null) {
 			if (!empty($helper)) {
 				$text = $helper->render($text);
@@ -325,14 +325,29 @@ class Page extends ResponseContent {
 
 			return strtotime($text);
 		});
-		$mustache->addHelper('date', function($time, $helper = null) {
+		$mustache->addHelper('datetime', function($time, $helper = null) {
 			if (!empty($helper)) {
 				$time = $helper->render($time);
 			}
 
 			$time = (int) $time;
-
 			return date('Y-m-d H:i:s', $time);
+		});
+		$mustache->addHelper('date', $mustache->getHelper('datetime'));
+
+		// Gravatar
+		// @see https://en.gravatar.com/site/implement/images/
+		$mustache->addHelper('gravatar', function($email) {
+			$email = strtolower(trim($email));
+			if (empty($email)) {
+				// No e-mail provided, generate a random one
+				$email = rand().'@example.org';
+			}
+			$hash = md5($email);
+
+			$url = '//www.gravatar.com/avatar/'.$hash;
+			$url .= '?d=retro';
+			return $url;
 		});
 
 
@@ -353,7 +368,7 @@ class Page extends ResponseContent {
 			return (($bytes < 0) ? '-' : '') . $roundedBytes . ' ' . $suffixes[floor($base)];
 		});
 
-		//join
+		// join
 		$mustache->addHelper('join', function($value) {
 			if (!is_array($value)) {
 				return $value;
@@ -362,7 +377,7 @@ class Page extends ResponseContent {
 			return implode(', ', $value);
 		});
 
-		//debug
+		// debug
 		$mustache->addHelper('var_dump', function($value) {
 			if (!is_array($value)) {
 				return $value;
