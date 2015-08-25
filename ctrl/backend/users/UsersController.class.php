@@ -151,21 +151,37 @@ class UsersController extends \core\BackController {
 		$cryptoManager = $this->managers->getManagerOf('crypto');
 
 		if ($request->postExists('username')) {
+			// Do not add the password to the page variable
 			$userData = array(
 				'username' => $request->postData('username'),
-				'password' => $request->postData('password')
+				'email' => $request->postData('email')
 			);
 
 			$this->page()->addVar('user', $userData);
 
+			// Now we can set the password
+			$userData['password'] = $request->postData('password');
+
+			// Check if password is empty
 			if (empty($userData['password'])) {
 				$this->page()->addVar('error', 'Password cannot be empty');
 				return;
 			}
 
+			// Check password confirm
 			$passwordConfirm = $request->postData('password-confirm');
 			if ($userData['password'] !== $passwordConfirm) {
 				$this->page()->addVar('error', 'Passwords does\'t match');
+				return;
+			}
+
+			// Check if username already exists
+			$user = null;
+			try {
+				$user = $manager->getByUsername($username);
+			} catch (\Exception $e) {}
+			if (!empty($user)) {
+				$this->page()->addVar('error', 'This username is already taken');
 				return;
 			}
 
@@ -179,6 +195,7 @@ class UsersController extends \core\BackController {
 				return;
 			}
 
+			// Finally, insert user
 			try {
 				$manager->insert($user);
 			} catch(\Exception $e) {

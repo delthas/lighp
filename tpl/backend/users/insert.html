@@ -33,6 +33,13 @@
 			</div>
 		</div>
 
+		<div class="control-group">
+			<label class="control-label" for="email">E-mail</label>
+			<div class="controls">
+				<input type="email" name="email" id="email" value="{{user.email}}" placeholder="Addresse e-mail">
+			</div>
+		</div>
+
 		<div class="form-actions">
 			<button type="submit" class="btn btn-primary">Valider</button>
 			<a class="btn" href="{{#buildUrl}}main showModule users{{/buildUrl}}">Annuler</a>
