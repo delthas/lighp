@@ -1,3 +1,5 @@
+{{%FILTERS}}
+
 {{> partials/form-search}}
 
 <div id="main-stack-container">
@@ -37,11 +39,15 @@
 				<table class="table table-bordered" id="notifications-stack">
 					{{#notifications}}
 						<tr><td {{#dismissed}}class="muted"{{/dismissed}}>
-							<a href="{{#buildUrl}}main dismissNotification {{id}}{{/buildUrl}}" class="pull-right close">&times;</a>
+							<span class="pull-right">
+								<a href="{{#buildUrl}}main dismissNotification {{id}}{{/buildUrl}}" class="pull-right close">&times;</a>
+							</span>
+
 							<i class="icon-{{icon}}{{^icon}}bell{{/icon}}"></i>&nbsp;{{{title}}}
+							<span class="muted">({{createdAt | datetime}})</span>
 							{{#description}}<br><small>{{{description}}}</small>{{/description}}
 							<div class="text-right">
-								{{#actions}}<a class="btn btn-small">{{title}}</a>&nbsp;{{/actions}}
+								{{#actions}}<a href="{{action | buildUrl}}" class="btn btn-small">{{title}}</a>&nbsp;{{/actions}}
 							</div>
 						</td></tr>
 					{{/notifications}}
