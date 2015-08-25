@@ -75,14 +75,14 @@ abstract class Entity implements \ArrayAccess, JsonSerializable {
 	}
 
 	public function setCreatedAt($createdAt) {
-		if (!is_int($createdAt)) {
+		if (!is_int($createdAt) && $createdAt !== null) {
 			throw new \InvalidArgumentException('Invalid entity creation timestamp: not a timestamp');
 		}
 		$this->createdAt = $createdAt;
 	}
 
 	public function setUpdatedAt($updatedAt) {
-		if (!is_int($updatedAt)) {
+		if (!is_int($updatedAt) && $updatedAt !== null) {
 			throw new \InvalidArgumentException('Invalid entity update timestamp: not a timestamp');
 		}
 		$this->updatedAt = $updatedAt;
