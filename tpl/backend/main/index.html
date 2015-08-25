@@ -45,7 +45,7 @@
 
 							<i class="icon-{{icon}}{{^icon}}bell{{/icon}}"></i>&nbsp;{{{title}}}
 							<span class="muted">({{createdAt | datetime}})</span>
-							{{#description}}<br><small>{{{description}}}</small>{{/description}}
+							{{#description}}<br><small class="notification-description">{{{description}}}</small>{{/description}}
 							<div class="text-right">
 								{{#actions}}<a href="{{action | buildUrl}}" class="btn btn-small">{{title}}</a>&nbsp;{{/actions}}
 							</div>
