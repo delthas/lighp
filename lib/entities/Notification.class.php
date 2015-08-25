@@ -2,7 +2,7 @@
 
 namespace lib\entities;
 
-class Notification extends BasicEntity {
+class Notification extends \core\Entity {
 	protected $title, $description, $receiver, $actions;
 
 	// SETTERS //
