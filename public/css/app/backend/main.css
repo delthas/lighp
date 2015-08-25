@@ -3,4 +3,12 @@
 	display: block;
 	max-height: 10em;
 	overflow: hidden;
+
+	transition: 0.3s max-height;
+	transition-delay: 0;
+}
+
+#notifications-stack .notification-description:hover {
+	max-height: 1000px;
+	transition-delay: 1.7s;
 }
