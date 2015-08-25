@@ -173,23 +173,30 @@ class Page extends ResponseContent {
 
 		//URL builder
 		$router = $this->app->router();
-		$mustache->addHelper('buildUrl', function($rawData, $helper) use ($router) {
-			$data = explode(' ', $helper->render($rawData));
+		$globalVars = $this->globalVars();
+		$mustache->addHelper('buildUrl', function($rawData, $helper = null) use ($router, $globalVars) {
+			if (!empty($helper)) {
+				$data = explode(' ', $helper->render($rawData));
 
-			if (count($data) < 2) {
-				return '#';
-			}
+				if (count($data) < 2) {
+					return '#';
+				}
 
-			$module = $data[0];
-			$action = $data[1];
-			$vars = array();
+				$module = $data[0];
+				$action = $data[1];
 
-			if (count($data) >= 3) {
-				$vars = array_slice($data, 2);
+				$vars = array();
+				if (count($data) >= 3) {
+					$vars = array_slice($data, 2);
+				}
+			} else {
+				$module = $rawData['module'];
+				$action = $rawData['action'];
+				$vars = (!empty($rawData['vars'])) ? $rawData['vars'] : array();
 			}
 
 			try {
-				$url = '{{WEBSITE_ROOT}}/' . $router->getUrl($module, $action, $vars);
+				$url = $globalVars['WEBSITE_ROOT'] . '/' . $router->getUrl($module, $action, $vars);
 			} catch(\Exception $e) {
 				return '#';
 			}
