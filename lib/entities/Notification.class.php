@@ -3,7 +3,7 @@
 namespace lib\entities;
 
 class Notification extends \core\Entity {
-	protected $title, $description, $receiver, $actions;
+	protected $title, $description, $icon, $receiver, $actions;
 
 	// SETTERS //
 
@@ -19,6 +19,13 @@ class Notification extends \core\Entity {
 			throw new InvalidArgumentException('Invalid notification description: not a string');
 		}
 		$this->description = $desc;
+	}
+
+	public function setIcon($icon) {
+		if (!is_string($icon) && $icon !== null) {
+			throw new InvalidArgumentException('Invalid notification icon: not a string');
+		}
+		$this->icon = $icon;
 	}
 
 	public function setReceiver($username) {
@@ -44,6 +51,10 @@ class Notification extends \core\Entity {
 
 	public function description() {
 		return $this->description;
+	}
+
+	public function icon() {
+		return $this->icon;
 	}
 
 	public function receiver() {
