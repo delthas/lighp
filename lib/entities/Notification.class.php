@@ -15,20 +15,24 @@ class Notification extends \core\Entity {
 	}
 
 	public function setDescription($desc) {
-		if (!is_string($desc) && !empty($desc)) {
+		if (!is_string($desc) && $desc !== null) {
 			throw new InvalidArgumentException('Invalid notification description: not a string');
 		}
 		$this->description = $desc;
 	}
 
 	public function setReceiver($username) {
-		if (!is_string($username) && !empty($username)) {
+		if (!is_string($username) && $username !== null) {
 			throw new InvalidArgumentException('Invalid notification receiver: not a username');
 		}
 		$this->receiver = $username;
 	}
 
-	public function setActions(array $actions) {
+	public function setActions($actions) {
+		if (!is_array($actions) && $actions !== null) {
+			throw new InvalidArgumentException('Invalid notification actions: not an array');
+		}
+		
 		$this->actions = $actions;
 	}
 
