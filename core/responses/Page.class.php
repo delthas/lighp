@@ -171,7 +171,7 @@ class Page extends ResponseContent {
 
 		$mustache->addHelper('__', $mustache->getHelper('translate'));
 
-		//URL builder
+		// URL builder
 		$router = $this->app->router();
 		$globalVars = $this->globalVars();
 		$mustache->addHelper('buildUrl', function($rawData, $helper = null) use ($router, $globalVars) {
@@ -299,6 +299,15 @@ class Page extends ResponseContent {
 			}
 
 			return ucfirst($text);
+		});
+
+		// strtolower
+		$mustache->addHelper('strtolower', function($text, $helper = null) {
+			if (!empty($helper)) {
+				$text = $helper->render($text);
+			}
+
+			return strtolower($text);
 		});
 
 		// nl2br
