@@ -8,9 +8,11 @@
 	<article>
 		<header>
 			<h2><a href="{{#buildUrl}}blog showPost {{name}}{{/buildUrl}}">{{title}}</a></h2>
-			<p>
-				<small><i class="icon-time"></i>&nbsp;{{creationDate}} · <i class="icon-user"></i>&nbsp;{{author}} · <i class="icon-comment"></i>&nbsp;<a href="{{#buildUrl}}blog showPost {{name}}{{/buildUrl}}#comments">{{#__}}comments{{/__}}</a></small>
-			</p>
+			<p><small>
+				<i class="icon-time"></i>&nbsp;{{creationDate}}
+				· <i class="icon-user"></i>&nbsp;{{author}}
+				· <i class="icon-comment"></i>&nbsp;<a href="{{#buildUrl}}blog showPost {{name}}{{/buildUrl}}#comments">{{commentsCount}} {{#strtolower}}{{#__}}comments{{/__}}{{/strtolower}}</a>
+			</small></p>
 		</header>
 
 		<section>{{{content}}}</section>

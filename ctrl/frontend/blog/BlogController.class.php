@@ -33,6 +33,8 @@ class BlogController extends \core\BackController {
 	protected function _showPostsList($postsList) {
 		$config = $this->config()->read();
 
+		$commentsManager = $this->managers->getManagerOf('blogComments');
+
 		foreach ($postsList as $i => $post) {
 			if ($post['isDraft']) {
 				unset($postsList[$i]);
@@ -43,6 +45,7 @@ class BlogController extends \core\BackController {
 
 			$postData['creationDate'] = date($config['dateFormat'], $postData['creationDate']);
 			$postData['content'] = nl2br($postData['content']);
+			$postData['commentsCount'] = $commentsManager->countByPost($post['name']);
 
 			$postsList[$i] = $postData;
 		}
@@ -223,6 +226,7 @@ class BlogController extends \core\BackController {
 		$comments = $commentsManager->listByPost($postName);
 
 		$this->page()->addVar('comments', $comments);
+		$this->page()->addVar('commentsCount', count($comments));
 		$this->page()->addVar('comments?', (count($comments) > 0));
 	}
 
