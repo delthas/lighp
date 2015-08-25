@@ -196,6 +196,7 @@ class BlogController extends \core\BackController {
 				$notificationsManager->insert(array(
 					'title' => $title,
 					'description' => nl2br(htmlspecialchars($comment['content'])),
+					'icon' => 'comment',
 					'receiver' => $post['author'],
 					'actions' => array(
 						array(
