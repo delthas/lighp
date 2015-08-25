@@ -74,7 +74,7 @@ class UsersController extends \core\BackController {
 	}
 
 	public function executeUpdateMe(HTTPRequest $request) {
-		$this->page()->addVar('title', 'Modifier les identifiants de connexion');
+		$this->page()->addVar('title', 'Modifier mon compte');
 		$this->_addBreadcrumb();
 
 		$manager = $this->managers->getManagerOf('users');
