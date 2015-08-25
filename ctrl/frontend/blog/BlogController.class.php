@@ -206,14 +206,6 @@ class BlogController extends \core\BackController {
 		// Listing comments
 		$comments = $commentsManager->listByPost($postName);
 
-		foreach ($comments as $i => $comment) {
-			$commentData = $comment->toArray();
-
-			$commentData['creationDate'] = date($config['dateFormat'], $commentData['creationDate']);
-
-			$comments[$i] = $commentData;
-		}
-
 		$this->page()->addVar('comments', $comments);
 		$this->page()->addVar('comments?', (count($comments) > 0));
 	}

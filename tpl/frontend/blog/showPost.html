@@ -38,16 +38,23 @@
 		{{/commentInserted?}}
 
 		{{#comments}}
-			<div id="comment-{{id}}">
-				<span class="pull-right">
-					<i class="icon-time"></i>&nbsp;<a href="{{#buildUrl}}blog showPost {{name}}{{/buildUrl}}#comment-{{id}}" title="{{#__}}comments.permalink{{/__}}">{{creationDate}}</a>
-				</span>
+			<div id="comment-{{id}}" class="thumbnail">
+				<div class="caption">
+					<span class="pull-right">
+						<a href="{{#buildUrl}}blog showPost {{name}}{{/buildUrl}}#comment-{{id}}" title="{{#__}}comments.permalink{{/__}}">{{creationDate | datetime}}</a>
+					</span>
 
-				{{#authorWebsite}}<h4><a href="{{authorWebsite}}" title="{{#__}}comments.goToAuthorWebsite{{/__}}" target="_blank">{{authorPseudo}}</a></h4>{{/authorWebsite}}
-				{{^authorWebsite}}<h4>{{authorPseudo}}</h4>{{/authorWebsite}}
+					<img src="{{authorEmail | gravatar}}" alt="{{authorPseudo}}" class="pull-left avatar" crossorigin="anonymous">
 
-				<p>{{{content | htmlspecialchars | nl2br}}}</p>
+					{{#authorWebsite}}<h4><a href="{{authorWebsite}}" title="{{#__}}comments.goToAuthorWebsite{{/__}}" target="_blank">{{authorPseudo}}</a></h4>{{/authorWebsite}}
+					{{^authorWebsite}}<h4>{{authorPseudo}}</h4>{{/authorWebsite}}
+
+					<p>{{{content | htmlspecialchars | nl2br}}}</p>
+
+					<span class="clearfix"></span>
+				</div>
 			</div>
+			<br>
 		{{/comments}}
 
 		<hr />
