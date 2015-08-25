@@ -2,8 +2,9 @@
 
 <table class="table table-bordered">
 	{{#comments}}
-		<tr><td>
+		<tr id="comment-{{id}}"><td>
 			<div class="pull-right">
+				<span class="muted">{{creationDate | datetime}}</span>
 				<a class="btn" href="{{#buildUrl}}blog updateComment {{id}}{{/buildUrl}}">Modifier</a>
 				<a class="btn btn-danger" href="{{#buildUrl}}blog deleteComment {{id}}{{/buildUrl}}">Supprimer</a>
 			</div>
