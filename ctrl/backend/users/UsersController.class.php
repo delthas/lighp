@@ -80,27 +80,57 @@ class UsersController extends \core\BackController {
 		$manager = $this->managers->getManagerOf('users');
 		$cryptoManager = $this->managers->getManagerOf('crypto');
 
-		if ($request->postExists('current-password')) {
-			$password = $request->postData('current-password');
+		$username = $this->app->user()->username();
+		try {
+			$user = $manager->getByUsername($username);
+		} catch (\Exception $e) {
+			return $this->executeLogout($request);
+		}
 
-			$username = $this->app->user()->username();
-			try {
-				$user = $manager->getByUsername($username);
-			} catch (\Exception $e) {
-				return $this->executeLogout($request);
-			}
+		$this->page()->addVar('user', $user);
 
-			if ($cryptoManager->verifyPassword($password, $user['password'])) {
-				$newPassword = $request->postData('new-password');
-				$confirmPassword = $request->postData('confirm-password');
+		if ($request->postExists('email')) {
+			$isDirty = false;
 
-				if ($newPassword !== $confirmPassword) {
-					$this->page()->addVar('error', 'Passwords does\'t match');
+			$email = $request->postData('email');
+			if ($email != $user['email']) {
+				try {
+					$user['email'] = $email;
+				} catch (\InvalidArgumentException $e) {
+					$this->page()->addVar('error', $e->getMessage());
 					return;
 				}
+				
+				$isDirty = true;
+			}
 
-				$user['password'] = $cryptoManager->hashPassword($newPassword);
+			$password = $request->postData('current-password');
+			if (!empty($password)) {
+				if ($cryptoManager->verifyPassword($password, $user['password'])) {
+					$newPassword = $request->postData('new-password');
+					$confirmPassword = $request->postData('confirm-password');
 
+					if (empty($newPassword)) {
+						$this->page()->addVar('error', 'Password cannot be empty');
+						return;
+					}
+
+					if ($newPassword !== $confirmPassword) {
+						$this->page()->addVar('error', 'Passwords does\'t match');
+						return;
+					}
+
+					$user['password'] = $cryptoManager->hashPassword($newPassword);
+
+					$isDirty = true;
+				} else {
+					sleep(3); // Delay to prevent bruteforce attacks
+					$this->page()->addVar('error', 'Incorrect password');
+					return;
+				}
+			}
+
+			if ($isDirty) {
 				try {
 					$manager->update($user);
 				} catch (\Exception $e) {
@@ -109,9 +139,6 @@ class UsersController extends \core\BackController {
 				}
 
 				$this->page()->addVar('updated?', true);
-			} else {
-				sleep(3); // Delay to prevent bruteforce attacks
-				$this->page()->addVar('error', 'Incorrect password');
 			}
 		}
 	}
@@ -130,6 +157,11 @@ class UsersController extends \core\BackController {
 			);
 
 			$this->page()->addVar('user', $userData);
+
+			if (empty($userData['password'])) {
+				$this->page()->addVar('error', 'Password cannot be empty');
+				return;
+			}
 
 			$passwordConfirm = $request->postData('password-confirm');
 			if ($userData['password'] !== $passwordConfirm) {

@@ -15,21 +15,32 @@
 	{{/error}}
 
 	<form action="" method="post" class="form-horizontal">
+		<h2>Modifier mes informations personnelles</h2>
+
+		<div class="control-group">
+			<label class="control-label" for="email">E-mail</label>
+			<div class="controls">
+				<input type="email" name="email" id="email" value="{{user.email}}" placeholder="Addresse e-mail">
+			</div>
+		</div>
+
+		<h2>Changer de mot de passe</h2>
+
 		<div class="control-group">
 			<label class="control-label" for="currentPassword">Mot de passe actuel</label>
 			<div class="controls">
-				<input type="password" name="current-password" id="currentPassword" placeholder="Mot de passe" required>
+				<input type="password" name="current-password" id="currentPassword" placeholder="Mot de passe">
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label" for="newPassword">Nouveau mot de passe</label>
 			<div class="controls">
-				<input type="password" name="new-password" id="newPassword" placeholder="Nouveau mot de passe" required>
+				<input type="password" name="new-password" id="newPassword" placeholder="Nouveau mot de passe">
 			</div>
 		</div>
 		<div class="control-group">
 			<div class="controls">
-				<input type="password" name="confirm-password" id="confirmPassword" placeholder="Confirmer le nouveau mot de passe" required>
+				<input type="password" name="confirm-password" id="confirmPassword" placeholder="Confirmer le nouveau mot de passe">
 			</div>
 		</div>
 
