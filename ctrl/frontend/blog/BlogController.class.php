@@ -188,10 +188,25 @@ class BlogController extends \core\BackController {
 
 			$notificationsManager = $this->managers->getManagerOf('notifications');
 			try {
+				$postUrl = $request->href();
+				$commentUrl = $postUrl.'#comment-'.$comment['id'];
+				$title = '<a href="'.$commentUrl.'" target="_blank">Nouveau commentaire de <em>'.htmlspecialchars($comment['authorPseudo']).'</em></a>';
+				$title .= ' pour <a href="'.$postUrl.'" target="_blank">'.htmlspecialchars($post['title']).'</a>';
+
 				$notificationsManager->insert(array(
-					'title' => 'Nouveau commentaire de <em>'.htmlspecialchars($comment['authorPseudo']).'</em> pour <em>'.htmlspecialchars($post['title']).'</em>',
+					'title' => $title,
 					'description' => nl2br(htmlspecialchars($comment['content'])),
-					'receiver' => $post['author']
+					'receiver' => $post['author'],
+					'actions' => array(
+						array(
+							'action' => array('module' => 'blog', 'action' => 'updateComment', 'vars' => array('commentId' => $comment['id'])),
+							'title' => 'Modifier'
+						),
+						array(
+							'action' => array('module' => 'blog', 'action' => 'deleteComment', 'vars' => array('commentId' => $comment['id'])),
+							'title' => 'Supprimer'
+						)
+					)
 				));
 			} catch(\Exception $e) {
 				// TODO: non-blocking error handling
