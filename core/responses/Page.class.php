@@ -346,8 +346,10 @@ class Page extends ResponseContent {
 				$time = $helper->render($time);
 			}
 
+			// TODO: localized datetime format
+			// @see http://php.net/manual/en/intldateformatter.format.php
 			$time = (int) $time;
-			return date('Y-m-d H:i:s', $time);
+			return date('Y-m-d H:i', $time);
 		});
 		$mustache->addHelper('date', $mustache->getHelper('datetime'));
 
