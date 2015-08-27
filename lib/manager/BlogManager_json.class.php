@@ -102,6 +102,11 @@ class BlogManager_json extends BlogManager {
 		
 		foreach ($items as $i => $item) {
 			if ($item['name'] == $post['name']) {
+				// If it was a draft and it is not anymore, update craetionDate
+				if (!$post['isDraft'] && $item['isDraft'] != $post['isDraft']) {
+					$post->setCreationDate(time());
+				}
+
 				$items[$i] = $this->dao->createItem($post->toArray());
 				$postsFile->write($items);
 				return;
