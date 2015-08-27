@@ -111,6 +111,7 @@ class BlogController extends \core\BackController {
 	public function executeShowPost(HTTPRequest $request) {
 		$manager = $this->managers->getManagerOf('blog');
 		$config = $this->config()->read();
+		$session = $request->session();
 
 		$postName = $request->getData('postName');
 
@@ -154,6 +155,13 @@ class BlogController extends \core\BackController {
 		$captcha = Captcha::build($this->app());
 		$this->page()->addVar('captcha', $captcha);
 
+		// Pre-fill author data
+		$this->page()->addVar('comment', array(
+			'authorPseudo' => $session->get('blog.comment.author.pseudo'),
+			'authorEmail' => $session->get('blog.comment.author.email'),
+			'authorWebsite' => $session->get('blog.comment.author.website')
+		));
+
 		if ($request->postExists('comment-content')) {
 			$commentData = array(
 				'authorPseudo' => trim($request->postData('comment-author-pseudo')),
@@ -189,6 +197,11 @@ class BlogController extends \core\BackController {
 				return;
 			}
 
+			// Save author data
+			$session->set('blog.comment.author.pseudo', $comment['authorPseudo']);
+			$session->set('blog.comment.author.email', $comment['authorEmail']);
+			$session->set('blog.comment.author.website', $comment['authorWebsite']);
+
 			$notificationsManager = $this->managers->getManagerOf('notifications');
 			try {
 				$postUrl = $request->href();
@@ -202,6 +215,10 @@ class BlogController extends \core\BackController {
 					'icon' => 'comment',
 					'receiver' => $post['author'],
 					'actions' => array(
+						array(
+							'action' => array('module' => 'blog', 'action' => 'listPostComments', 'vars' => array('postName' => $postName)),
+							'title' => 'Gérer les commentaires'
+						),
 						array(
 							'action' => array('module' => 'blog', 'action' => 'updateComment', 'vars' => array('commentId' => $comment['id'])),
 							'title' => 'Modifier'
@@ -219,7 +236,15 @@ class BlogController extends \core\BackController {
 			}
 
 			$this->page()->addVar('commentInserted?', true);
-			$this->page()->addVar('comment', null);
+
+			// Pre-fill author data
+			$keep = array('authorPseudo', 'authorEmail', 'authorWebsite');
+			foreach ($commentData as $key => $value) {
+				if (!in_array($key, $keep)) {
+					unset($commentData[$key]);
+				}
+			}
+			$this->page()->addVar('comment', $commentData);
 		}
 
 		// Listing comments
