@@ -5,10 +5,9 @@
 	overflow: hidden;
 
 	transition: 0.3s max-height;
-	transition-delay: 0;
 }
 
-#notifications-stack .notification-description:hover {
+#notifications-stack .notification-description:focus {
 	max-height: 1000px;
-	transition-delay: 1.7s;
+	outline: none;
 }
