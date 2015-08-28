@@ -4,7 +4,7 @@ namespace lib\entities;
 use core\Entity;
 
 class BlogPost extends Entity {
-	protected $name, $title, $content, $creationDate, $author, $isDraft, $tags;
+	protected $name, $title, $content, $publishedAt, $author, $isDraft, $tags;
 
 	// SETTERS //
 
@@ -32,12 +32,19 @@ class BlogPost extends Entity {
 		$this->content = $content;
 	}
 
+	/**
+	 * @deprecated
+	 */
 	public function setCreationDate($creationDate) {
-		if (!is_int($creationDate)) {
-			throw new \InvalidArgumentException('Invalid blog post creation date');
+		return $this->setPublishedAt($creationDate);
+	}
+
+	public function setPublishedAt($publishedAt) {
+		if (!is_int($publishedAt)) {
+			throw new \InvalidArgumentException('Invalid blog post publication date');
 		}
 
-		$this->creationDate = $creationDate;
+		$this->publishedAt = $publishedAt;
 	}
 
 	public function setAuthor($author) {
@@ -78,8 +85,15 @@ class BlogPost extends Entity {
 		return $this->content;
 	}
 
+	/**
+	 * @deprecated
+	 */
 	public function creationDate() {
-		return $this->creationDate;
+		return $this->publishedAt();
+	}
+
+	public function publishedAt() {
+		return $this->publishedAt;
 	}
 
 	public function author() {
