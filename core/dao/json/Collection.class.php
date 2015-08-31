@@ -44,15 +44,38 @@ class Collection implements \ArrayAccess, \IteratorAggregate, \Countable, \JsonS
 		return new $this($filteredItems);
 	}
 
-	public function sort($sortKey) {
-		usort($this->data, function ($a, $b) use($sortKey) {
-			if ($a[$sortKey] == $b[$sortKey]) {
-				return 0;
+	public function sort($sortBy) {
+		if (is_string($sortBy)) {
+			if (strpos($sortBy, ' ') !== false) {
+				$sortByOptions = explode(' ', $sortBy, 2);
+				$sortBy = array($sortByOptions[0] => $sortByOptions[1]);
+			} else {
+				$sortBy = array($sortBy => null);
 			}
-			if ($a[$sortKey] < $b[$sortKey]) {
-				return 1;
+		} elseif (is_array($sortBy)) {
+			if (array_values($sortBy) === $sortBy) {
+				// It's a list, convert it to associative array
+				$sortByKeys = $sortBy;
+				$sortBy = array();
+				foreach ($sortByKeys as $key) {
+					$sortBy[$key] = null;
+				}
 			}
-			return -1;
+		}
+
+		usort($this->data, function ($a, $b) use($sortBy) {
+			foreach ($sortBy as $key => $flag) {
+				if ($a[$key] == $b[$key]) {
+					continue;
+				}
+
+				if ($a[$key] < $b[$key]) {
+					return ($flag == 'desc') ? 1 : -1;
+				} else {
+					return ($flag == 'desc') ? -1 : 1;
+				}
+			}
+			return 0;
 		});
 
 		return $this;
