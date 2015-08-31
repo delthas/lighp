@@ -8,6 +8,7 @@ use core\Config;
 use core\submodules\ModuleTranslation;
 use \Mustache_Engine;
 use \Mustache_Loader_FilesystemLoader;
+use \IntlDateFormatter;
 
 /**
  * A page.
@@ -145,6 +146,34 @@ class Page extends ResponseContent {
 	 */
 	protected function _templatePath() {
 		return Pathfinder::getPathFor('tpl').'/'.$this->app->name().'/'.$this->module.'/'.$this->action.'.html';
+	}
+
+	protected function _datetimeFormatter($date = true, $time = true, $intl = true) {
+		if ($intl && class_exists('IntlDateFormatter')) {
+			$date = ($date) ? IntlDateFormatter::SHORT : IntlDateFormatter::NONE;
+			$time = ($time) ? IntlDateFormatter::SHORT : IntlDateFormatter::NONE;
+
+			$formatter = new IntlDateFormatter($this->app->httpRequest()->lang(), $date, $time);
+			if ($formatter === false) {
+				$formatter = new IntlDateFormatter();
+			}
+			return function ($timestamp) use($formatter) {
+				return $formatter->format((int) $timestamp);
+			};
+		} else {
+			$format = array();
+			if ($date) {
+				$format[] = 'Y-m-d';
+			}
+			if ($time) {
+				$format[] = 'H:i';
+			}
+			$format = implode(' ', $format);
+
+			return function ($timestamp) use($format) {
+				return date($format, (int) $timestamp);
+			};
+		}
 	}
 
 	/**
@@ -341,17 +370,16 @@ class Page extends ResponseContent {
 
 			return strtotime($text);
 		});
-		$mustache->addHelper('datetime', function($time, $helper = null) {
-			if (!empty($helper)) {
-				$time = $helper->render($time);
-			}
 
-			// TODO: localized datetime format
-			// @see http://php.net/manual/en/intldateformatter.format.php
-			$time = (int) $time;
-			return date('Y-m-d H:i', $time);
+		$mustache->addHelper('datetime', $this->_datetimeFormatter());
+		$mustache->addHelper('date', $this->_datetimeFormatter(true, false));
+		$mustache->addHelper('time', $this->_datetimeFormatter(false, true));
+		$mustache->addHelper('datetime_rfc3339', function ($timestamp) {
+			return date('Y-m-d\TH:i:sP', (int) $timestamp);
 		});
-		$mustache->addHelper('date', $mustache->getHelper('datetime'));
+		$mustache->addHelper('date_rfc3339', function ($timestamp) {
+			return date('Y-m-d', (int) $timestamp);
+		});
 
 		// Gravatar
 		// @see https://en.gravatar.com/site/implement/images/
