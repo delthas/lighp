@@ -38,13 +38,7 @@ class BlogController extends \core\BackController {
 
 			try {
 				$post = new BlogPost($postData);
-			} catch(\InvalidArgumentException $e) {
-				$this->page()->addVar('error', $e->getMessage());
-				return;
-			}
-
-			try {
-				$manager->insertPost($post);
+				$manager->insert($post);
 			} catch(\Exception $e) {
 				$this->page()->addVar('error', $e->getMessage());
 				return;
@@ -61,13 +55,14 @@ class BlogController extends \core\BackController {
 		$manager = $this->managers->getManagerOf('blog');
 
 		$postName = $request->getData('postName');
-		$post = $manager->getPost($postName);
+		$post = $manager->get($postName);
 
 		$this->page()->addVar('post', $post);
 
 		if ($request->postExists('post-name')) {
 			$postData = array(
-				'name' => $request->postData('post-name'),
+				//'name' => $request->postData('post-name'),
+				'name' => $postName,
 				'title' => $request->postData('post-title'),
 				'content' => $request->postData('post-content'),
 				'isDraft' => $request->postExists('post-is-draft'),
@@ -78,13 +73,7 @@ class BlogController extends \core\BackController {
 
 			try {
 				$post->hydrate($postData);
-			} catch(\InvalidArgumentException $e) {
-				$this->page()->addVar('error', $e->getMessage());
-				return;
-			}
-
-			try {
-				$manager->updatePost($post);
+				$manager->update($post);
 			} catch(\Exception $e) {
 				$this->page()->addVar('error', $e->getMessage());
 				return;
@@ -103,13 +92,13 @@ class BlogController extends \core\BackController {
 		$postName = $request->getData('postName');
 
 		if ($request->postExists('check')) {
-			if (!$manager->postExists($postName)) {
+			if (!$manager->exists($postName)) {
 				$this->page()->addVar('error', 'Cannot find the post named "'.$postName.'"');
 				return;
 			}
 
 			try {
-				$manager->deletePost($postName);
+				$manager->delete($postName);
 			} catch(\Exception $e) {
 				$this->page()->addVar('error', $e->getMessage());
 				return;
@@ -117,7 +106,7 @@ class BlogController extends \core\BackController {
 
 			$this->page()->addVar('deleted?', true);
 		} else {
-			$post = $manager->getPost($postName);
+			$post = $manager->get($postName);
 			$this->page()->addVar('post', $post);
 		}
 	}
@@ -130,7 +119,9 @@ class BlogController extends \core\BackController {
 
 		$postName = $request->getData('postName');
 
-		$comments = $manager->listByPost($postName);
+		$comments = $manager->listByPost($postName, array(
+			'sortBy' => 'creationDate desc'
+		));
 
 		$this->page()->addVar('comments', $comments);
 	}
@@ -143,7 +134,7 @@ class BlogController extends \core\BackController {
 
 		$manager = $this->managers->getManagerOf('blogComments');
 
-		$comment = $manager->getById($commentId);
+		$comment = $manager->get($commentId);
 		$this->page()->addVar('comment', $comment);
 
 		if ($request->postExists('comment-content')) {
@@ -182,7 +173,7 @@ class BlogController extends \core\BackController {
 
 		$manager = $this->managers->getManagerOf('blogComments');
 
-		$comment = $manager->getById($commentId);
+		$comment = $manager->get($commentId);
 		$this->page()->addVar('comment', $comment);
 
 		if ($request->postExists('check')) {
@@ -230,7 +221,7 @@ class BlogController extends \core\BackController {
 	public function listPosts() {
 		$manager = $this->managers->getManagerOf('blog');
 
-		$posts = $manager->listPosts();
+		$posts = $manager->listAll();
 		$list = array();
 
 		foreach($posts as $post) {
@@ -248,6 +239,6 @@ class BlogController extends \core\BackController {
 			$list[] = $item;
 		}
 
-		return $list;
+		return array_reverse($list);
 	}
 }

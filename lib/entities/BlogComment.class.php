@@ -51,7 +51,13 @@ class BlogComment extends \core\Entity {
 			throw new \InvalidArgumentException('Invalid blog comment creation date');
 		}
 
-		$this->creationDate = $creationDate;
+		$this->createdAt = $creationDate;
+	}
+
+	public function setCreatedAt($createdAt) {
+		if (empty($this->createdAt)) {
+			return parent::setCreatedAt($createdAt);
+		}
 	}
 
 	// GETTERS //
@@ -77,6 +83,13 @@ class BlogComment extends \core\Entity {
 	}
 
 	public function creationDate() {
-		return $this->creationDate;
+		return $this->createdAt;
+	}
+
+
+	public function toArray() {
+		$data = parent::toArray();
+		unset($data['creationDate']);
+		return $data;
 	}
 }

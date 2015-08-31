@@ -1,3 +1,5 @@
+{{%FILTERS}}
+
 {{#postsList.0}}
 	{{> partials/postsListPager}}
 
@@ -9,7 +11,7 @@
 		<header>
 			<h2><a href="{{#buildUrl}}blog showPost {{name}}{{/buildUrl}}">{{title}}</a></h2>
 			<p><small>
-				<i class="icon-time"></i>&nbsp;{{creationDate}}
+				<i class="icon-time"></i>&nbsp;<time datetime="{{publishedAt | date_rfc3339}}">{{publishedAt | date}}</time>
 				· <i class="icon-user"></i>&nbsp;{{author}}
 				· <i class="icon-comment"></i>&nbsp;<a href="{{#buildUrl}}blog showPost {{name}}{{/buildUrl}}#comments">{{commentsCount}} {{#strtolower}}{{#__}}comments{{/__}}{{/strtolower}}</a>
 			</small></p>

@@ -4,7 +4,7 @@ namespace lib\entities;
 use core\Entity;
 
 class BlogPost extends Entity {
-	protected $name, $title, $content, $publishedAt, $author, $isDraft, $tags;
+	protected $name, $title, $content, $creationDate, $publishedAt, $author, $isDraft, $tags;
 
 	// SETTERS //
 
@@ -60,6 +60,10 @@ class BlogPost extends Entity {
 			throw new \InvalidArgumentException('Invalid blog post draft value');
 		}
 
+		if ($this->isDraft === false && $isDraft === true) {
+			$this->setPublishedAt(time());
+		}
+
 		$this->isDraft = $isDraft;
 	}
 
@@ -106,5 +110,12 @@ class BlogPost extends Entity {
 
 	public function tags() {
 		return $this->tags;
+	}
+
+
+	public function toArray() {
+		$data = parent::toArray();
+		unset($data['creationDate']);
+		return $data;
 	}
 }

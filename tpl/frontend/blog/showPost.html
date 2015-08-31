@@ -6,11 +6,10 @@
 			<header class="page-header">
 				<h1>{{title}}</h1>
 				<small>
-					<i class="icon-time"></i>&nbsp;<time datetime="{{creationDate | date}}">{{postCreationDate}}</time>
+					<i class="icon-time"></i>&nbsp;<time datetime="{{publishedAt | date_rfc3339}}">{{publishedAt | date}}</time>
 					· <i class="icon-user"></i>&nbsp;{{author}}{{#postTags.0}}
 					· <i class="icon-tags"></i>&nbsp;{{#postTags}}{{^first?}}, {{/first?}}<a href="{{WEBSITE_ROOT}}/{{url}}">{{name}}</a>{{/postTags}}{{/postTags.0}}
 					· <i class="icon-comment"></i>&nbsp;<a href="#comments">{{commentsCount}} {{#strtolower}}{{#__}}comments.title{{/__}}{{/strtolower}}</a>
-					· <a href="{{#buildUrl}}blog index{{/buildUrl}}">{{#__}}backToBlog{{/__}}</a>
 				</small>
 			</header>
 
@@ -41,7 +40,7 @@
 			<div id="comment-{{id}}" class="thumbnail">
 				<div class="caption">
 					<span class="pull-right">
-						<a href="{{#buildUrl}}blog showPost {{name}}{{/buildUrl}}#comment-{{id}}" title="{{#__}}comments.permalink{{/__}}">{{creationDate | datetime}}</a>
+						<a href="{{#buildUrl}}blog showPost {{name}}{{/buildUrl}}#comment-{{id}}" title="{{#__}}comments.permalink{{/__}}"><time datetime="{{createdAt | datetime_rfc3339}}">{{createdAt | datetime}}</time></a>
 					</span>
 
 					<img src="{{authorEmail | gravatar}}" alt="{{authorPseudo}}" class="pull-left avatar" crossorigin="anonymous">

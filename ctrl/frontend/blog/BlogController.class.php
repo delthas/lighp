@@ -13,11 +13,14 @@ class BlogController extends \core\BackController {
 			return;
 		}
 
-		$nbrPosts = $manager->countPosts();
+		$nbrPosts = $manager->count();
 		$postsPerPage = (int) $config['postsPerPage'];
 		$nbrPages = ceil($nbrPosts / $postsPerPage);
 		$listPostsFrom = ($pageNbr - 1) * $postsPerPage;
-		$postsList = $manager->listPosts($listPostsFrom, $postsPerPage);
+		$postsList = $manager->listBy(null, array(
+			'offset' => $listPostsFrom,
+			'limit' => $postsPerPage
+		));
 
 		$isFirstPage = ($pageNbr == 1);
 		$isLastPage = ($pageNbr == $nbrPages);
@@ -43,7 +46,6 @@ class BlogController extends \core\BackController {
 
 			$postData = $post->toArray();
 
-			$postData['creationDate'] = date($config['dateFormat'], $postData['creationDate']);
 			$postData['content'] = nl2br($postData['content']);
 			$postData['commentsCount'] = $commentsManager->countByPost($post['name']);
 
@@ -95,7 +97,7 @@ class BlogController extends \core\BackController {
 		$tagName = $request->getData('tagName');
 		$this->page()->addVar('title', $tagName);
 
-		$postsList = $manager->listPostsByTag($tagName);
+		$postsList = $manager->listByTag($tagName);
 		
 		if (count($postsList) === 0) {
 			return $this->app->httpResponse()->redirect404($this->app);
@@ -116,7 +118,7 @@ class BlogController extends \core\BackController {
 		$postName = $request->getData('postName');
 
 		try {
-			$post = $manager->getPost($postName);
+			$post = $manager->get($postName);
 		} catch(\Exception $e) {
 			$this->app->httpResponse()->redirect404($this->app);
 			return;
@@ -130,9 +132,7 @@ class BlogController extends \core\BackController {
 		$this->page()->addVar('title', $post['title']);
 		$this->page()->addVar('type', 'article');
 		$this->page()->addVar('post', $post);
-		$this->page()->addVar('postCreationDate', date($config['dateFormat'], $post['creationDate']));
 		$this->page()->addVar('postContent', nl2br($post['content']));
-
 		$this->page()->addVar('postUrl', $request->href());
 
 		// Tags
@@ -248,7 +248,9 @@ class BlogController extends \core\BackController {
 		}
 
 		// Listing comments
-		$comments = $commentsManager->listByPost($postName);
+		$comments = $commentsManager->listByPost($postName, array(
+			'sortBy' => 'creationDate desc'
+		));
 
 		$this->page()->addVar('comments', $comments);
 		$this->page()->addVar('commentsCount', count($comments));
@@ -257,22 +259,25 @@ class BlogController extends \core\BackController {
 
 	protected function executeShowFeed() {
 		$router = $this->app->router();
+		$manager = $this->managers->getManagerOf('blog');
 
 		$this->setResponseType('FeedResponse');
 
 		$res = $this->responseContent();
 
 		$websiteConfig = $this->app->websiteConfig()->read();
-		$link = (!empty($websiteConfig['root'])) ? $websiteConfig['root'] : '/'; // TODO
+		$link = $router->getUrl('blog', 'index');
 		$res->setMetadata(array(
 			'title' => $websiteConfig['name'],
 			'link' => $link,
 			'description' => $websiteConfig['description']
 		));
 
+		$postsList = $manager->listBy(null, array(
+			'limit' => 20
+		));
+
 		$items = array();
-		$manager = $this->managers->getManagerOf('blog');
-		$postsList = $manager->listPosts(0, 20);
 		foreach ($postsList as $post) {
 			if ($post['isDraft']) {
 				continue;
@@ -318,7 +323,7 @@ class BlogController extends \core\BackController {
 				return;
 			} 
 
-			$postsList = $manager->searchPosts($searchQuery);
+			$postsList = $manager->search($searchQuery);
 			$this->_showPostsList($postsList);
 		}
 

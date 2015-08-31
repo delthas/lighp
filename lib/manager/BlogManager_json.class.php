@@ -2,132 +2,65 @@
 namespace lib\manager;
 
 use lib\ArraySearcher;
+use lib\entities\BlogPost;
 
 class BlogManager_json extends BlogManager {
-	protected function _buildPost($postData) {
-		return new \lib\entities\BlogPost($postData);
+	use BasicManager_json {
+		buildAllEntities as _buildAllEntities;
+		insert as _insert;
 	}
 
-	protected function _buildPostsList($postsData) {
-		$postsList = array();
-		foreach($postsData as $postData) {
-			try {
-				$post = $this->_buildPost($postData);
-				$postsList[$post['creationDate']] = $post;
-			} catch(\InvalidArgumentException $e) {
-				continue;
-			}
-		}
+	protected $path = 'blog/posts';
 
-		krsort($postsList); // Sort posts by creation date
+	protected function buildAllEntities($items) {
+		$list = $this->_buildAllEntities($items);
 
-		return array_values($postsList);
-	}
+		// Sort by publication date
+		usort($list, function ($a, $b) {
+			$aDate = (!empty($a['publishedAt'])) ? $a['publishedAt'] : $a['updatedAt'];
+			$bDate = (!empty($b['publishedAt'])) ? $b['publishedAt'] : $b['updatedAt'];
 
-	public function listPosts($fromIndex = 0, $toIndex = null) {
-		$postsFile = $this->dao->open('blog/posts');
-		$postsData = $postsFile->read();
-
-		$postsList = $this->_buildPostsList($postsData);
-
-		return array_slice($postsList, $fromIndex, $toIndex, false);
-	}
-
-	public function listPostsByTag($tag) {
-		$postsFile = $this->dao->open('blog/posts');
-		$postsData = $postsFile->read()->filter(function ($item) use ($tag) {
-			return in_array($tag, $item['tags']);
+			return ($aDate > $bDate) ? -1 : 1;
 		});
 
-		$postsList = $this->_buildPostsList($postsData);
-
-		return $postsList;
+		return $list;
 	}
 
-	public function searchPosts($query) {
+	public function listByTag($tag) {
+		return $this->listBy(function ($item) use ($tag) {
+			return in_array($tag, $item['tags']);
+		});
+	}
+
+	public function search($query) {
 		$query = strtolower($query);
 
-		$postsFile = $this->dao->open('blog/posts');
-		$postsData = $postsFile->read();
+		$file = $this->open();
+		$items = $file->read();
 
-		$searcher = new ArraySearcher($postsData);
-		$postsData = $searcher->search($query, array('title', 'content'));
+		$searcher = new ArraySearcher($items);
+		$items = $searcher->search($query, array('title', 'content'));
 
-		$postsList = $this->_buildPostsList($postsData);
-
-		return $postsList;
+		return $this->buildAllEntities($items);
 	}
 
-	public function countPosts() {
-		$postsFile = $this->dao->open('blog/posts');
-		$postsData = $postsFile->read();
+	public function count() {
+		$file = $this->open();
+		$items = $file->read();
 
-		return count($postsData);
+		return count($items);
 	}
 
-	public function getPost($postName) {
-		$postsFile = $this->dao->open('blog/posts');
-		$postsData = $postsFile->read()->filter(array('name' => $postName));
+	public function exists($postName) {
+		return !empty($this->get($postName));
+	}
 
-		if (!isset($postsData[0])) {
-			throw new \RuntimeException('Cannot find a blog post named "'.$postName.'"');
+
+	public function insert($post) {
+		if (!$post['isDraft']) {
+			$post['publishedAt'] = time();
 		}
 
-		return $this->_buildPost($postsData[0]);
-	}
-
-	public function postExists($postName) {
-		$postsFile = $this->dao->open('blog/posts');
-		$postsData = $postsFile->read()->filter(array('name' => $postName));
-
-		return (count($postsData) > 0);
-	}
-
-
-	public function insertPost(\lib\entities\BlogPost $post) {
-		$postsFile = $this->dao->open('blog/posts');
-		$items = $postsFile->read();
-
-		$post->setCreationDate(time());
-
-		$item = $this->dao->createItem($post->toArray());
-		$items[] = $item;
-
-		$postsFile->write($items);
-	}
-
-	public function updatePost(\lib\entities\BlogPost $post) {
-		$postsFile = $this->dao->open('blog/posts');
-		$items = $postsFile->read();
-		
-		foreach ($items as $i => $item) {
-			if ($item['name'] == $post['name']) {
-				// If it was a draft and it is not anymore, update craetionDate
-				if (!$post['isDraft'] && $item['isDraft'] != $post['isDraft']) {
-					$post->setCreationDate(time());
-				}
-
-				$items[$i] = $this->dao->createItem($post->toArray());
-				$postsFile->write($items);
-				return;
-			}
-		}
-
-		throw new \RuntimeException('Cannot find a blog post named "'.$post['name'].'"');
-	}
-
-	public function deletePost($postName) {
-		$postsFile = $this->dao->open('blog/posts');
-		$items = $postsFile->read();
-
-		foreach ($items as $i => $item) {
-			if ($item['name'] == $postName) {
-				unset($items[$i]);
-				$postsFile->write($items);
-				return;
-			}
-		}
-
-		throw new \RuntimeException('Cannot find a blog post named "'.$postName.'"');
+		return $this->_insert($post);
 	}
 }
