@@ -187,7 +187,7 @@ class MainController extends \core\BackController {
 			$notifications = $notificationsManager->listBy(array(
 				'receiver' => $this->app->user()->username()
 			), array(
-				'sortBy' => 'createdAt',
+				'sortBy' => 'createdAt desc',
 				'limit' => 20
 			));
 			$this->page()->addVar('notifications', $notifications);
