@@ -84,6 +84,10 @@ class Captcha extends ApplicationComponent {
 		$captchaData = $captchas[$id];
 		$result = (int) $result;
 
+		// Delete captcha
+		unset($captchas[$id]);
+		$session->set('captcha', $captchas);
+
 		if ($captchaData['result'] !== $result) {
 			throw new RuntimeException('Invalid captcha');
 		}
