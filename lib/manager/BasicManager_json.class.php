@@ -82,7 +82,7 @@ trait BasicManager_json {
 		$file = $this->open();
 		$items = $file->read()->filter(array($this->primaryKey => $entityKey));
 
-		if (empty($items)) {
+		if (empty($items) || empty($items[0])) {
 			throw new \RuntimeException('Cannot find an entity '.$this->entity.' with '.$this->primaryKey.' "'.$entityKey.'"');
 		}
 
@@ -91,9 +91,12 @@ trait BasicManager_json {
 
 	public function listBy($filter = array(), array $options = array()) {
 		$file = $this->open();
-		$items = $file->read()->filter($filter);
+		$items = $file->read();
 
-		// TODO: check this
+		if (!empty($filter)) {
+			$items = $items->filter($filter);
+		}
+
 		if (isset($options['sortBy'])) {
 			$items = $items->sort($options['sortBy']);
 		}
