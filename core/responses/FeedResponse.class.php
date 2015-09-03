@@ -44,19 +44,42 @@ class FeedResponse extends ResponseContent {
 	 * @see http://www.rssboard.org/rss-specification
 	 */
 	protected function generateRss() {
-		$xml = new SimpleXMLElement('<rss version="2.0"></rss>');
+		$this->app->httpResponse()->addHeader('Content-Type: text/xml');
+
+		$xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?>'
+			. '<rss version="2.0"></rss>');
 
 		$xml->addChild('channel');
-		$xml->channel->addChild('title', $this->metadata['title']);
-		$xml->channel->addChild('link', $this->metadata['link']);
-		$xml->channel->addChild('description', $this->metadata['description']);
+		$xml->channel->title = $this->metadata['title'];
+		$xml->channel->link = $this->metadata['link'];
+		$xml->channel->description = $this->metadata['description'];
 
 		foreach($this->items as $data) {
 			$item = $xml->channel->addChild('item');
-			$item->addChild('title', $data['title']);
-			$item->addChild('link', $data['link']);
-			$item->addChild('description', $data['content']);
-			$item->addChild('pubDate', date(DateTime::RSS, $data['createdAt']));
+
+			$item->title = $data['title'];
+			$item->link = $data['link'];
+			$item->description = $data['content'];
+			$item->pubDate = date(DateTime::RSS, $data['publishedAt']);
+
+			if (!empty($data['author'])) {
+				$item->author = $data['author'];
+			}
+			if (!empty($data['categories'])) {
+				$i = 0;
+				foreach ($data['categories'] as $category) {
+					$item->addChild('category');
+					if (isset($category['title'])) {
+						$item->category[$i] = $category['title'];
+						if (isset($category['link'])) {
+							$item->category[$i]->domain = $category['link'];
+						}
+					} else {
+						$item->category[$i] = $category;
+					}
+					$i++;
+				}
+			}
 		}
 
 		return $xml->asXML();
@@ -68,21 +91,54 @@ class FeedResponse extends ResponseContent {
 	 * @see http://tools.ietf.org/html/rfc4287
 	 */
 	protected function generateAtom() {
-		$xml = new SimpleXMLElement('<feed xmlns="http://www.w3.org/2005/Atom"></feed>');
+		$this->app->httpResponse()->addHeader('Content-Type: application/atom+xml');
 
-		$xml->addChild('title', $this->metadata['title']);
+		$xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?>'
+			. '<feed xmlns="http://www.w3.org/2005/Atom"></feed>');
+
+		$xml->title = $this->metadata['title'];
 		$xml->addChild('link')->addAttribute('href', $this->metadata['link']);
 
 		foreach($this->items as $data) {
 			$item = $xml->addChild('entry');
-			$item->addChild('title', $data['title']);
+			$item->title = $data['title'];
 			$item->addChild('link')->addAttribute('href', $data['link']);
 			//$item->addChild('summary', $data['description']);
-			$item->addChild('published', date(DateTime::ATOM, $data['createdAt']));
+			$item->addChild('published', date(DateTime::ATOM, $data['publishedAt']));
 
 			$content = $item->addChild('content');
 			$content->addAttribute('type', 'xhtml');
-			$content->addChild('div', $data['content'])->addAttribute('xmlns', 'http://www.w3.org/1999/xhtml');
+
+			// TODO
+			/*libxml_use_internal_errors(true);
+			$doc = new \DOMDocument('1.0', 'UTF-8');
+			$doc->loadHTML('<div>'.$data['content'].'</div>');
+			$content->div = simplexml_import_dom($doc)->body->div;*/
+			$content->div = $data['content'];
+			$content->div->addAttribute('xmlns', 'http://www.w3.org/1999/xhtml');
+
+			if (!empty($data['author'])) {
+				$content->addChild('author');
+				$content->author->name = $data['author'];
+			}
+			if (!empty($data['updatedAt'])) {
+				$item->addChild('updated', date(DateTime::ATOM, $data['updatedAt']));
+			}
+			if (!empty($data['categories'])) {
+				$i = 0;
+				foreach ($data['categories'] as $category) {
+					$catTag = $item->addChild('category');
+					if (isset($category['title'])) {
+						$catTag->label = $category['title'];
+						if (isset($category['link'])) {
+							$catTag->term = $category['link'];
+						}
+					} else {
+						$catTag->label = $category;
+					}
+					$i++;
+				}
+			}
 		}
 
 		return $xml->asXML();
