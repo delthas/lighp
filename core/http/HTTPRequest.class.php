@@ -124,11 +124,19 @@ class HTTPRequest {
 	}
 
 	/**
+	 * Get this request's URL origin.
+	 * @return string
+	 */
+	public function origin() {
+		return $this->protocol() . '://' . $this->host();
+	}
+
+	/**
 	 * Get this request's full URL.
 	 * @return string
 	 */
 	public function href() {
-		return $this->protocol().'://'.$this->host().$this->path();
+		return $this->origin() . $this->path();
 	}
 
 	/**
