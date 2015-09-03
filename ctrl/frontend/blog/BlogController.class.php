@@ -62,7 +62,7 @@ class BlogController extends \core\BackController {
 
 		$router = $this->app->router();
 		$this->page()->addVar('rssFeed', $router->getUrl('blog', 'showRssFeed'));
-		$this->page()->addVar('atomFeed', $router->getUrl('blog', 'showRssFeed'));
+		$this->page()->addVar('atomFeed', $router->getUrl('blog', 'showAtomFeed'));
 	}
 
 	public function executeIndex(HTTPRequest $request) {
@@ -262,11 +262,12 @@ class BlogController extends \core\BackController {
 		$manager = $this->managers->getManagerOf('blog');
 
 		$this->setResponseType('FeedResponse');
-
 		$res = $this->responseContent();
 
 		$websiteConfig = $this->app->websiteConfig()->read();
-		$link = $router->getUrl('blog', 'index');
+		$baseUrl = $this->app->httpRequest()->origin() . $websiteConfig['root'] . '/';
+
+		$link = $baseUrl . $router->getUrl('blog', 'index');
 		$res->setMetadata(array(
 			'title' => $websiteConfig['name'],
 			'link' => $link,
@@ -283,7 +284,7 @@ class BlogController extends \core\BackController {
 				continue;
 			}
 
-			$link = $router->getUrl('blog', 'showPost', array(
+			$link = $baseUrl . $router->getUrl('blog', 'showPost', array(
 				'postName' => $post['name']
 			));
 
@@ -291,7 +292,9 @@ class BlogController extends \core\BackController {
 				'title' => $post['title'],
 				'link' => $link,
 				'content' => $post['content'],
-				'createdAt' => $post['creationDate']
+				'publishedAt' => $post['publishedAt'],
+				'updatedAt' => $post['updatedAt'],
+				'categories' => $post['tags']
 			);
 		}
 
@@ -304,7 +307,7 @@ class BlogController extends \core\BackController {
 	}
 
 	public function executeShowAtomFeed() {
-		return $this->executeShowFeed();
+		$this->executeShowFeed();
 		$this->responseContent()->setFormat('atom');
 	}
 
