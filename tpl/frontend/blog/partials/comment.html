@@ -1,0 +1,32 @@
+{{%FILTERS}}
+
+<div id="comment-{{id}}" class="thumbnail comment">
+	<div class="caption">
+		<span class="pull-right">
+			<a href="{{#buildUrl}}blog showPost {{name}}{{/buildUrl}}#comment-{{id}}" title="{{#__}}comments.permalink{{/__}}"><time datetime="{{createdAt | datetime_rfc3339}}">{{createdAt | datetime}}</time></a>
+		</span>
+
+		<img src="{{authorEmail | gravatar}}" alt="{{authorPseudo}}" class="pull-left avatar" crossorigin="anonymous">
+
+		<h4>
+			{{#authorWebsite}}<a href="{{authorWebsite}}" title="{{#__}}comments.goToAuthorWebsite{{/__}}" target="_blank">{{/authorWebsite}}
+			{{authorPseudo}}
+			{{#authorWebsite}}</a>{{/authorWebsite}}
+
+			{{#inReplyTo}}
+				<a href="#comment-{{id}}" class="label">En réponse à {{authorPseudo}}</a>
+			{{/inReplyTo}}
+		</h4>
+
+		<p>{{{content | htmlspecialchars | nl2br}}}</p>
+
+		<a href="?replyTo={{id}}#form-blog-comment">Répondre</a>
+
+		<span class="clearfix"></span>
+
+		{{#replies}}
+			<br>
+			{{> partials/comment}}
+		{{/replies}}
+	</div>
+</div>
