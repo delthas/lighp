@@ -2,7 +2,7 @@
 namespace lib\entities;
 
 class BlogComment extends \core\Entity {
-	protected $authorPseudo, $authorEmail, $authorWebsite, $content, $postName, $creationDate;
+	protected $authorPseudo, $authorEmail, $authorWebsite, $content, $postName, $creationDate, $inReplyTo;
 
 	// SETTERS //
 
@@ -60,6 +60,14 @@ class BlogComment extends \core\Entity {
 		}
 	}
 
+	public function setInReplyTo($otherCommentId) {
+		if (!is_int($otherCommentId) && $otherCommentId !== null) {
+			throw new \InvalidArgumentException('Invalid blog comment inReplyTo');
+		}
+
+		$this->inReplyTo = $otherCommentId;
+	}
+
 	// GETTERS //
 
 	public function authorPseudo() {
@@ -84,6 +92,10 @@ class BlogComment extends \core\Entity {
 
 	public function creationDate() {
 		return $this->createdAt;
+	}
+
+	public function inReplyTo() {
+		return $this->inReplyTo;
 	}
 
 

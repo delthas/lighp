@@ -1,11 +1,11 @@
 index:
 	title: 'Blog'
 	description: ''
-	emptyPostsList: Aucun billet n'a &eacute;t&eacute; publi&eacute; pour l'instant.
+	emptyPostsList: Aucun billet n'a été publié pour l'instant.
 	comments: 'Commentaires'
 	pager:
 		older: '&larr; Plus ancien'
-		newer: 'Plus r&eacute;cent &rarr;'
+		newer: 'Plus récent &rarr;'
 	tagColon: 'Tag :'
 	showAllPosts: 'Afficher tous les billets'
 
@@ -15,24 +15,25 @@ showPost:
 		title: 'Billet introuvable'
 		msg: 'Le billet que vous demandez est introuvable.'
 
-	emptyCommentsList: Aucun commentaire n'a &eacute;t&eacute; publi&eacute; pour l'instant.
+	emptyCommentsList: Aucun commentaire n'a été publié pour l'instant.
 	comments:
 		title: 'Commentaires'
 		insertComment: 'Publier un commentaire'
+		replyToComment: 'Répondre à un commentaire'
 		success:
-			title: 'Commentaire ajout&eacute;'
-			msg: 'Le commentaire a bien &eacute;t&eacute; ajout&eacute;.'
+			title: 'Commentaire ajouté'
+			msg: 'Le commentaire a bien été ajouté.'
 		error:
 			title: 'Erreur'
-			msg: 'Une erreur est survenue lors du traitement de la requ&ecirc;te'
+			msg: 'Une erreur est survenue lors du traitement de la requête'
 		form:
 			pseudo: 'Pseudo'
 			content: 'Contenu du commentaire'
 			email: 'E-mail'
 			website: 'Site Web'
 			optional: '(facultatif)'
-			optionalAndWontBePublished: '(facultatif, ne sera pas publi&eacute;)'
+			optionalAndWontBePublished: '(facultatif, ne sera pas publié)'
 			captchaHelp: Ceci est un code de vérification pour éviter l'envoi de commentaires non désirables.
-			captchaResult: 'R&eacute;sultat'
+			captchaResult: 'Résultat'
 		permalink: 'Lien permanent'
-		goToAuthorWebsite: Acc&eacute;der au site Web de l'auteur
+		goToAuthorWebsite: Accéder au site Web de l'auteur

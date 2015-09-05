@@ -159,7 +159,8 @@ class BlogController extends \core\BackController {
 		$this->page()->addVar('comment', array(
 			'authorPseudo' => $session->get('blog.comment.author.pseudo'),
 			'authorEmail' => $session->get('blog.comment.author.email'),
-			'authorWebsite' => $session->get('blog.comment.author.website')
+			'authorWebsite' => $session->get('blog.comment.author.website'),
+			'inReplyTo' => ($request->getExists('replyTo')) ? $request->getData('replyTo') : null
 		));
 
 		if ($request->postExists('comment-content')) {
@@ -168,6 +169,7 @@ class BlogController extends \core\BackController {
 				'authorEmail' => $request->postData('comment-author-email'),
 				'authorWebsite' => trim($request->postData('comment-author-website')),
 				'content' => trim($request->postData('comment-content')),
+				'inReplyTo' => (int) $request->postData('comment-in-reply-to'),
 				'postName' => $postName
 			);
 
@@ -248,8 +250,10 @@ class BlogController extends \core\BackController {
 		}
 
 		// Listing comments
-		$comments = $commentsManager->listByPost($postName, array(
-			'sortBy' => 'creationDate desc'
+		$comments = $commentsManager->getTreeByPost($postName, array(
+			'sortBy' => 'creationDate desc',
+			'levels' => 1,
+			'includeParent' => true
 		));
 
 		$this->page()->addVar('comments', $comments);

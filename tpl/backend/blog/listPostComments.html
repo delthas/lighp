@@ -4,12 +4,16 @@
 	{{#comments}}
 		<tr id="comment-{{id}}"><td>
 			<div class="pull-right">
-				<span class="muted">{{creationDate | datetime}}</span>
+				<span class="muted">{{createdAt | datetime}}</span>
 				<a class="btn" href="{{#buildUrl}}blog updateComment {{id}}{{/buildUrl}}">Modifier</a>
 				<a class="btn btn-danger" href="{{#buildUrl}}blog deleteComment {{id}}{{/buildUrl}}">Supprimer</a>
 			</div>
 
 			<strong>{{authorPseudo}} {{#authorEmail}}({{authorEmail}}){{/authorEmail}}</strong>
+			{{#inReplyTo}}
+				<a href="#comment-{{id}}" class="label">Réponse</a>
+			{{/inReplyTo}}
+
 			<p>{{{content | htmlspecialchars | nl2br}}}</p>
 		</td></tr>
 	{{/comments}}

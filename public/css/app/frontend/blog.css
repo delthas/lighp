@@ -12,3 +12,7 @@ article section li {
 .avatar {
 	margin-right: 10px;
 }
+
+.comment h4 {
+	margin-top: 0;
+}

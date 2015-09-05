@@ -37,28 +37,18 @@
 		{{/commentInserted?}}
 
 		{{#comments}}
-			<div id="comment-{{id}}" class="thumbnail">
-				<div class="caption">
-					<span class="pull-right">
-						<a href="{{#buildUrl}}blog showPost {{name}}{{/buildUrl}}#comment-{{id}}" title="{{#__}}comments.permalink{{/__}}"><time datetime="{{createdAt | datetime_rfc3339}}">{{createdAt | datetime}}</time></a>
-					</span>
-
-					<img src="{{authorEmail | gravatar}}" alt="{{authorPseudo}}" class="pull-left avatar" crossorigin="anonymous">
-
-					{{#authorWebsite}}<h4><a href="{{authorWebsite}}" title="{{#__}}comments.goToAuthorWebsite{{/__}}" target="_blank">{{authorPseudo}}</a></h4>{{/authorWebsite}}
-					{{^authorWebsite}}<h4>{{authorPseudo}}</h4>{{/authorWebsite}}
-
-					<p>{{{content | htmlspecialchars | nl2br}}}</p>
-
-					<span class="clearfix"></span>
-				</div>
-			</div>
+			{{> partials/comment}}
 			<br>
 		{{/comments}}
 
 		<hr />
 
-		<h2>{{#__}}comments.insertComment{{/__}}</h2>
+		{{#comment.inReplyTo}}
+			<h2>{{#__}}comments.replyToComment{{/__}}</h2>
+		{{/comment.inReplyTo}}
+		{{^comment.inReplyTo}}
+			<h2>{{#__}}comments.insertComment{{/__}}</h2>
+		{{/comment.inReplyTo}}
 		{{> partials/form-comment}}
 	{{/post}}
 	{{^post}}

@@ -120,7 +120,7 @@ class BlogController extends \core\BackController {
 		$postName = $request->getData('postName');
 
 		$comments = $manager->listByPost($postName, array(
-			'sortBy' => 'creationDate desc'
+			'sortBy' => 'createdAt desc'
 		));
 
 		$this->page()->addVar('comments', $comments);
