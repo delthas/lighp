@@ -74,7 +74,7 @@ class Route {
 	 * @return bool        True if this route matches, false otherwise.
 	 */
 	public function match($url) {
-		if (preg_match('`^'.$this->url.'(\?.+)?$`', $this->_beautifyPath($url), $matches)) {
+		if (preg_match('`^'.$this->url.'(\?.*)?$`', $this->_beautifyPath($url), $matches)) {
 			array_shift($matches);
 			return $matches;
 		} else {
