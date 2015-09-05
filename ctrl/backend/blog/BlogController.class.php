@@ -198,7 +198,6 @@ class BlogController extends \core\BackController {
 			$configData = array(
 				'introduction' => $request->postData('config-introduction'),
 				'postsPerPage' => (int) $request->postData('config-postsPerPage'),
-				'dateFormat' => $request->postData('config-dateFormat'),
 				'enableComments' => ($request->postData('config-enableComments') == 'on')
 			);
 

@@ -30,12 +30,12 @@ class BlogController extends \core\BackController {
 		$this->page()->addVar('previousPage', $pageNbr - 1);
 		$this->page()->addVar('nextPage', $pageNbr + 1);
 
+		$this->page()->addVar('introduction', $config['introduction']);
+
 		$this->_showPostsList($postsList);
 	}
 
 	protected function _showPostsList($postsList) {
-		$config = $this->config()->read();
-
 		$commentsManager = $this->managers->getManagerOf('blogComments');
 
 		foreach ($postsList as $i => $post) {
@@ -66,27 +66,20 @@ class BlogController extends \core\BackController {
 	}
 
 	public function executeIndex(HTTPRequest $request) {
-		$config = $this->config()->read();
 		$dict = $this->translation()->read();
 
 		$this->page()->addVar('title', $dict['title']);
 
 		$this->_showPostsPage(1);
-
-		$this->page()->addVar('introduction', $config['introduction']);
 	}
 
 	public function executeShowPage(HTTPRequest $request) {
 		$this->translation()->setSection('index');
-
-		$config = $this->config()->read();
 		$dict = $this->translation()->read();
 
 		$this->page()->addVar('title', $dict['title']);
 
 		$this->_showPostsPage((int) $request->getData('pageNbr'));
-
-		$this->page()->addVar('introduction', $config['introduction']);
 	}
 
 	public function executeShowTag(HTTPRequest $request) {
