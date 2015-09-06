@@ -1,4 +1,4 @@
-(function() {
+(function () {
 	/**
 	 * JavaScript code to detect available availability of a
 	 * particular font in a browser using JavaScript and CSS.
@@ -23,7 +23,7 @@
 	 * Usage: d = new Detector();
 	 *        d.detect('font name');
 	 */
-	var Detector = function() {
+	var Detector = function () {
 		// a font will be compared against all the three default fonts.
 		// and if it doesn't match all 3 then that font is not available.
 		var baseFonts = ['monospace', 'sans-serif', 'serif'];
@@ -70,10 +70,10 @@
 	window.FontDetector = Detector;
 })();
 
-(function() {
+(function () {
 	var blogApi = Lighp.registerModule('backend', 'blog');
 
-	var Editor = function(el) {
+	var Editor = function (el) {
 		this._$el = $(el);
 
 		this._init();
@@ -83,7 +83,7 @@
 
 		_$el: $(),
 
-		_init: function() {
+		_init: function () {
 			var that = this;
 
 			if (!Editor.checkHtml5Support()) {
@@ -108,11 +108,12 @@
 
 			$editor.one('focus', function() {
 				that.execCommand('enableObjectResizing');
+				that.execCommand('styleWithCSS', true);
 			});
 
 			var $toolbarContainer = $editor.find('.toolbar-container');
 			var toolbarOffset = $toolbarContainer.offset();
-			$(window).scroll(function(event) {
+			$(window).scroll(function (event) {
 				var scrollTop = $(window).scrollTop();
 
 				var topDiff = scrollTop - toolbarOffset.top;
@@ -130,12 +131,22 @@
 				that.getEditor('html').val(that.getValue().replace(/\n/g, ''));
 			});
 
-			this.getEditor('html').on('keyup mouseup change cut paste drop', function() {
+			var selectionChangeSupported = ('onselectionchange' in document);
+
+			this.getEditor('html').on('keyup mouseup change cut paste drop', function () {
 				var $htmlEditor = $(this);
 
+				// Adjust height
 				var height = $htmlEditor[0].scrollHeight + ($htmlEditor.height() - $htmlEditor.outerHeight());
 				$htmlEditor.css('height', height + 'px');
-			});
+
+				// Detect current state
+				if (!selectionChangeSupported) {
+					$htmlEditor.trigger('selectionchange');
+				}
+			});/*.on('selectionchange', function () {
+				// TODO
+			})*/
 
 			this.execCommand('switchMode', 'wysiwyg');
 
@@ -144,7 +155,7 @@
 		_initFonts: function() {
 			var that = this;
 
-			this._$el.find('button,a').each(function() {
+			this._$el.find('button,a').each(function () {
 				var elData = $(this).data();
 
 				if (elData.cmd && elData.cmd.toLowerCase() == 'fontname' && elData.arg) {
@@ -270,6 +281,9 @@
 					this.showAlert('Impossible d\'ex&eacute;cuter la commande "'+cmd+'".', 'error');
 				}
 			}
+		},
+		queryCommandValue: function (cmd) {
+			return document.queryCommandValue(cmd);
 		},
 		showAlert: function(msg, type) {
 			var $toolbarContainer = this._$el.find('.toolbar-container');
