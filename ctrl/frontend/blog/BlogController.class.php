@@ -162,7 +162,7 @@ class BlogController extends \core\BackController {
 				'authorEmail' => $request->postData('comment-author-email'),
 				'authorWebsite' => trim($request->postData('comment-author-website')),
 				'content' => trim($request->postData('comment-content')),
-				'inReplyTo' => (int) $request->postData('comment-in-reply-to'),
+				'inReplyTo' => ($request->postExists('comment-in-reply-to')) ? (int) $request->postData('comment-in-reply-to') : null,
 				'postName' => $postName
 			);
 
@@ -244,7 +244,7 @@ class BlogController extends \core\BackController {
 
 		// Listing comments
 		$comments = $commentsManager->getTreeByPost($postName, array(
-			'sortBy' => 'creationDate desc',
+			'sortBy' => 'createdAt desc',
 			'levels' => 1,
 			'includeParent' => true
 		));
