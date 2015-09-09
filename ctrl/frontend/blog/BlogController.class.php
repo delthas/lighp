@@ -197,6 +197,7 @@ class BlogController extends \core\BackController {
 			$session->set('blog.comment.author.email', $comment['authorEmail']);
 			$session->set('blog.comment.author.website', $comment['authorWebsite']);
 
+			// Send a notification to the post author
 			$notificationsManager = $this->managers->getManagerOf('notifications');
 			try {
 				$postUrl = $request->href();
@@ -228,6 +229,30 @@ class BlogController extends \core\BackController {
 				// TODO: non-blocking error handling
 				$this->page()->addVar('error', $e->getMessage());
 				return;
+			}
+
+			// If it's a reply, send an e-mail to the comment author
+			if (!empty($comment['inReplyTo'])) {
+				$parent = $commentsManager->get($comment['inReplyTo']);
+
+				if (!empty($parent['authorEmail'])) {
+					$websiteConfig = $this->app->websiteConfig()->read();
+
+					$prefix = '> ';
+					$content = $prefix.str_replace("\n", "\n".$prefix, $comment['content']);
+
+					// TODO: translations
+					$br = "\r\n";
+					$message = (new \Swift_Message())
+						->setSubject('Nouvelle réponse à votre commentaire sur '.$websiteConfig['name'])
+						->setTo($parent['authorEmail'])
+						->setBody('Bonjour,'.$br.$br.
+							$comment['authorPseudo'].' a répondu à votre commentaire sur le billet '.$post['title'].' :'.$br.$br.
+							$content.$br.$br.
+							'Pour y répondre, cliquez ici : '.$request->origin().$request->path().'#comment-'.$comment['id']);
+
+					$this->app->mailer()->send($message);
+				}
 			}
 
 			$this->page()->addVar('commentInserted?', true);
