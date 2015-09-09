@@ -10,6 +10,7 @@ use core\User;
 use core\routing\Router;
 use core\routing\Route;
 use core\Config;
+use core\Mailer;
 
 /**
  * An application (e.g. frontend/backend).
@@ -252,6 +253,14 @@ abstract class Application {
 		}
 
 		return $this->router;
+	}
+
+	/**
+	 * Get the default mailer.
+	 * @return Swift_Mailer
+	 */
+	public function mailer() {
+		return new Mailer($this);
 	}
 
 	/**
