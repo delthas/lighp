@@ -101,7 +101,6 @@ class HTTPRequest {
 	/**
 	 * Get this request's URI.
 	 * @return string
-	 * @deprecated
 	 */
 	public function requestURI() {
 		return $_SERVER['REQUEST_URI'];
@@ -112,7 +111,14 @@ class HTTPRequest {
 	 * @return string
 	 */
 	public function path() {
-		return $_SERVER['REQUEST_URI'];
+		$path = $_SERVER['REQUEST_URI'];
+		
+		// Remove query string
+		if (($i = strpos($path, '?')) !== false) {
+			$path = substr($path, 0, $i);
+		}
+
+		return $path;
 	}
 
 	/**
@@ -136,7 +142,7 @@ class HTTPRequest {
 	 * @return string
 	 */
 	public function href() {
-		return $this->origin() . $this->path();
+		return $this->origin() . $this->requestURI();
 	}
 
 	/**
