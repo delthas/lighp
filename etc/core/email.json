@@ -1,0 +1,4 @@
+{
+	"transport": "sendmail",
+	"from": "contact@example.org"
+}
