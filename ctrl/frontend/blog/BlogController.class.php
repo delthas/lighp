@@ -252,7 +252,11 @@ class BlogController extends \core\BackController {
 							$content.$br.$br.
 							'Pour y répondre, cliquez ici : '.$request->origin().$request->path().'#comment-'.$comment['id']);
 
-					$this->app->mailer()->send($message);
+					try {
+						$this->app->mailer()->send($message);
+					} catch (\Exception $e) {
+						// TODO: silently ignore error
+					}
 				}
 			}
 
