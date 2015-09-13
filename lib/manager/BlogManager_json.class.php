@@ -7,7 +7,8 @@ use lib\entities\BlogPost;
 class BlogManager_json extends BlogManager {
 	use BasicManager_json {
 		buildAllEntities as _buildAllEntities;
-		insert as _insert;
+		insert as protected _insert;
+		update as protected _update;
 	}
 
 	protected $path = 'blog/posts';
@@ -62,5 +63,13 @@ class BlogManager_json extends BlogManager {
 		}
 
 		return $this->_insert($post);
+	}
+
+	public function update($post) {
+		if (!$post['isDraft']) {
+			$post['publishedAt'] = time();
+		}
+
+		return $this->_update($post);
 	}
 }
