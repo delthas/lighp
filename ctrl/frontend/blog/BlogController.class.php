@@ -19,7 +19,8 @@ class BlogController extends \core\BackController {
 		$listPostsFrom = ($pageNbr - 1) * $postsPerPage;
 		$postsList = $manager->listBy(null, array(
 			'offset' => $listPostsFrom,
-			'limit' => $postsPerPage
+			'limit' => $postsPerPage,
+			'sortBy' => 'publishedAt desc'
 		));
 
 		$isFirstPage = ($pageNbr == 1);

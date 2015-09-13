@@ -67,7 +67,10 @@ class BlogManager_json extends BlogManager {
 
 	public function update($post) {
 		if (!$post['isDraft']) {
-			$post['publishedAt'] = time();
+			$current = $this->get($post['name']);
+			if ($current['isDraft']) {
+				$post['publishedAt'] = time();
+			}
 		}
 
 		return $this->_update($post);
