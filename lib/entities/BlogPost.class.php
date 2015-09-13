@@ -40,7 +40,7 @@ class BlogPost extends Entity {
 	}
 
 	public function setPublishedAt($publishedAt) {
-		if (!is_int($publishedAt)) {
+		if (!is_int($publishedAt) && !empty($publishedAt)) {
 			throw new \InvalidArgumentException('Invalid blog post publication date');
 		}
 
