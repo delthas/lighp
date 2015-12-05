@@ -23,6 +23,7 @@
 	};
 
 	Lighp.triggerError = function(msg) {
+		console.error(msg);
 		alert(msg);
 	};
 
@@ -231,7 +232,8 @@
 			container = container || '#page-container';
 
 			return moduleApi.renderTpl(index, view, function (output) {
-				$output = $(output);
+				var $output = $('<div></div>').html(output);
+
 				$container = $output.filter(container);
 				if ($container.length === 0) {
 					$container = $output.find(container);
@@ -291,7 +293,7 @@
 
 			var escapedQuery = this._pregQuote(String(query).trim()),
 				i;
-			
+
 			escapedQuery = this._replaceAll(' ', '|', escapedQuery);
 			for (i = 0; i < this._accentedChars.length; i++) {
 				var regex = '('+this._accentedChars[i]+')';
