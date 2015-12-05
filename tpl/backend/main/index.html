@@ -8,14 +8,14 @@
 			{{#actions}}
 				<li><a href="{{WEBSITE_ROOT}}/{{url}}">
 					<span class="muted pull-right">{{{backend}}} {{{name}}}</span>
-					<i class="icon-{{icon}}{{^icon}}cog{{/icon}}"></i>&nbsp;{{{title}}}
+					<i class="icon-{{icon}}{{^icon}}cog{{/icon}}"></i> {{{title}}}
 				</a></li>
 			{{/actions}}
 		</ul>
 		{{^actions}}
 			<div class="alert alert-warning">
-				<h4 class="alert-heading">Aucun r&eacute;sultat</h4>
-				<p>Les termes de votre recherche ne correspondent &agrave; aucune action.</p>
+				<h4 class="alert-heading">Aucun résultat</h4>
+				<p>Les termes de votre recherche ne correspondent à aucune action.</p>
 				<p><a class="btn" href="{{#buildUrl}}main index{{/buildUrl}}" id="main-stack-back">Retour</a></p>
 			</div>
 		{{/actions}}
@@ -27,7 +27,7 @@
 					{{#backends}}{{^hidden}}
 						<li><a href="{{WEBSITE_ROOT}}/{{url}}">
 							<span class="muted pull-right">{{{name}}}</span>
-							<i class="icon-{{icon}}{{^icon}}cog{{/icon}}"></i>&nbsp;{{title}}
+							<i class="icon-{{icon}}{{^icon}}cog{{/icon}}"></i> {{title}}
 						</a></li>
 					{{/hidden}}{{/backends}}
 				</ul>
@@ -43,7 +43,7 @@
 								<a href="{{#buildUrl}}main dismissNotification {{id}}{{/buildUrl}}" class="pull-right close">&times;</a>
 							</span>
 
-							<i class="icon-{{icon}}{{^icon}}bell{{/icon}}"></i>&nbsp;{{{title}}}
+							<i class="icon-{{icon}}{{^icon}}bell{{/icon}}"></i> {{{title}}}
 							<span class="muted">({{createdAt | datetime}})</span>
 							{{#description}}<br><small class="notification-description" tabindex="-1">{{{description}}}</small>{{/description}}
 							<div class="text-right">
@@ -59,6 +59,6 @@
 				{{/notifications}}
 			</div>
 		</div>
-		
+
 	{{/searchQuery}}
 </div>
