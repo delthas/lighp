@@ -163,7 +163,7 @@ trait BasicManager_json {
 
 		$file = $this->open();
 		$items = $file->read();
-		
+
 		foreach ($items as $i => $item) {
 			if ($item[$this->primaryKey] == $entity[$this->primaryKey]) {
 				$items[$i] = $this->dao->createItem($entity->toArray());
