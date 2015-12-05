@@ -190,7 +190,7 @@
 			return $editor[($editor.is('textarea')) ? 'val' : 'html']();
 		},
 		//From http://jsfiddle.net/timdown/gEhjZ/4/
-		saveSelection: function () {
+		saveSelection: function () { 
 			var containerEl = this.getEditor()[0];
 
 			if (window.getSelection && document.createRange) {
@@ -365,7 +365,6 @@
 				$urlInput = $('#insertCustomImage-url'),
 				$fileInput = $('#insertCustomImage-file'),
 				$captionInput = $('#insertCustomImage-caption'),
-				$wrapLinkCheckbox = $('#insertCustomImage-wrap-link'),
 				$thumbnails = $modal.find('.thumbnails');
 
 				$urlInput.val('');
@@ -390,7 +389,7 @@
 						var spinnersIdPrefix = 'imgupload-'+(new Date()).getTime();
 						for (var i = 0; i < imgFiles.length; i++) {
 							var file = imgFiles[i];
-							var fileName = file.name || '';
+							var fileName = (file.name) ? file.name : '';
 
 							if (file.type && file.type.indexOf('image/') === -1) {
 								Lighp.triggerError('Cannot upload files: file '+fileName+' is not an image');
@@ -429,11 +428,7 @@
 
 							req.execute(function(data) {
 								var imgPath = Lighp.websiteConf.WEBSITE_ROOT + '/' + data.path;
-								var imgTag = '<img src="'+imgPath+'" alt="'+imgCaption+'"/>';
-								if ($wrapLinkCheckbox.prop('checked')) {
-									imgTag = '<a href="'+imgPath+'" target="_blank">'+imgTag+'</a>';
-								}
-								$('#'+spinnersIdPrefix+'-'+currentFileIndex).replaceWith(imgTag);
+								$('#'+spinnersIdPrefix+'-'+currentFileIndex).replaceWith('<img src="'+imgPath+'" alt="'+imgCaption+'"/>');
 
 								currentFileIndex++;
 								if (imgFiles.length > currentFileIndex) {
