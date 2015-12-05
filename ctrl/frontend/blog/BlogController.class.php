@@ -37,6 +37,7 @@ class BlogController extends \core\BackController {
 	}
 
 	protected function _showPostsList($postsList) {
+		$router = $this->app->router();
 		$commentsManager = $this->managers->getManagerOf('blogComments');
 
 		foreach ($postsList as $i => $post) {
@@ -49,6 +50,16 @@ class BlogController extends \core\BackController {
 
 			$postData['content'] = nl2br($postData['content']);
 			$postData['commentsCount'] = $commentsManager->countByPost($post['name']);
+
+			$tags = array();
+			foreach ($post['tags'] as $i => $tagName) {
+				$tags[] = array(
+					'name' => $tagName,
+					'url' => $router->getUrl('blog', 'showTag', array($tagName)),
+					'first?' => ($i == 0)
+				);
+			}
+			$postData['tagsData'] = $tags;
 
 			$postsList[$i] = $postData;
 		}
@@ -92,7 +103,7 @@ class BlogController extends \core\BackController {
 		$this->page()->addVar('title', $tagName);
 
 		$postsList = $manager->listByTag($tagName);
-		
+
 		if (count($postsList) === 0) {
 			return $this->app->httpResponse()->redirect404($this->app);
 		}
@@ -351,7 +362,7 @@ class BlogController extends \core\BackController {
 			if (strlen($searchQuery) < 3) {
 				$this->page()->addVar('error', 'Votre requête doit contenir 3 caractères au minimum.');
 				return;
-			} 
+			}
 
 			$postsList = $manager->search($searchQuery);
 			$this->_showPostsList($postsList);
