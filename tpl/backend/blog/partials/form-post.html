@@ -46,6 +46,7 @@
 						<ul class="dropdown-menu">
 							<li><a tabindex="-1" href="#" data-cmd="switchMode" data-arg="wysiwyg">WYSIWYG</a></li>
 							<li><a tabindex="-1" href="#" data-cmd="switchMode" data-arg="html">HTML</a></li>
+							<li><a tabindex="-1" href="#" data-cmd="switchMode" data-arg="preview">Prévisualisation</a></li>
 						</ul>
 					</div>
 				</div>
@@ -128,7 +129,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="editor-inner editor-wysiwyg uneditable-input" contenteditable="true">{{{post.content}}}</div>
+		<div class="editor-inner editor-wysiwyg editor-preview uneditable-input" contenteditable="true">{{{post.content}}}</div>
 		<textarea name="post-content" id="post-content" class="editor-inner editor-html">{{{post.content}}}</textarea>
 	</div>
 

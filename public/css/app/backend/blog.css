@@ -19,6 +19,8 @@
 	width: 100%;
 	resize: none;
 	cursor: text;
+}
+.editor-html5 .uneditable-input {
 	color: black;
 }
 .editor-html5 .editor-wysiwyg {

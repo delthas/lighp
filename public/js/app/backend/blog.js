@@ -190,7 +190,7 @@
 			return $editor[($editor.is('textarea')) ? 'val' : 'html']();
 		},
 		//From http://jsfiddle.net/timdown/gEhjZ/4/
-		saveSelection: function () { 
+		saveSelection: function () {
 			var containerEl = this.getEditor()[0];
 
 			if (window.getSelection && document.createRange) {
@@ -325,6 +325,9 @@
 		},
 		html: {
 			title: 'HTML'
+		},
+		preview: {
+			title: 'Prévisualisation'
 		}
 	};
 
@@ -511,7 +514,7 @@
 				previousContent = $newEditorInner[($newEditorInner.is('textarea')) ? 'val' : 'html']();
 			}
 
-			if (newMode != 'wysiwyg') { // Improve HTML visibility
+			if (newMode == 'html') { // Improve HTML visibility
 				previousContent = previousContent
 					.replace(/(<br\s?\/?>)([^\n])/gi, '$1\n$2')
 					.replace(/(<\/(?:p|div|h[0-6]|ul|ol|li|blockquote|hr|pre|code)>)([^\n])/gi, '$1\n$2');
@@ -526,6 +529,11 @@
 			} else {
 				$editor.find('.toolbar-wysiwyg').css('visibility', 'hidden');
 			}
+
+			var isPreview = (newMode == 'preview');
+			$editor.find('.editor-inner.editor-wysiwyg')
+				.toggleClass('uneditable-input', !isPreview)
+				.prop('contenteditable', !isPreview);
 
 			$editor.find('.editor-currentMode').html(newModeData.title);
 			this._editorMode = newMode;
