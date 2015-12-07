@@ -101,6 +101,7 @@
 
 				if (elData.cmd) {
 					that.execCommand(elData.cmd, elData.arg);
+					event.preventDefault();
 				} else if (that.editorMode() != 'preview') {
 					event.preventDefault();
 				}
