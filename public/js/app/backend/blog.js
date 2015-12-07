@@ -101,9 +101,9 @@
 
 				if (elData.cmd) {
 					that.execCommand(elData.cmd, elData.arg);
+				} else if (that.editorMode() != 'preview') {
+					event.preventDefault();
 				}
-
-				event.preventDefault();
 			});
 
 			$editor.one('focus', function() {
