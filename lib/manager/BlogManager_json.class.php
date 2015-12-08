@@ -52,6 +52,17 @@ class BlogManager_json extends BlogManager {
 		return count($items);
 	}
 
+	public function listAllTags() {
+		$posts = $this->listAll();
+
+		$tags = array();
+		foreach ($posts as $post) {
+			$tags += $post['tags'];
+		}
+
+		return $tags;
+	}
+
 	public function exists($postName) {
 		return !empty($this->get($postName));
 	}

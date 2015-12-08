@@ -25,7 +25,14 @@
 	<div class="control-group">
 		<label class="control-label" for="post-tags">Tags</label>
 		<div class="controls">
-			<input type="text" name="post-tags" id="post-tags" value="{{post.tags | join}}" placeholder="Tags séparés par des virgules" class="input-xxlarge">
+			<div class="dropdown">
+				<input type="text" name="post-tags" id="post-tags" value="{{post.tags | join}}" placeholder="Tags séparés par des virgules" class="input-xxlarge dropdown-toggle" data-toggle="dropdown" autocomplete="off">
+				{{#existingTags.0}}<ul class="dropdown-menu" role="menu">
+					{{#existingTags}}
+					<li><a href="#">{{.}}</a></li>
+					{{/existingTags}}
+				</ul>{{/existingTags.0}}
+			</div>
 		</div>
 	</div>
 	<div class="control-group">

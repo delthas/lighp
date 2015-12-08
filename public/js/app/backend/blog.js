@@ -71,6 +71,38 @@
 })();
 
 (function () {
+	var $tagsInput = $('#post-tags'),
+		$tagsDropdown = $('#post-tags').parent().find('ul');
+
+	$tagsInput.on('keyup', function (event) {
+		var typing = $(this).val().split(',').pop().trim().toLowerCase();
+
+		var shown = 0;
+		$tagsDropdown.find('li').each(function () {
+			var showItem = ($(this).text().toLowerCase().indexOf(typing) >= 0);
+			$(this).toggle(showItem);
+			if (showItem) {
+				shown++;
+			}
+		});
+
+		if ($(this).parent().is('.open') != (shown > 0)) {
+			$(this).dropdown('toggle');
+		}
+	});
+	$tagsDropdown.click(function (event) {
+		event.preventDefault();
+
+		var tags = $tagsInput.val().split(',').map(function (tag) {
+			return tag.trim();
+		});
+		tags.pop();
+		tags.push($(event.target).text());
+		$tagsInput.val(tags.join(', ')).trigger('keyup').focus();
+	});
+})();
+
+(function () {
 	var blogApi = Lighp.registerModule('backend', 'blog');
 
 	var Editor = function (el) {

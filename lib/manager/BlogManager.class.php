@@ -11,4 +11,6 @@ abstract class BlogManager extends \core\Manager {
 	abstract public function search($query);
 	abstract public function count();
 	abstract public function exists($postName);
+
+	abstract public function listAllTags();
 }

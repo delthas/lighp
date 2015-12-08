@@ -18,9 +18,16 @@ class BlogController extends \core\BackController {
 		$this->page()->addVar('breadcrumb', array_merge($breadcrumb, $additionnalBreadcrumb));
 	}
 
+	protected function _addTags() {
+		$manager = $this->managers->getManagerOf('blog');
+		$tags = $manager->listAllTags();
+		$this->page()->addVar('existingTags', $tags);
+	}
+
 	public function executeInsertPost(HTTPRequest $request) {
 		$this->page()->addVar('title', 'Créer un billet');
 		$this->_addBreadcrumb();
+		$this->_addTags();
 
 		$manager = $this->managers->getManagerOf('blog');
 
@@ -51,6 +58,7 @@ class BlogController extends \core\BackController {
 	public function executeUpdatePost(HTTPRequest $request) {
 		$this->page()->addVar('title', 'Modifier un billet');
 		$this->_addBreadcrumb();
+		$this->_addTags();
 
 		$manager = $this->managers->getManagerOf('blog');
 
