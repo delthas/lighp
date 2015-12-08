@@ -57,7 +57,11 @@ class BlogManager_json extends BlogManager {
 
 		$tags = array();
 		foreach ($posts as $post) {
-			$tags += $post['tags'];
+			foreach ($post['tags'] as $tag) {
+				if (!empty($tag) && !in_array($tag, $tags)) {
+					$tags[] = $tag;
+				}
+			}
 		}
 
 		return $tags;
