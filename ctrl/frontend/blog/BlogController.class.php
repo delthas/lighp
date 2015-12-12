@@ -40,9 +40,9 @@ class BlogController extends \core\BackController {
 		$router = $this->app->router();
 		$commentsManager = $this->managers->getManagerOf('blogComments');
 
+		$published = array();
 		foreach ($postsList as $i => $post) {
 			if ($post['isDraft']) {
-				unset($postsList[$i]);
 				continue;
 			}
 
@@ -61,16 +61,11 @@ class BlogController extends \core\BackController {
 			}
 			$postData['tagsData'] = $tags;
 
-			$postsList[$i] = $postData;
+			$published[] = $postData;
 		}
 
-		// Important: make sure $postsList is not indexed
-		// because of unset(), otherwise mustache doesn't
-		// want to loop through it.
-		$postsList = array_values($postsList);
-
-		$this->page()->addVar('postsList', $postsList);
-		$this->page()->addVar('postsListNotEmpty?', (count($postsList) > 0));
+		$this->page()->addVar('postsList', $published);
+		$this->page()->addVar('postsListNotEmpty?', (count($published) > 0));
 
 		$router = $this->app->router();
 		$this->page()->addVar('rssFeed', $router->getUrl('blog', 'showRssFeed'));
