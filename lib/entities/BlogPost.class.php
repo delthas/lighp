@@ -4,6 +4,8 @@ namespace lib\entities;
 use core\Entity;
 
 class BlogPost extends Entity {
+	const EXCERPT_SEPARATOR = '<hr id="excerpt-separator">';
+
 	protected $name, $title, $content, $creationDate, $publishedAt, $author, $isDraft, $tags;
 
 	// SETTERS //
@@ -110,6 +112,18 @@ class BlogPost extends Entity {
 
 	public function tags() {
 		return $this->tags;
+	}
+
+	public function hasExcerpt() {
+		return (strpos($this->content(), self::EXCERPT_SEPARATOR) !== false);
+	}
+
+	public function excerpt() {
+		$excerpt = $this->content();
+		if (($pos = strpos($excerpt, self::EXCERPT_SEPARATOR)) !== false) {
+			$excerpt = substr($excerpt, 0, $pos);
+		}
+		return $excerpt;
 	}
 
 

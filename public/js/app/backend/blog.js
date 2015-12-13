@@ -520,6 +520,10 @@
 			// The "heading" command is only supported in Firefox
 			this.execCommand('formatBlock', '<'+headingName+'>');
 		},
+		insertExcerptSeparator: function () {
+			$('#excerpt-separator').remove(); // Remove existing excerpt separator
+			this.execCommand('insertHTML', '<hr id="excerpt-separator">');
+		},
 		switchMode: function(newMode) {
 			var $editor = this._$el;
 

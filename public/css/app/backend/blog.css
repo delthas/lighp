@@ -44,6 +44,14 @@
 .editor-html5 .editor-wysiwyg li {
 	line-height: 1.5em;
 }
+.editor-html5 hr#excerpt-separator {
+	visibility: hidden;
+}
+.editor-html5 [contenteditable="true"] hr#excerpt-separator {
+	visibility: visible;
+	border: none;
+	border-bottom: 1px dashed grey;
+}
 
 .img-uploading {
 	position: relative;

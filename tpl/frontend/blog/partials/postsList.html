@@ -19,6 +19,11 @@
 		</header>
 
 		<section>{{{content}}}</section>
+
+		{{#hasExcerpt}}
+			<br>
+			<p><a href="{{#buildUrl}}blog showPost {{name}}{{/buildUrl}}#excerpt-separator" class="btn">Lire la suite</a></p>
+		{{/hasExcerpt}}
 	</article>
 	<hr />
 {{/postsList}}

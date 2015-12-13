@@ -9,6 +9,10 @@ article section li {
 	line-height: 1.5em;
 }
 
+hr#excerpt-separator {
+	visibility: hidden;
+}
+
 .avatar {
 	margin-right: 10px;
 }

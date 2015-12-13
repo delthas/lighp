@@ -48,7 +48,8 @@ class BlogController extends \core\BackController {
 
 			$postData = $post->toArray();
 
-			$postData['content'] = nl2br($postData['content']);
+			$postData['content'] = nl2br($post->excerpt());
+			$postData['hasExcerpt'] = $post->hasExcerpt();
 			$postData['commentsCount'] = $commentsManager->countByPost($post['name']);
 
 			$tags = array();
