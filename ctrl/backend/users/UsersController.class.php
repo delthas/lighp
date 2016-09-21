@@ -100,7 +100,7 @@ class UsersController extends \core\BackController {
 					$this->page()->addVar('error', $e->getMessage());
 					return;
 				}
-				
+
 				$isDirty = true;
 			}
 
@@ -178,7 +178,7 @@ class UsersController extends \core\BackController {
 			// Check if username already exists
 			$user = null;
 			try {
-				$user = $manager->getByUsername($username);
+				$user = $manager->getByUsername($userData['username']);
 			} catch (\Exception $e) {}
 			if (!empty($user)) {
 				$this->page()->addVar('error', 'This username is already taken');

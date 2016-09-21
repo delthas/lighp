@@ -41,7 +41,9 @@ class UsersManager_json extends UsersManager {
 			throw new \RuntimeException('Another user is already registered with the username "'.$user['username'].'"');
 		}
 
-		$item = $this->dao->createItem($user->toArray());
+		$data = $user->toArray();
+		$data['password'] = $user->password();
+		$item = $this->dao->createItem($data);
 		$items[] = $item;
 		$file->write($items);
 	}
@@ -49,10 +51,12 @@ class UsersManager_json extends UsersManager {
 	public function update(User $user) {
 		$file = $this->dao->open('users/users');
 		$items = $file->read();
-		
+
 		foreach ($items as $i => $item) {
 			if ($item['username'] == $user['username']) {
-				$items[$i] = $this->dao->createItem($user->toArray());
+				$data = $user->toArray();
+				$data['password'] = $user->password();
+				$items[$i] = $this->dao->createItem($data);
 				$file->write($items);
 				return;
 			}
