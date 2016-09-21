@@ -7,7 +7,7 @@ use core\submodules\ModuleComponent;
 
 /**
  * A response's content.
- * @author Simon Ser
+ * @author emersion
  * @since 1.0alpha1
  */
 abstract class ResponseContent extends ModuleComponent {

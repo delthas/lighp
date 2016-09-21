@@ -6,7 +6,7 @@ use core\fs\Pathfinder;
 
 /**
  * A class providing access to managers.
- * @author Simon Ser
+ * @author emersion
  * @since 1.0alpha1
  */
 class Managers {

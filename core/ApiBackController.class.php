@@ -7,7 +7,7 @@ use core\responses\ApiResponse;
 
 /**
  * An API back controller.
- * @author Simon Ser
+ * @author emersion
  * @since 1.0alpha1
  */
 abstract class ApiBackController extends BackController {

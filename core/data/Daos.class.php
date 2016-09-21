@@ -7,7 +7,7 @@ use core\Config;
 
 /**
  * A Data Access Objects manager.
- * @author Simon Ser
+ * @author emersion
  * @since 1.0alpha1
  */
 class Daos {

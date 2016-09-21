@@ -5,7 +5,7 @@ namespace core\routing;
 /**
  * A router.
  * A router can determine the route matching to a given URL.
- * @author Simon Ser
+ * @author emersion
  * @since 1.0alpha1
  */
 class Router {

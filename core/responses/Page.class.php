@@ -13,7 +13,7 @@ use \IntlDateFormatter;
 /**
  * A page.
  * Page's templates are stored in /tpl.
- * @author Simon Ser
+ * @author emersion
  * @since 1.0alpha1
  */
 class Page extends ResponseContent {

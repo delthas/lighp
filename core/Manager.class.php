@@ -3,7 +3,7 @@ namespace core;
 
 /**
  * A data manager.
- * @author Simon Ser
+ * @author emersion
  * @since 1.0alpha1
  */
 abstract class Manager {

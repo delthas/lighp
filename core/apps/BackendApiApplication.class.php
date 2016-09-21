@@ -4,7 +4,7 @@ namespace core\apps;
 
 /**
  * A backend API.
- * @author Simon Ser
+ * @author emersion
  * @since 1.0alpha1
  */
 class BackendApiApplication extends Application {

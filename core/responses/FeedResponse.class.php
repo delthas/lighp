@@ -7,7 +7,7 @@ use DateTime;
 
 /**
  * A news feed response.
- * @author Simon Ser
+ * @author emersion
  * @since 1.0alpha2
  */
 class FeedResponse extends ResponseContent {

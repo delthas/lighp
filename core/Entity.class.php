@@ -6,7 +6,7 @@ use core\data\JsonSerializable;
 
 /**
  * A data entity.
- * @author Simon Ser
+ * @author emersion
  * @since 1.0alpha1
  */
 abstract class Entity implements \ArrayAccess, JsonSerializable {

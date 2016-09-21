@@ -4,7 +4,7 @@ namespace core\routing;
 
 /**
  * A route to a page.
- * @author Simon Ser
+ * @author emersion
  * @since 1.0alpha1
  */
 class Route {

@@ -8,7 +8,7 @@ use core\Config;
 
 /**
  * A module's configuration file.
- * @author Simon Ser
+ * @author emersion
  * @since 1.0alpha1
  */
 class ModuleConfig extends ModuleComponent {

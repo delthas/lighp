@@ -7,7 +7,7 @@ use core\responses\ResponseContent;
 
 /**
  * The HTTP response.
- * @author Simon Ser
+ * @author emersion
  * @since 1.0alpha1
  */
 class HTTPResponse {

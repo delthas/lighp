@@ -4,7 +4,7 @@ namespace core\apps;
 
 /**
  * A frotend (the public part).
- * @author Simon Ser
+ * @author emersion
  * @since 1.0alpha1
  */
 class FrontendApplication extends Application {

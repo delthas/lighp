@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
  * The HTTP request.
- * @author Simon Ser
+ * @author emersion
  * @since 1.0alpha1
  */
 class HTTPRequest {

@@ -3,7 +3,7 @@ namespace core;
 
 /**
  * A configuration file.
- * @author Simon Ser
+ * @author emersion
  * @since 1.0alpha1
  */
 class Config {

@@ -1,18 +1,18 @@
 [
 	{
-		"url":"/logout/?",
+		"url":"/admin/logout/?",
 		"action":"logout"
 	},
 	{
-		"url":"/users/new/?",
+		"url":"/admin/users/new/?",
 		"action":"insert"
 	},
 	{
-		"url":"/users/update/me/?",
+		"url":"/admin/users/update/me/?",
 		"action":"updateMe"
 	},
 	{
-		"url":"/users/delete/([a-zA-Z0-9-_.]+)/?",
+		"url":"/admin/users/delete/([a-zA-Z0-9-_.]+)/?",
 		"action":"delete",
 		"vars": ["username"]
 	}

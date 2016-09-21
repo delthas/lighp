@@ -12,7 +12,7 @@ use core\submodules\ModuleTranslation;
 /**
  * An back controller.
  * Back controllers are stored in /ctrl.
- * @author Simon Ser
+ * @author emersion
  * @since 1.0alpha1
  */
 abstract class BackController extends ApplicationComponent {

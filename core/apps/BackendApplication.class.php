@@ -4,7 +4,7 @@ namespace core\apps;
 
 /**
  * A backend (where you can manage the framework).
- * @author Simon Ser
+ * @author emersion
  * @since 1.0alpha1
  */
 class BackendApplication extends Application {
