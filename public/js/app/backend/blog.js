@@ -408,9 +408,11 @@
 				$thumbnails.empty();
 
 				$modal.modal('show');
-				$modal.find('#insertCustomImage-form').one('submit', function(event) {
+				$modal.find('#insertCustomImage-form').off('submit').submit(function(event) {
 					event.preventDefault();
+					$(this).off('submit');
 					$fileInput.off('change');
+					$urlInput.off('change');
 
 					$modal.modal('hide');
 					var imgUrl = $urlInput.val(),
@@ -477,6 +479,10 @@
 					}
 				});
 
+				$urlInput.change(function() {
+					$thumbnails.html('<li class="span3"><div class="thumbnail"><img src="'+$(this).val()+'" alt="Image"/></div></li>');
+				});
+
 				$fileInput.change(function() {
 					if (!window.URL || !window.URL.createObjectURL) {
 						return;
@@ -488,7 +494,7 @@
 					for (var i = 0; i < imgFiles.length; i++) {
 						var file = imgFiles[i];
 						var imgUrl = window.URL.createObjectURL(file);
-						$thumbnails.append('<li class="span1"><div class="thumbnail"><img src="'+imgUrl+'" alt="Image"/></div></li>');
+						$thumbnails.append('<li class="span3"><div class="thumbnail"><img src="'+imgUrl+'" alt="Image"/></div></li>');
 					}
 				});
 
