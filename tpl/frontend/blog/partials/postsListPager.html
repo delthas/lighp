@@ -1,8 +1,8 @@
 <ul class="pager">
-	<li class="previous{{#isLastPage}} disabled{{/isLastPage}}">
-		<a href="{{^isLastPage}}{{#buildUrl}}blog showPage {{nextPage}}{{/buildUrl}}{{/isLastPage}}">{{#__}}pager.older{{/__}}</a>
-	</li>
-	<li class="next{{#isFirstPage}} disabled{{/isFirstPage}}">
-		<a href="{{^isFirstPage}}{{#buildUrl}}blog showPage {{previousPage}}{{/buildUrl}}{{/isFirstPage}}">{{#__}}pager.newer{{/__}}</a>
-	</li>
+	{{^isLastPage}}<li class="previous">
+		<a href="{{#buildUrl}}blog showPage {{nextPage}}{{/buildUrl}}">{{#__}}pager.older{{/__}}</a>
+	</li>{{/isLastPage}}
+	{{^isFirstPage}}<li class="next">
+		<a href="{{#buildUrl}}blog showPage {{previousPage}}{{/buildUrl}}">{{#__}}pager.newer{{/__}}</a>
+	</li>{{/isFirstPage}}
 </ul>

@@ -15,7 +15,7 @@ class BlogController extends \core\BackController {
 
 		$nbrPosts = $manager->count();
 		$postsPerPage = (int) $config['postsPerPage'];
-		$nbrPages = ceil($nbrPosts / $postsPerPage);
+		$nbrPages = ceil((float) $nbrPosts / $postsPerPage);
 		$listPostsFrom = ($pageNbr - 1) * $postsPerPage;
 		$postsList = $manager->listBy(null, array(
 			'offset' => $listPostsFrom,
