@@ -83,9 +83,11 @@ class Collection implements \ArrayAccess, \IteratorAggregate, \Countable, \JsonS
 
 	public function getRange($from, $limit = -1) {
 		$from = (int) $from;
-		$limit = count($this->data);
-		if ($limit >= 0) {
-			$limit = $from + $limit;
+		$len = count($this->data);
+		if ($limit < 0) {
+			$limit = $len;
+		} else {
+			$limit = min($from + $limit, $len);
 		}
 
 		$items = array();
