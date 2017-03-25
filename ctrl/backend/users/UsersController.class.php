@@ -49,20 +49,22 @@ class UsersController extends \core\BackController {
 			} catch (\Exception $e) {
 				sleep(3); // Delay to prevent bruteforce attacks
 				$this->page()->addVar('error', 'Incorrect username or password');
+				return;
 			}
 
-			if ($cryptoManager->verifyPassword($password, $user['password'])) {
-				$this->_rehashPassword($user, $password);
-
-				$sessionUser = $this->app->user();
-				$sessionUser->setUsername($username);
-				$sessionUser->setAdmin(true);
-
-				$this->app->httpResponse()->redirect('');
-			} else {
+			if (!$cryptoManager->verifyPassword($password, $user['password'])) {
 				sleep(3); // Delay to prevent bruteforce attacks
 				$this->page()->addVar('error', 'Incorrect username or password');
+				return;
 			}
+
+			$this->_rehashPassword($user, $password);
+
+			$sessionUser = $this->app->user();
+			$sessionUser->setUsername($username);
+			$sessionUser->setAdmin(true);
+
+			$this->app->httpResponse()->redirect('');
 		}
 	}
 
